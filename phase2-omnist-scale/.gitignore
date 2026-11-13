@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+
+# Environments
+.venv/
+venv/
+env/
+
+# Local data cache
+data/*
+!data/.gitkeep
+# small, public, committed real Delhi PM2.5 (same as E-STGCN/OmniST) IS tracked
+!data/real_delhi/
+!data/real_delhi/*.csv
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+# Large artifacts
+*.pt
+*.pth
+*.npz
+results/scratch/

@@ -1,0 +1,126 @@
+{
+  "experiment": "V1 make-or-break (H1): do SSM temporal + O(N.k) attention match OmniST accuracy AND inductive coverage on real Delhi?",
+  "data": "CPCB Delhi PM2.5, 37 stations, real",
+  "device": "mps",
+  "seeds": 3,
+  "epochs": 15,
+  "alpha": 0.1,
+  "finite_sample_band_unseen": [
+    0.7529,
+    0.9981
+  ],
+  "variants": {
+    "gru+exact": {
+      "mae": {
+        "mean": 64.555,
+        "ci95": [
+          60.7258,
+          68.3842
+        ],
+        "n": 3
+      },
+      "coverage": {
+        "mean": 0.9479,
+        "ci95": [
+          0.9015,
+          0.9944
+        ],
+        "n": 3
+      },
+      "fps": {
+        "mean": 95.4244,
+        "ci95": [
+          80.7018,
+          110.1469
+        ],
+        "n": 3
+      }
+    },
+    "ssm+exact": {
+      "mae": {
+        "mean": 65.817,
+        "ci95": [
+          51.7428,
+          79.8913
+        ],
+        "n": 3
+      },
+      "coverage": {
+        "mean": 0.9441,
+        "ci95": [
+          0.9003,
+          0.9878
+        ],
+        "n": 3
+      },
+      "fps": {
+        "mean": 93.762,
+        "ci95": [
+          92.7497,
+          94.7743
+        ],
+        "n": 3
+      }
+    },
+    "gru+fast": {
+      "mae": {
+        "mean": 64.555,
+        "ci95": [
+          60.7258,
+          68.3842
+        ],
+        "n": 3
+      },
+      "coverage": {
+        "mean": 0.9479,
+        "ci95": [
+          0.9015,
+          0.9944
+        ],
+        "n": 3
+      },
+      "fps": {
+        "mean": 50.7283,
+        "ci95": [
+          45.3452,
+          56.1114
+        ],
+        "n": 3
+      }
+    },
+    "ssm+fast": {
+      "mae": {
+        "mean": 65.6198,
+        "ci95": [
+          51.9621,
+          79.2775
+        ],
+        "n": 3
+      },
+      "coverage": {
+        "mean": 0.9441,
+        "ci95": [
+          0.9023,
+          0.9858
+        ],
+        "n": 3
+      },
+      "fps": {
+        "mean": 53.8322,
+        "ci95": [
+          53.1961,
+          54.4684
+        ],
+        "n": 3
+      }
+    }
+  },
+  "diagnostics": {
+    "mae_parity_full_vs_baseline": true,
+    "coverage_in_band": true,
+    "throughput_comparable_or_better": false
+  },
+  "verdict": "GO - the scalable ssm+fast model MATCHES OmniST: inductive MAE 65.62 vs baseline 64.56 (within 10%), inductive coverage 0.944 in band [0.7529, 0.9981]. Throughput not yet better at N=37 (expected; the win is at large N - V4). Parity holds -> the scale-up is worth pursuing (V2 equivalence, V3 coverage-at-scale, V4 SSM crossover).",
+  "go": true,
+  "runtime_seconds": 819.4
+}

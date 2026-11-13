@@ -1,0 +1,46 @@
+{
+  "experiment": "V2 fast O(N.k) attention equivalence vs exact (shared weights)",
+  "device": "mps",
+  "d_model": 64,
+  "rows": [
+    {
+      "N": 37,
+      "cosine_vs_exact": 1.0,
+      "rel_l2_diff": 0.0,
+      "fast_time_s": 1.2121,
+      "exact_time_s": 0.2363
+    },
+    {
+      "N": 100,
+      "cosine_vs_exact": 1.0,
+      "rel_l2_diff": 0.0,
+      "fast_time_s": 0.1419,
+      "exact_time_s": 0.0032
+    },
+    {
+      "N": 325,
+      "cosine_vs_exact": 0.999985,
+      "rel_l2_diff": 0.005527,
+      "fast_time_s": 0.1445,
+      "exact_time_s": 0.1941
+    },
+    {
+      "N": 1000,
+      "cosine_vs_exact": 0.999995,
+      "rel_l2_diff": 0.003254,
+      "fast_time_s": 0.1521,
+      "exact_time_s": 0.2253
+    },
+    {
+      "N": 2000,
+      "cosine_vs_exact": 0.999874,
+      "rel_l2_diff": 0.015847,
+      "fast_time_s": 0.1891,
+      "exact_time_s": 0.1817
+    }
+  ],
+  "min_cosine_vs_exact": 0.999874,
+  "equivalent": true,
+  "verdict": "GO - fast attention is numerically equivalent to exact (min cosine 0.99987 >= 0.999) across tested N; the O(N.k) path is a drop-in for exact with no coverage/accuracy cost.",
+  "runtime_seconds": 3.08
+}

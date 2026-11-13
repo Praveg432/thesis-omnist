@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Test / tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Regenerable heavy artifacts (checkpoints/caches; result JSONs ARE committed)
+phase1-omnist/results/cache/
+*.pt
+
+# Large raw archives (extracted data is committed; zips are fetchable)
+*.zip
+
+# Large real traffic speed series (fetchable from public sources; see phase1-omnist/data/README.md)
+phase1-omnist/data/real_pems/pemsbay_vel.csv
+phase1-omnist/data/real_pems/pemsd7_vel.csv
+
+# Disposable local venv used only for Markdown->PDF conversion
+.pdfvenv/
+
+# Generated intermediate HTML from the PDF build (the .pdf itself IS committed)
+*.html

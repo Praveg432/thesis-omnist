@@ -1,0 +1,3 @@
+# Local data cache. The committed real Delhi PM2.5 (data/real_delhi/, public, same source as
+# E-STGCN/OmniST) is tracked for the vetting experiments. Larger datasets (traffic, thousands of
+# nodes) are fetched at the scaling phase (V3).
