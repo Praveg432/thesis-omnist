@@ -55,16 +55,19 @@ real* sensors is bounded by the availability of a real dataset of that size.
 
 ## 3. Review of Related Work (summary)
 
-The design sits at the intersection of three established lines, and is positioned against each:
+The design sits at the intersection of three established lines, and is positioned against each
+(numbered references are listed in Section 8):
 
-- **Spatiotemporal graph neural networks** (e.g. fixed-adjacency STGCN-family models) give strong
+- **Spatiotemporal graph neural networks** — fixed-adjacency STGCN-family models [1], [2] give strong
   accuracy on a *fixed* sensor set but cannot predict at a newly added sensor and break when the node
   count changes.
-- **Inductive graph kriging** (e.g. IGNNK) predicts at unseen locations but provides no coverage
-  guarantee.
-- **Conformal prediction** gives distribution-free coverage guarantees, but standard split-conformal
-  assumes a fixed model and data exchangeability; applying it under changing topology and at scale is
-  the open problem this project addresses.
+- **Inductive graph kriging** — methods such as IGNNK [3] predict at unseen locations but provide no
+  coverage guarantee.
+- **Conformal prediction** [4], [5] gives distribution-free coverage guarantees, but standard
+  split-conformal assumes a fixed model and data exchangeability; applying it under changing topology
+  and at scale is the open problem this project addresses.
+- **Efficient sequence models** — selective state-space models [6] process long sequences in linear
+  time and in parallel, motivating the Phase-2 temporal backbone.
 
 The project's distinct contribution is the *combination*: coverage guaranteed at spatially unseen
 sensor coordinates, preserved under topology change, validated cross-domain on real data, and (Phase
@@ -94,8 +97,9 @@ topology changes.
 
 ### 4.2 Testing and validation (executed on real data)
 
-All results below are from committed experiment outputs (reproducible scripts and result files in the
-project repository; see Appendix A).
+All results below are produced by reproducible experiment scripts with their outputs committed to the
+public project repository [7]; the headline numbers, with 95% confidence intervals, are collected in
+Appendix A of this report so the report is self-contained.
 
 **(a) Guaranteed coverage at unseen sensors, across four real datasets and three domains.** Target
 coverage 90%.
@@ -136,9 +140,11 @@ cost of wider intervals.
 
 ### 4.4 Dissemination
 
-The Phase-1 work (formulation + validation) has been written up and released as a **preprint**
+The Phase-1 work (formulation + validation) has been written up and released as a **preprint** [8]
 (arXiv:2611.04256). It has **not** been submitted to any journal or conference for publication; it is a
 timestamped record of this project's Phase-1 work, and is intended to form part of the final thesis.
+The complete code, experiment scripts, and committed result files for both phases are available in the
+public project repository [7].
 
 ## 5. Work in Progress — Phase 2: Scaling the Engine While Preserving the Guarantee
 
@@ -199,26 +205,71 @@ certification, the full evaluation, and the packaging of the method into a reusa
 
 ---
 
-## Appendix A — Reproducibility (claim → experiment → result file)
+## 8. References
 
-Every number in this report is backed by a committed experiment script and result file in the project
-repository. Phase-1 artifacts are under `phase1-omnist/`; Phase-2 under `phase2-omnist-scale/`.
+[1] B. Yu, H. Yin, and Z. Zhu, "Spatio-Temporal Graph Convolutional Networks: A Deep Learning
+Framework for Traffic Forecasting," in *Proc. 27th Int. Joint Conf. Artificial Intelligence (IJCAI)*,
+2018, pp. 3634–3640.
 
-| Claim in this report | Script | Result file |
+[2] Y. Li, R. Yu, C. Shahabi, and Y. Liu, "Diffusion Convolutional Recurrent Neural Network:
+Data-Driven Traffic Forecasting," in *Proc. Int. Conf. Learning Representations (ICLR)*, 2018.
+
+[3] Y. Wu, D. Zhuang, A. Labbe, and L. Sun, "Inductive Graph Neural Networks for Spatiotemporal
+Kriging," in *Proc. AAAI Conf. Artificial Intelligence*, vol. 35, no. 5, 2021, pp. 4478–4485.
+
+[4] V. Vovk, A. Gammerman, and G. Shafer, *Algorithmic Learning in a Random World*. New York, NY,
+USA: Springer, 2005.
+
+[5] A. N. Angelopoulos and S. Bates, "A Gentle Introduction to Conformal Prediction and
+Distribution-Free Uncertainty Quantification," *Foundations and Trends in Machine Learning*, vol. 16,
+no. 4, pp. 494–591, 2023.
+
+[6] A. Gu and T. Dao, "Mamba: Linear-Time Sequence Modeling with Selective State Spaces,"
+*arXiv:2312.00752*, 2023.
+
+[7] P. Vashishtha, "thesis-omnist: Certified Topology-Invariant Spatiotemporal Forecasting and Its
+Scaling (project repository)," 2026. [Online]. Available:
+https://github.com/Praveg432/thesis-omnist
+
+[8] P. Vashishtha, "OmniST: Topology-Invariant Spatiotemporal Forecasting with Guaranteed-Coverage
+Uncertainty at Unseen Sensor Locations," *arXiv:2611.04256*, 2026. [Online]. Available:
+https://arxiv.org/abs/2611.04256
+
+---
+
+## Appendix A — Summary of Executed Results (self-contained)
+
+Every number cited in this report is reproduced below with its 95% confidence interval where
+multi-seed. The experiment scripts and raw result files that produce these numbers are in the public
+project repository [7]; this appendix states the results in full so the report can be read on its own.
+
+**Phase 1 — OmniST (completed).** Coverage at unseen sensors, target 90% (α = 0.10):
+
+| Evidence | Dataset / setting | Result |
 |---|---|---|
-| Cross-domain coverage (4 datasets) | `phase1-omnist/experiments/B1_multidomain_v2.py` | `phase1-omnist/results/exp_multidomain_v2.json` |
-| Headline inductive coverage (Delhi) | `phase1-omnist/experiments/06_inductive_conformal.py` | `phase1-omnist/results/exp_inductive_conformal.json` |
-| vs learned IGNNK baseline | `phase1-omnist/experiments/B9_ignnk_inductive.py` | `phase1-omnist/results/exp_ignnk_inductive.json` |
-| Fixed-topology failure demo | `phase1-omnist/experiments/B8_fixedtopo_crash_demo.py` | `phase1-omnist/results/exp_fixedtopo_crash_demo.json` |
-| Temporal-drift coverage restored | `phase1-omnist/experiments/10_temporal_conformal.py` | `phase1-omnist/results/exp_temporal_conformal.json` |
-| Scale to 325 real sensors | `phase1-omnist/experiments/B7_largeN_pemsbay.py` | `phase1-omnist/results/exp_largeN_pemsbay.json` |
-| Phase-2 parity (make-or-break) | `phase2-omnist-scale/experiments/V1_ssm_matches_omnist.py` | `phase2-omnist-scale/results/V1_ssm_matches_omnist_results.json` |
-| Phase-2 attention equivalence | `phase2-omnist-scale/experiments/V2_attention_equivalence.py` | `phase2-omnist-scale/results/V2_attention_equivalence_results.json` |
+| Cross-domain coverage | Delhi air quality (37 stations) | 0.914 ± 0.006 (10 seeds) |
+| Cross-domain coverage | Beijing air quality (12 stations) | 0.928 ± 0.003 (10 seeds) |
+| Cross-domain coverage | NOAA weather (30 stations) | 0.919 ± 0.007 (10 seeds) |
+| Cross-domain coverage | PeMSD7-M traffic (228 sensors) | 0.915 ± 0.008 (6 seeds) |
+| Point error vs learned IGNNK | Delhi, unseen sensors | OmniST MAE 26.7 vs IGNNK 34.0 (~21% lower); OmniST coverage 0.915 vs IGNNK 0.891 |
+| Resilience vs fixed-topology | Delhi / weather, 30–50% sensors dropped | fixed-topology baseline fails to produce output (captured dimension error); OmniST holds 0.91–0.93 coverage |
+| Drift over time | Delhi, temporal split | static conformal worst-window 0.50 → rolling-ACI 0.96 (wider intervals) |
+| Scale (largest real N) | PeMS-BAY (325 sensors) | coverage 0.921 ± 0.000, holding under 30–50% dropout |
 
-A full claim→evidence map is in `EXPERIMENTS-INDEX.md`; the detailed Phase-1 result index is in
-`phase1-omnist/RESULTS-INDEX.md`.
+**Phase 2 — OmniST-Scale (two gates executed).** Real Delhi PM2.5, 37 stations, 3 seeds, α = 0.10;
+finite-sample coverage band at unseen sensors [0.753, 0.998]:
+
+| Gate | Variant | Inductive MAE (95% CI) | Coverage (95% CI) |
+|---|---|---|---|
+| Parity (make-or-break) | gru+exact (original OmniST baseline) | 64.56 [60.73, 68.38] | 0.948 [0.902, 0.994] |
+| Parity | **ssm+fast (rebuilt scalable engine)** | **65.62** | **0.944** |
+| Equivalence | sub-quadratic vs exact attention | — | output cosine similarity ≥ 0.99987 for sensor counts up to 2000 |
+
+Reading: the rebuilt engine matches the original within 2% on error and keeps coverage inside the
+finite-sample band (parity holds); the sub-quadratic attention is numerically equivalent to exact.
+Both gates pass on real data.
 
 ---
 
 *Candidate: Praveg Vashishtha (ID No. IITP006424) | Supervisor: Pankaj Chaswal | Semester-3 Progress
-Report*
+Report | Project repository: https://github.com/Praveg432/thesis-omnist*
