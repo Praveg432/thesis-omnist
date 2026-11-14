@@ -4,6 +4,18 @@ Maps each claim/table in the paper to the result JSON that produced it and the s
 that JSON. All numbers are reproducible: `pip install -r requirements.txt`, then run the script.
 Headline datasets are real; see `src/data_*.py` for provenance.
 
+> **Addendum after the preliminary review (read first).** The rows below come from the original
+> protocol: the conformal threshold was calibrated on training-station residuals and coverage was
+> measured on 3 to 7 hard-coded held-out stations, identical across seeds (seeds vary only the
+> initialisation). The primary coverage evidence is now **C1**
+> (`experiments/C1_rigorous_inductive_eval.py`, results in `results/exp_C1_<domain>.json`, summary by
+> `experiments/C1_summarise.py`): random disjoint train, calibration and test stations over 20 splits
+> (6 for the two traffic datasets). Under C1 the mean coverage is Delhi 0.893, Beijing 0.903,
+> weather 0.906, PeMSD7-M 0.876, PeMS-BAY 0.892 (target 0.90). The original-protocol values quoted
+> below are 1 to 2.5 points higher and should not be used as headlines. Baseline comparisons, dropout
+> robustness, drift handling and the 7-sensor PeMS-BAY run below have not been repeated under C1.
+
+
 ## Datasets (all real)
 | Domain | Type | Source | Loader |
 |--------|------|--------|--------|
@@ -58,6 +70,7 @@ Headline datasets are real; see `src/data_*.py` for provenance.
   and (b) a *controlled* head-to-head on real data under identical seeds/preprocessing/budget against
   a faithful reimplementation of the E-STGCN architecture (Chebyshev-GCN + LSTM + POT) — not the
   authors' original code. See `experiments/B6_estgcn_controlled.py`.
-- Large-N real coverage is certified to 325 real sensors (full PeMS-BAY); PeMS-BAY coordinates are
-  reconstructed via MDS from the released distance adjacency (speed series is original). Certifying
-  coverage at *thousands* of nodes still awaits a larger real benchmark (none fetchable here).
+- Large-N real coverage has been checked on up to 325 real sensors (full PeMS-BAY): 7 held-out
+  sensors in the original protocol, and 45 test sensors per random split in C1. PeMS-BAY coordinates
+  are reconstructed via MDS from the released distance adjacency (speed series is original).
+  Evaluating coverage at *thousands* of nodes still awaits a larger real benchmark.

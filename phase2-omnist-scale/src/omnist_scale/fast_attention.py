@@ -4,18 +4,27 @@ Why. OmniST's exact attention forms the full (B, N, N) Haversine matrix -> O(N^2
 the bottleneck beyond a few hundred nodes. Its "scalable" path uses a per-batch Python loop over
 cKDTree queries (correct but slow and not vectorized). This module provides a clean O(N log N)
 neighbour selection (cKDTree on an equirectangular projection) + fully-vectorized O(N·k) gather and
-attention, with NO (B,N,N) tensor ever formed and NO per-item Python loop in the hot path.
+attention. No (B,N,N) tensor is formed. The only Python-level loop is over the batch dimension inside
+the (cached) neighbour build.
 
 Equivalence. The attention MATH is identical to InductiveGAT; only neighbour SELECTION differs
-(exact topk vs cKDTree). For the local neighbourhoods that drive attention the cKDTree ranking equals
-the exact Haversine ranking, so outputs match exact attention within numerical noise (V2 measures the
-cosine similarity + coverage parity). The true Haversine distance is recomputed on the k selected
-pairs so the learned distance-bias is unchanged.
+(exact topk vs cKDTree). For the local neighbourhoods that drive attention the cKDTree ranking is
+expected to equal the exact Haversine ranking, so outputs should match exact attention within
+numerical noise. V2 measures this with output cosine similarity on random tokens; planned (Semester
+4): neighbour-set agreement and trained-weight equivalence. The true Haversine distance is recomputed
+on the k selected pairs so the learned distance-bias is unchanged.
+
+Status of the speed/memory claim. Equivalence is measured; a speed or memory advantage is NOT yet
+demonstrated (V2 measured no memory; at N=37 this path is slower than exact). Scaling curves are
+planned for Semester 4.
 
 Interface matches InductiveGAT.forward(tokens (B,N,d), coords (B,N,2)) -> (B,N,d), so it swaps into
 omnist_model via a config flag.
 """
 from __future__ import annotations
+import hashlib
+from collections import OrderedDict
+
 import numpy as np
 import torch
 import torch.nn as nn
@@ -24,7 +33,8 @@ import torch.nn.functional as F
 
 def knn_indices_ckdtree(coords: torch.Tensor, k: int) -> torch.Tensor:
     """(B,N,k) neighbour indices via a per-batch cKDTree on an equirectangular projection.
-    O(N log N) build+query; no (B,N,N) tensor. Vectorized self-removal and padding."""
+    O(N log N) build+query per batch item; no (B,N,N) tensor. The loop over the batch dimension B is
+    the only Python-level loop; self-removal and padding are vectorized."""
     from scipy.spatial import cKDTree
     B, N, _ = coords.shape
     dev = coords.device
@@ -37,21 +47,21 @@ def knn_indices_ckdtree(coords: torch.Tensor, k: int) -> torch.Tensor:
         tree = cKDTree(xy)
         _, nbr = tree.query(xy, k=min(k + 1, N))          # +1 to drop self
         nbr = np.atleast_2d(nbr)
-        # drop self (vectorized): mask self then take first k of the rest
-        rows = np.arange(N)[:, None]
-        keep = nbr != rows                                 # (N, k+1) bool
-        cleaned = np.empty((N, k), dtype=np.int64)
-        for i in range(N):                                 # cheap: k+1 small; no distance work here
-            r = nbr[i][keep[i]][:k]
-            cleaned[i] = np.pad(r, (0, k - len(r)), mode="edge") if 0 < len(r) < k else (
-                r if len(r) == k else np.full(k, i))
-        out[b] = torch.from_numpy(cleaned).to(dev)
+        # Drop self without a Python loop: a stable argsort on the "is self" mask moves the kept
+        # entries to the front in their original (nearest-first) order; take the first k.
+        keep = nbr != np.arange(N)[:, None]               # (N, k+1) bool
+        order = np.argsort(~keep, axis=1, kind="stable")
+        cleaned = np.take_along_axis(nbr, order, axis=1)[:, :k]
+        if cleaned.shape[1] < k:                           # only when N - 1 < k (tiny graphs)
+            cleaned = np.pad(cleaned, ((0, 0), (0, k - cleaned.shape[1])), mode="edge")
+        out[b] = torch.from_numpy(np.ascontiguousarray(cleaned, dtype=np.int64)).to(dev)
     return out
 
 
 def haversine_on_pairs(coords: torch.Tensor, idx: torch.Tensor) -> torch.Tensor:
     """True Haversine (km) on the k selected pairs only. coords (B,N,2) deg, idx (B,N,k) -> (B,N,k).
-    O(N·k) memory — no N^2 tensor."""
+    Intended O(N·k) memory. NOTE: the gather below reads from an expanded (stride-0) view; peak
+    memory has not been measured yet (planned: memory-vs-N curves in the Semester-4 evaluation)."""
     B, N, k = idx.shape
     lat = coords[..., 0] * (np.pi / 180.0)
     lon = coords[..., 1] * (np.pi / 180.0)
@@ -67,7 +77,7 @@ class FastInductiveGAT(nn.Module):
     """O(N·k) inductive graph attention. Same math/params as InductiveGAT; sub-quadratic selection."""
 
     def __init__(self, d_model: int, n_heads: int = 4, k_neighbors: int = 8, dropout: float = 0.0,
-                 cache_knn: bool = True):
+                 cache_knn: bool = True, cache_size: int = 8):
         super().__init__()
         assert d_model % n_heads == 0
         self.d_model = d_model; self.n_heads = n_heads; self.d_head = d_model // n_heads
@@ -83,23 +93,36 @@ class FastInductiveGAT(nn.Module):
         # OPTIMIZATION: the k-NN neighbour graph depends only on COORDINATES, which are static within
         # a run (a batch repeats the same sensor set). Caching the cKDTree indices + pair distances
         # per unique coordinate tensor turns the O(N log N) build from per-forward-pass into once-per-
-        # topology. The cache key is the coords' id+shape+content hash; a topology change (new coords)
-        # yields a new key and a fresh build. This is why the "fast" path is fast in TRAINING too.
+        # topology. The key is a hash of the exact coordinate BYTES (plus shape, dtype, k, device), so
+        # any change in layout, including a reordering of the same sensors, gives a new key. (An
+        # earlier key built from coords.sum() and coords.std() collided for permuted layouts and
+        # silently returned the wrong neighbours.) The cache holds at most `cache_size` topologies and
+        # evicts the least recently used.
         self.cache_knn = cache_knn
-        self._cache: dict = {}
+        self.cache_size = cache_size
+        self._cache: "OrderedDict[tuple, tuple]" = OrderedDict()
+
+    @staticmethod
+    def _coords_key(coords: torch.Tensor, k: int) -> tuple:
+        arr = np.ascontiguousarray(coords.detach().cpu().numpy())
+        digest = hashlib.blake2b(arr.tobytes(), digest_size=16).digest()
+        return (tuple(arr.shape), str(arr.dtype), k, str(coords.device), digest)
 
     def _knn(self, coords: torch.Tensor, k: int):
         if not self.cache_knn:
             idx = knn_indices_ckdtree(coords, k)
             return idx, haversine_on_pairs(coords, idx)
-        key = (coords.shape, float(coords.sum().item()), float(coords.std().item()), k, str(coords.device))
+        key = self._coords_key(coords, k)
         cached = self._cache.get(key)
-        if cached is None:
-            idx = knn_indices_ckdtree(coords, k)
-            dist = haversine_on_pairs(coords, idx)
-            self._cache[key] = (idx, dist)
-            return idx, dist
-        return cached
+        if cached is not None:
+            self._cache.move_to_end(key)
+            return cached
+        idx = knn_indices_ckdtree(coords, k)
+        entry = (idx, haversine_on_pairs(coords, idx))
+        self._cache[key] = entry
+        while len(self._cache) > self.cache_size:
+            self._cache.popitem(last=False)
+        return entry
 
     def forward(self, tokens: torch.Tensor, coords: torch.Tensor) -> torch.Tensor:
         B, N, D = tokens.shape

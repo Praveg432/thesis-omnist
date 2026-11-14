@@ -9,208 +9,241 @@
 | **ID No.** | IITP006424 |
 | **Supervisor** | Pankaj Chaswal |
 | **Program / Semester** | M.Tech (CSE) — Semester 3 Progress Report |
-| **Reporting period** | Semester 3 |
 | **Hardware** | Apple M4 Pro (MPS, ~24 GB unified memory); single machine, no cluster |
 
-> **Note on scope of this report.** This is a *Semester-3 progress report*. It documents the work
-> completed so far and the plan for Semester 4. Per the department instruction, the Semester-3 report
-> may be in any format; the full thesis submitted after Semester 4 will follow the IIT Patna M.Tech
-> Thesis Manual format. The project is organized in two phases: **Phase 1 (OmniST)** — completed this
-> reporting period — and **Phase 2 (scaling + deliverable)** — in progress, to be completed in
-> Semester 4.
+> **Scope of this report.** This is a Semester-3 progress report. It documents the completed work,
+> states its limits, and gives the plan for Semester 4. The full thesis after Semester 4 will follow
+> the IIT Patna M.Tech Thesis Manual. The project has two phases: **Phase 1 (OmniST)**, completed and
+> re-evaluated this semester, and **Phase 2 (scaling)**, planned for Semester 4.
+>
+> **Terminology.** "Certified coverage" in the title means finite-sample marginal coverage from split
+> conformal prediction when stations are split at random into train, calibration and test sets, so
+> that calibration and test scores are exchangeable across stations. It is checked empirically over
+> many random splits. It is not a guarantee for every station and not a guarantee against arbitrary
+> spatial dependence.
 
 ---
 
 ## 1. Introduction
 
-Large sensor networks — for air quality, road traffic, weather, and power — are used to forecast
-conditions and drive decisions. For a forecasting system to be useful in deployment, it must satisfy
-two properties that existing methods do not provide together:
+Large sensor networks for air quality, road traffic, weather and power are used to forecast conditions
+and drive decisions. Two properties decide whether a forecaster is usable in deployment.
 
 1. **Resilience to a changing network.** Sensors fail, go offline, or are newly installed. The model
    must keep forecasting, including at locations with no sensor history, without retraining each time
-   the network layout changes.
-2. **Trustworthy uncertainty.** Decisions need a prediction *interval* with a stated, guaranteed
-   probability of containing the true value — not a bare point estimate whose reliability is unknown.
+   the layout changes.
+2. **Usable uncertainty.** Decisions need a prediction interval with a stated coverage level, not a
+   bare point estimate whose reliability is unknown.
 
-This project designs a forecaster that provides both (Phase 1) and then makes it run efficiently at
-the scale of real networks — thousands of sensors — without weakening the guarantee (Phase 2).
+Phase 1 builds a forecaster with both properties. Phase 2 aims to make it run at the scale of real
+networks (thousands of sensors) and to study how its coverage behaves as the network grows.
 
 ## 2. Objectives and Scope
 
-1. Design a spatiotemporal forecaster whose computation has no structural dependence on the number of
-   sensors, so it keeps forecasting as the network's topology changes. **(Phase 1 — completed.)**
-2. Equip it with a distribution-free, finite-sample coverage guarantee at *unseen* sensor locations,
-   and validate that the guarantee holds on real data across multiple domains. **(Phase 1 — completed.)**
-3. Re-engineer the forecasting engine to be sub-quadratic in the number of sensors and parallel over
-   time, so it can scale to thousands of sensors on commodity hardware. **(Phase 2 — in progress.)**
-4. Certify that the coverage guarantee still holds as the network scales, and tighten per-sensor
-   (conditional) coverage. **(Phase 2 — in progress / planned.)**
-5. Package the method as a reusable, installable software library so practitioners can apply it to
-   their own sensor networks. **(Phase 2 deliverable — planned for Semester 4.)**
+1. Design a forecaster whose computation has no structural dependence on the number of sensors.
+   **(Phase 1: completed.)**
+2. Equip it with conformal prediction intervals at unseen sensor locations and evaluate the coverage on
+   real data from several domains, using random disjoint splits of stations. **(Phase 1: completed.)**
+3. Make the engine sub-quadratic in the number of sensors and time-parallel, and measure memory and
+   time against network size. **(Phase 2: planned.)**
+4. Evaluate and improve per-station coverage with a localised calibration method, and study coverage
+   as the network grows. **(Phase 2: planned.)**
+5. Deliver a reusable, installable PyTorch package. **(Phase 2: planned.)**
 
-**Out of scope (stated honestly):** the contribution is the *capability* (trustworthy, resilient,
-scalable uncertainty), not a point-accuracy state-of-the-art; coverage certification at *thousands of
-real* sensors is bounded by the availability of a real dataset of that size.
+**Out of scope.** The contribution is a calibrated, scalable system and an honest evaluation of its
+coverage, not a point-accuracy record and not a new state-space model.
 
-## 3. Review of Related Work (summary)
+## 3. Related Work
 
-The design sits at the intersection of three established lines, and is positioned against each
-(numbered references are listed in Section 8):
+The design sits among four lines of work (references in Section 8).
 
-- **Spatiotemporal graph neural networks** — fixed-adjacency STGCN-family models [1], [2] give strong
-  accuracy on a *fixed* sensor set but cannot predict at a newly added sensor and break when the node
-  count changes.
-- **Inductive graph kriging** — methods such as IGNNK [3] predict at unseen locations but provide no
-  coverage guarantee.
-- **Conformal prediction** [4], [5] gives distribution-free coverage guarantees, but standard
-  split-conformal assumes a fixed model and data exchangeability; applying it under changing topology
-  and at scale is the open problem this project addresses.
-- **Efficient sequence models** — selective state-space models [6] process long sequences in linear
-  time and in parallel, motivating the Phase-2 temporal backbone.
+- **Spatiotemporal graph networks.** Fixed-adjacency models such as STGCN [1] and DCRNN [2] are
+  accurate on a fixed sensor set but cannot predict at a newly added sensor.
+- **Inductive kriging.** IGNNK [3] predicts at unseen locations but gives no coverage statement. Recent
+  work shows that common kriging evaluation protocols leak spatial information and proposes a
+  leakage-free partition that separates training, validation and testing in space and time [11].
+- **Conformal prediction.** Split conformal prediction [4], [5] gives finite-sample coverage when
+  calibration and test scores are exchangeable. Two directly relevant extensions exist: conformal
+  prediction for inductive graph models, which corrects the shift in calibration scores caused by new
+  nodes [9], and conformal prediction for spatially dependent data, which addresses failure of
+  exchangeability under spatial dependence and scales through nearest-neighbour approximations [10].
+  Neither is used in the present work yet; both are comparison points for Phase 2.
+- **Efficient sequence and spatiotemporal models.** Selective state-space models [6] process
+  sequences in linear time. STGformer [12] reports a 100-fold speedup and a 99.8% reduction in GPU
+  memory against the STAEformer baseline during batch inference on a California road graph with
+  8,600 sensors, and is evaluated on the LargeST benchmark [13].
 
-The project's distinct contribution is the *combination*: coverage guaranteed at spatially unseen
-sensor coordinates, preserved under topology change, validated cross-domain on real data, and (Phase
-2) carried to the thousands-of-sensors regime. A full, cited related-work chapter will appear in the
-Semester-4 thesis.
+The project's contribution is the combination: a topology-invariant forecaster whose interval
+calibration is evaluated under random disjoint station splits, carried toward larger networks with
+measured memory and time evidence. A full cited related-work chapter will appear in the thesis.
 
-## 4. Work Completed in Semester 3 — Phase 1: Formulation and Testing of OmniST
+## 4. Work Completed in Semester 3: Phase 1 (OmniST)
 
 ### 4.1 Model formulation
 
-The forecaster (named OmniST) is built from three design choices, none of which references a global
-sensor count:
+Three design choices remove any structural dependence on the sensor count:
 
-1. **Coordinate-based tokenization** — each sensor is embedded from its geographic coordinates via a
-   learned spatial mapping, with no positional index or fixed node count.
-2. **k-nearest-neighbour spatial attention** — each sensor attends only to its nearest neighbours,
-   selected from coordinates at every forward pass, so the graph adapts to whatever sensors are
-   present (no precomputed adjacency matrix).
-3. **Per-sensor temporal processing** — a bidirectional recurrent (GRU) model runs independently per
-   sensor, so adding or removing a sensor does not alter any other sensor's representation.
+1. **Coordinate tokenisation.** Each sensor is embedded from its coordinates, with no positional index
+   or fixed node count.
+2. **k-nearest-neighbour spatial attention.** Each sensor attends to its nearest neighbours, selected
+   from coordinates at every forward pass, so no precomputed adjacency matrix is needed.
+3. **Per-sensor temporal processing.** A bidirectional GRU runs independently for each sensor, so
+   adding or removing a sensor does not change any other sensor's representation.
 
-Composed with inductive split-conformal calibration, this yields a distribution-free coverage
-guarantee at sensor coordinates never seen in training, preserved as sensors are added or removed. A
-locality property was formulated and verified: each sensor's nonconformity score is exactly invariant
-to sensors outside its neighbour set, so the guarantee requires no recalibration under far-away
-topology changes.
+With split-conformal calibration the model produces prediction intervals at coordinates never seen in
+training. A locality property was verified numerically: a sensor's nonconformity score is unchanged by
+sensors outside its neighbour set (prediction difference 8.9×10⁻⁸ after a far-away change). This is an
+invariance property, not a proof of exchangeability.
 
-### 4.2 Testing and validation (executed on real data)
+### 4.2 Evaluation protocol (experiment C1)
 
-All results below are produced by reproducible experiment scripts with their outputs committed to the
-public project repository [7]; the headline numbers, with 95% confidence intervals, are collected in
-Appendix A of this report so the report is self-contained.
+The first evaluation used a fixed list of 3 to 7 held-out stations per dataset, the same in every seed,
+and calibrated the conformal threshold on the residuals of the training stations. A preliminary review
+pointed out two problems: training-station residuals are not exchangeable with unseen-station
+residuals, and seed-to-seed spread on a fixed station set measures initialisation noise, not variation
+across sensor sets. Experiment C1 therefore repeats the evaluation as follows.
 
-**(a) Guaranteed coverage at unseen sensors, across four real datasets and three domains.** Target
-coverage 90%.
+- The stations are split at random into train, calibration and test sets. The model never sees the
+  calibration or test stations.
+- The conformal threshold is computed from the calibration stations; coverage is measured at the test
+  stations. The same trained models are also evaluated with the old training-station calibration.
+- The split is the unit of inference: results are the mean and 95% interval over random splits (20
+  splits for the three small datasets, 6 for the two traffic datasets).
+- Target coverage is 0.90. Scores are per-day absolute errors in original units.
 
-| Dataset (domain) | Coverage at unseen sensors |
-|---|:---:|
-| Delhi air quality (environmental) | 0.914 |
-| Beijing air quality (environmental) | 0.928 |
-| NOAA weather (meteorology) | 0.919 |
-| PeMSD7-M traffic (transportation) | 0.915 |
+### 4.3 Results
 
-Coverage holds within a few points of the 90% target on every dataset, and stays on target under
-30–50% of sensors being dropped. OmniST is the only method, among four model-free interpolators, to
-hold the target on all four datasets.
+| Dataset | Stations (train / cal / test) | Splits | Coverage, disjoint calibration | Coverage, training-station calibration | Per-station coverage: mean / 10th percentile / minimum |
+|---|---|:---:|---|:---:|---|
+| Delhi PM2.5 | 21 / 8 / 8 | 20 | 0.893 [0.884, 0.901] | 0.901 | 0.893 / 0.840 / 0.777 |
+| Beijing PM2.5 | 6 / 3 / 3 | 20 | 0.903 [0.895, 0.912] | 0.902 | 0.903 / 0.876 / 0.861 |
+| NOAA weather | 18 / 6 / 6 | 20 | 0.906 [0.881, 0.931] | 0.888 | 0.906 / 0.772 / 0.654 |
+| PeMSD7-M traffic | 168 / 30 / 30 | 6 | 0.876 [0.843, 0.909] | 0.890 | 0.876 / 0.718 / 0.519 |
+| PeMS-BAY traffic | 235 / 45 / 45 | 6 | 0.892 [0.872, 0.913] | 0.887 | 0.892 / 0.808 / 0.402 |
 
-**(b) Better than a learned baseline at unseen sensors.** Against a learned inductive-kriging baseline
-(IGNNK, a faithful reimplementation), OmniST achieves ~21% lower error at unseen sensors on Delhi with
-tighter, better-calibrated intervals.
+Reading the table:
 
-**(c) Resilience demonstrated, not asserted.** A fixed-topology baseline (E-STGCN, faithful
-reimplementation), run under identical conditions, structurally cannot produce an output at a newly
-added sensor and fails when sensors are dropped — demonstrated with the captured error. OmniST, on the
-same reduced network, keeps coverage on target.
+- Mean coverage over random splits is close to the 0.90 target in every dataset, and every interval
+  contains 0.90. This supports the marginal coverage statement under the random-split protocol.
+- Individual splits vary. The standard deviation over splits is 0.02 to 0.05, and in the weather data
+  coverage ranged from 0.79 to 0.99. Only 33% to 55% of splits reached 0.90, which is what one expects
+  when the mean sits near the target.
+- Coverage is marginal. Some stations are badly under-covered (minimum per-station coverage 0.40 to
+  0.86). This motivates the localised calibration planned for Phase 2.
+- Calibrating on training stations gave similar average coverage on these data (the disjoint-station
+  value minus the training-station value ranged from -0.014 to +0.018). The exchangeability concern
+  did not produce a large average error here, but the assumption remains unsupported for that
+  protocol.
+- Test errors (mean absolute error, in each dataset's units) were 27.6 (Delhi), 49.3 (Beijing), 5.8
+  (weather), 10.3 (PeMSD7-M) and 5.5 (PeMS-BAY).
 
-**(d) Uncertainty stays valid under drift over time.** A rolling adaptive-conformal layer restores
-coverage from 0.50 (static, worst-drift window) to 0.96 on real Delhi data, at an honestly reported
-cost of wider intervals.
+### 4.4 Original-protocol results (kept as a record)
 
-**(e) Scale tested to 325 real sensors** (PeMS-BAY): coverage 0.921, holding under node dropout.
+The first protocol gave coverage 0.914 ± 0.006 (Delhi, 10 seeds), 0.928 ± 0.003 (Beijing, 10),
+0.919 ± 0.007 (weather, 10) and 0.915 ± 0.009 (PeMSD7-M, 6), where ± is the standard deviation over
+seeds on the same fixed held-out stations. These are 1 to 2.5 points higher than the random-split
+means in Section 4.3 and should not be read as the headline. The following original-protocol results
+were not repeated under C1 and carry the stated caveats.
 
-### 4.3 Honest limitations identified in Phase 1 (these motivate Phase 2)
+- **Simple interpolators.** Nearest neighbour, inverse-distance weighting, mean of k neighbours and a
+  Gaussian process: OmniST's mean coverage was at or above 0.90 on all four datasets, and each
+  interpolator's was below 0.90 on at least one. Thresholds were applied to means without intervals.
+- **Learned kriging baseline.** Point error at unseen Delhi stations was 26.7 for OmniST against 34.0
+  for IGNNK (21.5% lower; 5 seeds). IGNNK is the author's re-implementation, and equal tuning effort
+  has not been verified.
+- **Fixed-adjacency baseline.** A fixed-adjacency model cannot produce an output at a newly added
+  sensor and fails when sensors are removed. This motivates the design; it is not evidence of better
+  accuracy.
+- **Drift over time.** A rolling adaptive conformal layer raised worst-window coverage on Delhi from
+  0.498 to 0.962, at the cost of wider intervals.
+- **Larger network.** PeMS-BAY coverage was 0.921, but with **7 held-out sensors in one fixed split**.
+  Under C1 the same data give 0.892 over 6 random splits with 45 test sensors each.
+- **Dropout robustness.** Dataset-mean coverage with 30% or 50% of sensors removed was 0.912 to 0.931
+  under the original protocol; individual seeds went as low as 0.89.
 
-- The spatial attention's exact computation grows with the square of the sensor count; measured
-  training cost scales super-linearly.
-- The temporal model is sequential and cannot be parallelised over time.
-- Coverage is certified only up to a few hundred real sensors (325), and the guarantee is on average
-  (marginal), not per-sensor (conditional), with only a partial fix so far.
+### 4.5 Threats to validity and limitations
 
-### 4.4 Dissemination
+- **Marginal, not conditional coverage.** Per-station coverage varies widely (Section 4.3).
+- **Exchangeability is assumed.** Spatial and temporal dependence can break it. C1 measures the
+  outcome over random splits; it is not a proof.
+- **Small station sets.** The Beijing and weather datasets have 12 and 30 stations, so each split
+  tests 3 to 6 stations.
+- **Coordinates.** The two traffic datasets use sensor coordinates reconstructed from the published
+  distance matrix, not measured latitude and longitude.
+- **Preprocessing.** Missing-value filling uses the full series. In the Delhi data 0.0000% of
+  training-year entries and 0.0074% of test-year entries were invalid, so the effect is negligible
+  there; it was not measured for the other datasets. The calendar dates of the Delhi series are
+  declared in the loader (starting 1 January 2019); PM2.5 peaks in November to January under those
+  dates, as expected for Delhi.
+- **Year feature.** The year input is scaled against each dataset's own range, so the test year is
+  encoded as 0.0. The temporal embedding is periodic, so 0.0 and 1.0 give the same embedding, and the
+  test year aliases to the latest training year. A check that set the feature to 1.0 therefore
+  changed nothing, and it was uninformative by construction. No effect on results was found; a better
+  year encoding is a Semester-4 cleanup.
+- **Baselines.** E-STGCN and IGNNK are the author's re-implementations.
 
-The Phase-1 work (formulation + validation) has been written up and released as a **preprint** [8]
-(arXiv:2611.04256). It has **not** been submitted to any journal or conference for publication; it is a
-timestamped record of this project's Phase-1 work, and is intended to form part of the final thesis.
-The complete code, experiment scripts, and committed result files for both phases are available in the
-public project repository [7].
+### 4.6 Dissemination
 
-## 5. Work in Progress — Phase 2: Scaling the Engine While Preserving the Guarantee
+The Phase-1 work has been released as a preprint [8] (arXiv:2611.04256). It has not been submitted to
+any journal or conference. The code, experiment scripts and committed results for both phases are in
+the public project repository [7].
 
-The Phase-1 limitations define three re-engineering fronts. Two are implemented and have passed their
-first validation gates on real data; the third is planned for Semester 4.
+## 5. Phase 2: Status of Existing Components
 
-### 5.1 Components
+Phase 2 is planned work for Semester 4. Some components already exist from exploratory work, and the
+review corrected what had been claimed for them.
 
-**Implemented (Semester 3):**
+### 5.1 Components and what has been measured
 
-1. **Sub-quadratic spatial attention** — a vectorized nearest-neighbour attention with cost and memory
-   that grow linearly in (sensors × neighbours) instead of quadratically, using a cached spatial index.
-2. **Parallel temporal block** — a selective state-space model that processes the time sequence in
-   linear time and in parallel, as a drop-in replacement for the sequential recurrent model.
-
-**Planned (Semester 4), not yet implemented:**
-
-3. **Scalable conditional conformal** — a calibration scheme intended to keep coverage valid as the
-   network scales and to even out per-sensor coverage. The Semester-3 parity and equivalence checks
-   below use the same standard split-conformal calibration as Phase 1; they do not yet include this
-   component.
-
-### 5.2 Validation completed this period
-
-| Test | Question | Result |
+| Component | State | Evidence |
 |---|---|---|
-| Parity (make-or-break) | Does the rebuilt engine (parallel temporal block + sub-quadratic attention) match OmniST's accuracy *and* coverage on real data? | **Pass.** On real Delhi (3 seeds): error within 2% of the original (65.62 vs 64.56) and coverage preserved (0.944 vs 0.948, within the finite-sample band). |
-| Equivalence | Does the sub-quadratic attention compute the same thing as the exact version? | **Pass.** Output cosine similarity to exact ≥ 0.99987 across sensor counts up to 2000. |
+| Neighbour attention (cost proportional to sensors × neighbours) | Implemented | Output cosine similarity to exact attention is at least 0.99987 for N up to 2,000 on random tokens with shared weights. **No memory measurement exists and no speed advantage appeared**: at N=2,000 the two paths took 189 ms and 182 ms, and at small N the neighbour path was slower. |
+| State-space temporal block | Implemented as a **sequential** scan | About 2.0 to 2.2 times slower than the GRU at sequence lengths 60, 240 and 960 (29.0 vs 14.0 ms, 115.7 vs 53.3 ms, 462.3 vs 233.7 ms). No time-parallel advantage exists. Only the step size is input-dependent. |
+| Localised calibration | **Not implemented** | Planned (work package WP1). |
+| First parity check (V1) | Preliminary | 3 seeds, Delhi: the rebuilt engine had MAE 65.62 against 64.56 and coverage 0.944 against 0.948. The pass criteria were too permissive to be informative (the coverage band was widened to [0.723, 1.028], accuracy tolerance was 10%, calibration used training stations), so this is not evidence of parity. |
 
-These are the two cheapest, most load-bearing checks: they confirm the scaling does not cost accuracy
-or break the guarantee. They have both passed on real data.
+### 5.2 Defects found and fixed
 
-### 5.3 Remaining Phase-2 work (planned for Semester 4)
-
-- **Scalable conditional conformal:** implement the third front and evaluate it against standard
-  split-conformal calibration.
-- **Coverage at scale:** certify that coverage stays valid as the sensor count grows toward thousands.
-  *Main residual risk: this needs a real sensor dataset of that size; where unavailable, realistic
-  replication is used with the explicit caveat that replication cannot by itself certify coverage.*
-- **Throughput/memory study:** quantify where the parallel state-space block and sub-quadratic
-  attention win over the original, and identify the crossover point honestly.
-- **Full evaluation:** multi-seed results with confidence intervals across all datasets; ablations.
+- A cache of neighbour indices used a key built from the coordinate sum and spread, so two different
+  sensor layouts with equal sum and spread (for example two nodes swapped) could silently share
+  neighbours. The key is now a hash of the exact coordinates, the cache is size-limited, and
+  regression tests cover both. The committed V1 and V2 numbers were not affected.
+- Descriptions of the state-space block as a parallel scan and of the attention equivalence as proven
+  were incorrect and have been corrected throughout.
+- A corrected parity gate (V1b) replaces V1: random calibration stations disjoint from the test
+  stations, an equivalence test on paired per-seed differences with margins fixed in advance (5% of
+  baseline error, 0.03 in coverage), 10 seeds, and interval widths reported. It has been smoke-tested
+  only.
 
 ## 6. Plan for Semester 4
 
-| Milestone | Work | Target |
-|---|---|---|
-| M-A | Coverage-at-scale experiments + scalable conditional conformal | Coverage holds in band as sensor count grows |
-| M-B | Throughput/memory curves; crossover analysis vs the original engine | Scaling benefit quantified honestly |
-| M-C | Full real-data evaluation (multi-seed, confidence intervals, ablations) | Rebuilt engine matches original accuracy/coverage at lower cost |
-| M-D | **Deliverable: a reusable software library** (pip-installable) wrapping the forecaster + conformal layer, so practitioners can apply it to their own sensor networks | Installable package + usage example + tests |
-| M-E | Thesis write-up in IIT Patna manual format; final preemption/novelty re-scan | Final thesis submitted |
+All acceptance criteria are fixed before the experiments are run, and each work package has a
+fallback so that a negative result is still a thesis result.
 
-**On the deliverable.** A concrete goal for Semester 4 is to package the method as an installable
-Python library (a NumPy/PyTorch-based tool) that takes a user's sensor coordinates and readings and
-returns forecasts with guaranteed-coverage intervals, including at unseen locations. This turns the
-research from a set of experiments into a tool others can use — the usability contribution.
+| Package | Work | Acceptance criterion | Fallback |
+|---|---|---|---|
+| WP0 | Run V1b; check that the LargeST benchmark [13] (8,600 sensors) is usable; fix a timing baseline | V1b verdict recorded; data decision made | Decide the state-space line and data plan from the outcome |
+| WP1 | Localised calibration; compare with [9] and [10] | Over at least 20 random splits on three datasets, mean coverage within 0.02 of 0.90 and improved 10th-percentile per-station coverage without widening intervals by more than 10% | Empirical study of when random-split conformal coverage holds and fails |
+| WP2 | Parallel prefix scan for the state-space block | Matches the sequential version within 1e-4 for T up to 960 and is no slower than the GRU for T ≥ 240 | Drop the time-parallel claim |
+| WP3 | Peak memory and time against N (325 to 8,600); neighbour-set agreement | At least 5× lower peak memory than exact attention at N ≥ 2,000; agreement ≥ 0.99 | Restrict the claim to equivalence |
+| WP4 | Coverage against N on a larger real network | Mean coverage within 0.02 of 0.90 at every size, spread over at least 10 splits reported | State evidence to 325 sensors only; never use replicated sensors to claim coverage |
+| WP5 | Stronger baselines with equal tuning; leakage-free protocol [11] | Official-code IGNNK or equivalent compared at equal budget | Cut first if time is short |
+| WP6 | Reusable PyTorch package with tests and an example | Installs in a fresh environment and reproduces the Delhi result within the spread over splits | Scope to forecaster plus calibration |
+| WP7 | Thesis in the IIT Patna format, 60 to 70 pages, at least 30 verified references | Supervisor review | None |
+
+Timeline: month 1 WP0; month 2 WP1; month 3 WP2 and WP3; month 4 WP4 and WP5; month 5 WP6; month 6
+WP7 and the final literature re-scan.
 
 ## 7. Summary of Progress
 
-Phase 1 is complete: the forecaster has been formulated and validated on four real datasets across
-three domains, with the coverage guarantee holding under topology change and under drift, and the work
-is on record as a preprint. Phase 2 is underway: the scaled engine (sub-quadratic attention and parallel temporal block) is implemented, and its two
-make-or-break checks (accuracy/coverage parity with the original, and equivalence of the sub-quadratic
-attention) have both passed on real data. The remaining Semester-4 work is the coverage-at-scale
-certification, the full evaluation, and the packaging of the method into a reusable library.
+Phase 1 is complete. The forecaster was formulated, validated on four real datasets, released as a
+preprint, and re-evaluated this semester over random disjoint station splits. Mean coverage was close
+to the 0.90 target on all five networks, with considerable variation between splits and between
+stations. Phase 2 is planned: a neighbour attention that matches exact attention in output and a
+sequential state-space block exist, but neither has shown a speed or memory advantage yet, localised
+calibration is not implemented, and the first parity check was too permissive to count. A preliminary
+review identified these points, and the code, documents and plan have been corrected accordingly. The
+Semester-4 plan has acceptance criteria and fallbacks for each work package.
 
 ---
 
@@ -244,39 +277,46 @@ https://github.com/Praveg432/thesis-omnist
 Uncertainty at Unseen Sensor Locations," *arXiv:2611.04256*, 2026. [Online]. Available:
 https://arxiv.org/abs/2611.04256
 
+[9] S. H. Zargarbashi and A. Bojchevski, "Conformal Inductive Graph Neural Networks," in *Proc. Int.
+Conf. Learning Representations (ICLR)*, 2024. [Online]. Available: https://arxiv.org/abs/2407.09173
+
+[10] A. B. Sen and A. Saha, "Conformal Prediction for Spatially Dependent Data via Sequential
+Whitening," *arXiv:2610.10168*, 2026. [Online]. Available: https://arxiv.org/abs/2610.10168
+
+[11] C. Yang, C. Zhao, H. Zhao, Y. He, C. Wang, and J. Fan, "Leakage-Free Evaluation and
+Distribution-Robust Spatio-Temporal Graph Learning for Inductive Kriging," *Pattern Recognition*,
+2026, doi: 10.1016/j.patcog.2026.114638. [Online]. Available: https://arxiv.org/abs/2509.23631
+
+[12] H. Wang, J. Chen, T. Pan, Z. Dong, L. Zhang, R. Jiang, and X. Song, "STGformer: Efficient
+Spatiotemporal Graph Transformer for Traffic Forecasting," *arXiv:2410.00385*, 2024. [Online].
+Available: https://arxiv.org/abs/2410.00385
+
+[13] X. Liu, Y. Xia, Y. Liang, J. Hu, Y. Wang, L. Bai, C. Huang, Z. Liu, B. Hooi, and R. Zimmermann,
+"LargeST: A Benchmark Dataset for Large-Scale Traffic Forecasting," in *Advances in Neural Information
+Processing Systems (NeurIPS)*, 2023. [Online]. Available: https://arxiv.org/abs/2306.08259
+
 ---
 
-## Appendix A — Summary of Executed Results (self-contained)
+## Appendix A: Supplementary Results
 
-Every number cited in this report is reproduced below with its 95% confidence interval where
-multi-seed. The experiment scripts and raw result files that produce these numbers are in the public
-project repository [7]; this appendix states the results in full so the report can be read on its own.
+**A.1 Phase 1, random-split evaluation (C1), additional statistics.** Target coverage 0.90.
 
-**Phase 1 — OmniST (completed).** Coverage at unseen sensors, target 90% (α = 0.10):
+| Dataset | Standard deviation over splits | Range over splits | Fraction of splits at or above 0.90 | Mean interval width | Test MAE |
+|---|:---:|:---:|:---:|:---:|:---:|
+| Delhi PM2.5 | 0.019 | 0.860 to 0.934 | 0.35 | 119.8 | 27.6 |
+| Beijing PM2.5 | 0.018 | 0.869 to 0.933 | 0.45 | 176.5 | 49.3 |
+| NOAA weather | 0.054 | 0.788 to 0.990 | 0.55 | 24.8 | 5.8 |
+| PeMSD7-M traffic | 0.031 | 0.830 to 0.917 | 0.33 | 44.1 | 10.3 |
+| PeMS-BAY traffic | 0.019 | 0.863 to 0.917 | 0.33 | 22.9 | 5.5 |
 
-| Evidence | Dataset / setting | Result |
+**A.2 Phase 2, measurements on existing components.**
+
+| Measurement | Setting | Result |
 |---|---|---|
-| Cross-domain coverage | Delhi air quality (37 stations) | 0.914 ± 0.006 (10 seeds) |
-| Cross-domain coverage | Beijing air quality (12 stations) | 0.928 ± 0.003 (10 seeds) |
-| Cross-domain coverage | NOAA weather (30 stations) | 0.919 ± 0.007 (10 seeds) |
-| Cross-domain coverage | PeMSD7-M traffic (228 sensors) | 0.915 ± 0.008 (6 seeds) |
-| Point error vs learned IGNNK | Delhi, unseen sensors | OmniST MAE 26.7 vs IGNNK 34.0 (~21% lower); OmniST coverage 0.915 vs IGNNK 0.891 |
-| Resilience vs fixed-topology | Delhi / weather, 30–50% sensors dropped | fixed-topology baseline fails to produce output (captured dimension error); OmniST holds 0.91–0.93 coverage |
-| Drift over time | Delhi, temporal split | static conformal worst-window 0.50 → rolling-ACI 0.96 (wider intervals) |
-| Scale (largest real N) | PeMS-BAY (325 sensors) | coverage 0.921 ± 0.000, holding under 30–50% dropout |
-
-**Phase 2 — OmniST-Scale (two gates executed).** Real Delhi PM2.5, 37 stations, 3 seeds, α = 0.10;
-finite-sample coverage band at unseen sensors [0.753, 0.998]:
-
-| Gate | Variant | Inductive MAE (95% CI) | Coverage (95% CI) |
-|---|---|---|---|
-| Parity (make-or-break) | gru+exact (original OmniST baseline) | 64.56 [60.73, 68.38] | 0.948 [0.902, 0.994] |
-| Parity | **ssm+fast (rebuilt scalable engine)** | **65.62** | **0.944** |
-| Equivalence | sub-quadratic vs exact attention | — | output cosine similarity ≥ 0.99987 for sensor counts up to 2000 |
-
-Reading: the rebuilt engine matches the original within 2% on error and keeps coverage inside the
-finite-sample band (parity holds); the sub-quadratic attention is numerically equivalent to exact.
-Both gates pass on real data.
+| Attention equivalence (V2) | Shared weights, random tokens, N = 37, 100, 325, 1,000, 2,000 | Minimum cosine similarity to exact attention 0.99987 |
+| Attention time (V2) | N = 325 / 1,000 / 2,000, one layer, batch 1 | Neighbour path 145 / 152 / 189 ms; exact path 194 / 225 / 182 ms |
+| State-space block vs GRU (T1) | T = 60 / 240 / 960, batch 4, 37 nodes, two layers | State-space 29.0 / 115.7 / 462.3 ms; GRU 14.0 / 53.3 / 233.7 ms |
+| First parity check (V1, preliminary) | 3 seeds, Delhi | MAE 64.56 [60.73, 68.38] (baseline) vs 65.62 (rebuilt); coverage 0.948 vs 0.944 |
 
 ---
 

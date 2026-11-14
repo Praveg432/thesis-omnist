@@ -755,8 +755,11 @@ top-tier bar.
 
 - **Authors' original E-STGCN / IGNNK code** was not run (not available / compute); both are faithful
   reimplementations, stated as such.
-- **Thousands of real sensors**: coverage is certified to 325 real sensors; larger real benchmarks are
-  not fetchable here. This is a data gate, not a method gate (scalable k-NN is verified equivalent).
+- **Thousands of real sensors**: coverage has been checked on networks of up to 325 real sensors (7
+  held-out sensors in the original protocol; 45 test sensors per random split in experiment C1, mean
+  coverage 0.892 over 6 splits). Larger real benchmarks were not fetchable at the time; LargeST (8,600
+  sensors) is a candidate to be checked in Semester 4. The scalable k-NN attention matched exact
+  attention in output on the cases tested.
 - **Conditional (per-node/per-horizon) coverage** remains marginal with a Mondrian partial fix.
 
 ## Reproduce (this hardening)

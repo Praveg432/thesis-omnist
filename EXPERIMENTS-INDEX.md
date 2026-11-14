@@ -1,62 +1,70 @@
-# Experiments Index — Abstract Claim → Script → Result File
+# Experiments Index — Claim → Script → Result File
 
-Every factual claim in the abstract and proposal is traced here to the experiment that produces it
-and the committed result file that holds the numbers. Status is marked **EXECUTED** (number is in a
-committed result file) or **PENDING** (planned thesis work, not yet run).
+Every factual claim in the abstract, proposal and report is traced here to the experiment that
+produces it and the committed result file that holds the numbers. Status is **EXECUTED** (number is in
+a committed result file), **PRELIMINARY** (executed, but under a protocol the review found too weak to
+support the claim), or **PLANNED** (not yet run).
 
 Paths are relative to the repo root. Phase 1 lives in `phase1-omnist/`, Phase 2 in
 `phase2-omnist-scale/`.
 
 ---
 
-## Phase 1 — OmniST (all EXECUTED)
+## Phase 1 — OmniST
 
-| # | Abstract / proposal claim | Script | Result file | Status |
+### Primary evidence: C1, random disjoint-station evaluation (added after review)
+
+| # | Claim | Script | Result files | Status |
 |---|---|---|---|---|
-| 1 | Guaranteed inductive coverage at unseen sensors (real Delhi headline) | `phase1-omnist/experiments/06_inductive_conformal.py` | `phase1-omnist/results/exp_inductive_conformal.json` | EXECUTED |
-| 2 | Coverage holds across 4 real datasets / 3 domains (Delhi 0.914, Beijing 0.928, weather 0.919, traffic 0.915) | `phase1-omnist/experiments/B1_multidomain_v2.py` | `phase1-omnist/results/exp_multidomain_v2.json` | EXECUTED |
-| 3 | Only method vs four model-free interpolators to hold target on all four | `phase1-omnist/experiments/B2_baselines.py` | `phase1-omnist/results/exp_baselines.json` | EXECUTED |
-| 4 | Coverage tracks the target across domains/targets/held-out sizes; robustness | `phase1-omnist/experiments/07_inductive_conformal_rigor.py`, `11_realmultidomain_rigor.py` | `phase1-omnist/results/exp_inductive_conformal_rigor.json`, `exp_realmultidomain_rigor.json` | EXECUTED |
-| 5 | Beats learned IGNNK kriging at unseen nodes (~21% MAE Delhi), tighter intervals | `phase1-omnist/experiments/B9_ignnk_inductive.py` | `phase1-omnist/results/exp_ignnk_inductive.json` | EXECUTED |
-| 6 | Controlled E-STGCN head-to-head; fixed-topology cannot predict at unseen nodes | `phase1-omnist/experiments/B6_estgcn_controlled.py` | `phase1-omnist/results/exp_estgcn_controlled.json` | EXECUTED |
-| 7 | Fixed-topology model crashes under node dropout (demonstrated) | `phase1-omnist/experiments/B8_fixedtopo_crash_demo.py` | `phase1-omnist/results/exp_fixedtopo_crash_demo.json` | EXECUTED |
-| 8 | Temporal-drift coverage restored by rolling-ACI (0.89/0.96 vs static 0.50) | `phase1-omnist/experiments/10_temporal_conformal.py` | `phase1-omnist/results/exp_temporal_conformal.json` | EXECUTED |
-| 9 | Certified to 325 real sensors (PeMS-BAY) | `phase1-omnist/experiments/B7_largeN_pemsbay.py` | `phase1-omnist/results/exp_largeN_pemsbay.json` | EXECUTED |
-| 10 | Locality Proposition verified (recalibration-free coverage, far-change diff 8.9e-8) | `phase1-omnist/experiments/B5_theorem_check.py` | `phase1-omnist/results/exp_theorem_check.json` | EXECUTED |
-| 11 | Mondrian conditional conformal narrows per-node spread (traffic worst-group 0.80→0.86) | `phase1-omnist/experiments/13_mondrian_conformal.py` | `phase1-omnist/results/exp_mondrian_conformal.json` | EXECUTED |
-| 12 | Scalable k-NN attention equivalent to exact (cosine 0.99996) + cost scaling | `phase1-omnist/experiments/14_approx_knn_test.py`, `12_scalability_stress.py` | `phase1-omnist/results/exp_approx_knn.json`, `exp_scalability_stress.json` | EXECUTED |
-| 13 | Ablations + calibration diagnostics | `phase1-omnist/experiments/B3_ablations.py`, `B4_calibration.py` | `phase1-omnist/results/exp_ablations_v2.json`, `exp_calibration.json` | EXECUTED |
-| 14 | Multi-seed hardening (5/10-seed) | `phase1-omnist/experiments/08_optimizations.py`, `05_final_comparison.py` | `phase1-omnist/results/exp_optimizations.json`, `exp_final_5seed.json`, `exp_definitive_10seed.json` | EXECUTED |
+| C1 | Coverage at unseen stations over many random train/calibration/test station splits, with calibration on disjoint unseen stations; also the old training-station calibration on the same trained models; per-station coverage; interval width | `phase1-omnist/experiments/C1_rigorous_inductive_eval.py`, summary by `phase1-omnist/experiments/C1_summarise.py` | `phase1-omnist/results/exp_C1_delhi_air_quality.json`, `exp_C1_beijing_air_quality.json`, `exp_C1_ghcn_weather.json`, `exp_C1_pemsd7_traffic.json`, `exp_C1_pemsbay_traffic.json` | EXECUTED |
 
-Full claim→file map with inline numbers: `phase1-omnist/RESULTS-INDEX.md`.
+### Original protocol (calibration on training-station residuals, fixed held-out stations)
+
+These runs use 3 to 7 hard-coded held-out stations, the same in every seed, so seeds vary only the
+initialisation. They are kept as the original record; C1 is the primary evidence.
+
+| # | Claim | Script | Result file | Status |
+|---|---|---|---|---|
+| 1 | Coverage at unseen sensors, Delhi, original protocol | `phase1-omnist/experiments/06_inductive_conformal.py` | `phase1-omnist/results/exp_inductive_conformal.json` | EXECUTED (original protocol) |
+| 2 | Coverage on four datasets, original protocol | `phase1-omnist/experiments/B1_multidomain_v2.py` | `phase1-omnist/results/exp_multidomain_v2.json` | EXECUTED (original protocol) |
+| 3 | Comparison with four simple interpolators | `phase1-omnist/experiments/B2_baselines.py` | `phase1-omnist/results/exp_baselines.json` | EXECUTED (original protocol) |
+| 4 | Robustness across targets and held-out sizes | `phase1-omnist/experiments/07_inductive_conformal_rigor.py`, `11_realmultidomain_rigor.py` | `phase1-omnist/results/exp_inductive_conformal_rigor.json`, `exp_realmultidomain_rigor.json` | EXECUTED (original protocol) |
+| 5 | Point error against a learned kriging baseline (the author's re-implementation) | `phase1-omnist/experiments/B9_ignnk_inductive.py` | `phase1-omnist/results/exp_ignnk_inductive.json` | EXECUTED; tuning parity not verified |
+| 6 | A fixed-adjacency model cannot predict at unseen sensors (motivation, not evidence of superiority) | `phase1-omnist/experiments/B6_estgcn_controlled.py`, `B8_fixedtopo_crash_demo.py` | `phase1-omnist/results/exp_estgcn_controlled.json`, `exp_fixedtopo_crash_demo.json` | EXECUTED |
+| 7 | Drift: rolling adaptive conformal restores coverage over time | `phase1-omnist/experiments/10_temporal_conformal.py` | `phase1-omnist/results/exp_temporal_conformal.json` | EXECUTED |
+| 8 | Coverage on PeMS-BAY, 325 sensors, **7 held-out sensors, one fixed split** | `phase1-omnist/experiments/B7_largeN_pemsbay.py` | `phase1-omnist/results/exp_largeN_pemsbay.json` | EXECUTED (original protocol); see C1 for random splits |
+| 9 | Locality property: score invariance to far-away nodes (not an exchangeability result) | `phase1-omnist/experiments/B5_theorem_check.py` | `phase1-omnist/results/exp_theorem_check.json` | EXECUTED |
+| 10 | Mondrian conditional conformal narrows per-node spread on traffic | `phase1-omnist/experiments/13_mondrian_conformal.py` | `phase1-omnist/results/exp_mondrian_conformal.json` | EXECUTED |
+| 11 | Neighbour attention versus exact, and cost scaling | `phase1-omnist/experiments/14_approx_knn_test.py`, `12_scalability_stress.py` | `phase1-omnist/results/exp_approx_knn.json`, `exp_scalability_stress.json` | EXECUTED |
+| 12 | Ablations, calibration diagnostics, multi-seed hardening | `phase1-omnist/experiments/B3_ablations.py`, `B4_calibration.py`, `08_optimizations.py`, `05_final_comparison.py` | `phase1-omnist/results/exp_ablations_v2.json`, `exp_calibration.json`, `exp_optimizations.json`, `exp_final_5seed.json`, `exp_definitive_10seed.json` | EXECUTED |
+
+Full claim-to-file map for Phase 1: `phase1-omnist/RESULTS-INDEX.md`.
 
 ---
 
 ## Phase 2 — OmniST-Scale
 
-| # | Abstract / proposal claim | Script | Result file | Status |
+| # | Claim | Script | Result file | Status |
 |---|---|---|---|---|
-| V1 | The rebuilt engine (SSM + O(N·k) attention) matches OmniST accuracy and coverage on real data (MAE within 2%, coverage in band) | `phase2-omnist-scale/experiments/V1_ssm_matches_omnist.py` | `phase2-omnist-scale/results/V1_ssm_matches_omnist_results.json` | **EXECUTED → GO** |
-| V2 | O(N·k) nearest-neighbour attention gives numerically the same output as exact (min cosine 0.99987) | `phase2-omnist-scale/experiments/V2_attention_equivalence.py` | `phase2-omnist-scale/results/V2_attention_equivalence_results.json` | **EXECUTED → GO** |
-| V3 | Inductive coverage stays in band as N grows toward thousands; scalable conditional conformal | *(planned — V3 script, M3)* | *(pending)* | **PENDING** |
-| V4 | SSM beats GRU on throughput/memory at long T / large N; crossover identified (MambaOut-analog gate) | *(planned — V4 script, M2/M3)* | *(pending)* | **PENDING** |
+| V1 | First parity check of ssm+fast against gru+exact, 3 seeds. Gate was non-discriminating and calibration used training stations. | `phase2-omnist-scale/experiments/V1_ssm_matches_omnist.py` | `phase2-omnist-scale/results/V1_ssm_matches_omnist_results.json` | PRELIMINARY; superseded by V1b |
+| V1b | Corrected parity gate: disjoint calibration stations, paired equivalence with margins fixed in advance, 10 seeds | `phase2-omnist-scale/experiments/V1b_parity_equivalence.py` | *(written when V1b is run in full; none exists yet)* | PLANNED (smoke-tested only) |
+| V2 | Neighbour attention output equals exact attention (random tokens, shared weights); no memory measured | `phase2-omnist-scale/experiments/V2_attention_equivalence.py` | `phase2-omnist-scale/results/V2_attention_equivalence_results.json` | EXECUTED; limited scope |
+| T1 | Diagnostic: the state-space block is sequential and slower than the GRU | `phase2-omnist-scale/experiments/T1_ssm_vs_gru_timing.py` | `phase2-omnist-scale/results/T1_ssm_vs_gru_timing.json` | EXECUTED (diagnostic) |
+| WP1 | Localised calibration and comparison with two published conformal methods | *(planned)* | *(planned)* | PLANNED |
+| WP2 | Time-parallel scan, equal to the sequential version, no slower than the GRU | *(planned)* | *(planned)* | PLANNED |
+| WP3 | Peak memory and time against N, stronger equivalence test | *(planned)* | *(planned)* | PLANNED |
+| WP4 | Coverage as the network grows, on a larger real network if usable | *(planned)* | *(planned)* | PLANNED |
+
+Acceptance criteria and fallbacks for each work package: `phase2-omnist-scale/docs/RESEARCH-PLAN.md`.
 
 ---
 
 ## How the abstract maps to status
 
-- *"designed a forecaster … attaches a distribution-free coverage guarantee … validated on four real
-  datasets"* → **Phase 1, EXECUTED** (rows 1–14).
-- *"released it as a preprint"* → arXiv:2611.04256 (`phase1-omnist/paper/`), not submitted for
-  publication.
-- *"the rebuilt engine matches the original model's accuracy, keeps its coverage guarantee, and the
-  nearest-neighbour attention gives numerically the same output as the exact version"* → **Phase 2
-  V1 + V2, EXECUTED → GO.**
-- *"stays valid as the network scales … holds more evenly from sensor to sensor"* → **Phase 2 V3,
-  PENDING** (the coverage-at-scale ladder + scalable conditional conformal).
-- *"state-space block that handles long sequences in linear time and in parallel"* implemented
-  (`phase2-omnist-scale/src/omnist_scale/ssm_temporal.py`); its *earns-its-keep* crossover is
-  **Phase 2 V4, PENDING.**
-
-No number in any framing document is unsourced: executed claims point to a committed result file;
-pending claims are labelled pending and have no number asserted.
+- *Phase 1 forecaster, validated on four real datasets* → C1 and rows 1 to 12 above. EXECUTED.
+- *Released as a preprint* → arXiv:2611.04256, not submitted for publication.
+- *Nearest-neighbour attention gives numerically the same output as exact* → V2. EXECUTED, with the
+  scope limits stated above.
+- *A first parity check found the rebuilt engine close to the original* → V1. PRELIMINARY.
+- *Memory advantage at large sensor counts; time-parallel state-space block; localised calibration;
+  coverage on larger networks* → WP1 to WP4. PLANNED. No number is asserted for these.

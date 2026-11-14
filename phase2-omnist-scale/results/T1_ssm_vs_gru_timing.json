@@ -1,0 +1,30 @@
+{
+  "experiment": "T1 diagnostic: SSM vs GRU forward time",
+  "device": "mps",
+  "batch": 4,
+  "nodes": 37,
+  "d_model": 64,
+  "layers": 2,
+  "reps": 5,
+  "rows": [
+    {
+      "T": 60,
+      "gru_ms": 14.0,
+      "ssm_ms": 29.0,
+      "ssm_over_gru": 2.07
+    },
+    {
+      "T": 240,
+      "gru_ms": 53.3,
+      "ssm_ms": 115.7,
+      "ssm_over_gru": 2.17
+    },
+    {
+      "T": 960,
+      "gru_ms": 233.7,
+      "ssm_ms": 462.3,
+      "ssm_over_gru": 1.98
+    }
+  ],
+  "reading": "A ratio near 2 at every T, with both growing linearly in T, means the SSM scan is sequential and has no time-parallel advantage over the GRU."
+}

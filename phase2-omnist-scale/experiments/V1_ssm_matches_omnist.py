@@ -1,5 +1,11 @@
 """V1 - THE MAKE-OR-BREAK (H1): do the scalable components match OmniST's accuracy AND coverage?
 
+SUPERSEDED by V1b_parity_equivalence.py. This script and its committed result are kept as the
+PRELIMINARY record only. Its gate is non-discriminating: the coverage pass band was widened by 0.03
+on both sides ([0.723, 1.028]), accuracy tolerated 10% error with 3 seeds, calibration used
+training-station residuals, and preprocessing leaked (global normalisation, bfill, full-series
+median). See docs/VETTING-REPORT.md (erratum).
+
 If swapping OmniST's GRU -> SSM temporal block and exact -> O(N.k) attention loses accuracy or breaks
 the inductive conformal coverage guarantee, the whole scale-up is moot. So this is checked FIRST, on
 real Delhi PM2.5, before any scaling work.

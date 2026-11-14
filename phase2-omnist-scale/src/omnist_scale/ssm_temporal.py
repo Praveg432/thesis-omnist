@@ -1,23 +1,25 @@
 """Selective state-space (Mamba-style) temporal block — a drop-in replacement for OmniST's BiGRU.
 
-Why. OmniST's temporal backbone is a bidirectional GRU: O(T) *sequential* recurrence that cannot
-parallelize over the time axis and whose per-step cost is fixed. For long horizons / many nodes this
-is the throughput bottleneck. A diagonal selective state-space model (S4D/Mamba-style) runs in
-linear time with a PARALLEL scan and constant per-step state, giving better throughput and memory at
-long T while matching the modeling capacity GRUs provide here.
+Purpose. OmniST's temporal backbone is a bidirectional GRU. A diagonal state-space model (S4D-style,
+with an input-dependent step size) is a candidate replacement that could be evaluated for accuracy
+parity and, once a parallel scan is implemented, for time-parallel throughput.
 
-Design (MPS-friendly, pure PyTorch — no CUDA mamba-ssm kernel needed):
-  - diagonal SSM: state h_t = a ⊙ h_{t-1} + b ⊙ x_t,  y_t = Re(c · h_t) + d ⊙ x_t
-  - a = exp(-softplus(A_log) * dt)  (stable, in (0,1) per channel) — the decay; dt is input-dependent
-    (the "selective" part) so the block can modulate memory per token.
+Current implementation (what the code actually does):
+  - diagonal SSM: state h_t = a ⊙ h_{t-1} + b ⊙ x_t,  y_t = sum(c ⊙ h_t) + d ⊙ x_t
+  - a = exp(dt * A) with A < 0, so a is in (0,1); dt = softplus(Linear(x_t)) is input-dependent.
+    Only dt is input-dependent. B and C are fixed parameters, so this is a partial version of
+    Mamba's selection mechanism, not the full one.
+  - the recurrence is evaluated by a SEQUENTIAL Python loop over t. It is NOT parallel over time.
+    Measured on an M4 Pro (B=4, N=37, d=64, 2 layers): about 2x slower than the BiGRU at T = 60, 240
+    and 960, with the same linear growth in T. No throughput advantage over the GRU exists yet.
   - bidirectional (forward + reversed) to match BiGRU's two-directional context.
   - per-node processing: (B,T,N,d) -> (B*N, T, d), identical interface to BidirectionalGRU, so it
     swaps into omnist_model via a config flag with no other change.
 
-This is an associative-scan-free, numerically-simple realization adequate for the parity/scaling
-study; it is NOT a reimplementation of the full Mamba selective-scan kernel (that is a stretch goal).
-The claim this supports is "an SSM temporal block matches GRU accuracy/coverage while scaling better",
-tested in V1/V4 — not "we built Mamba".
+Planned (Semester 4): replace the loop with a parallel prefix scan (the recurrence h_t = a_t h_{t-1}
++ b_t is associative), verify numerical equality with this sequential version, and measure
+throughput and memory against the GRU. Until that is done, the only supportable claim is accuracy
+parity, not speed. This is NOT a reimplementation of Mamba's selective-scan kernel.
 """
 from __future__ import annotations
 import torch
@@ -41,7 +43,7 @@ class DiagonalSSM(nn.Module):
         self.dt_proj = nn.Linear(d_model, d_model)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        """x: (B, T, d) -> (B, T, d). Sequential scan (linear time); state is (B, d, d_state)."""
+        """x: (B, T, d) -> (B, T, d). Sequential scan (O(T) steps, not parallel); state (B, d, d_state)."""
         B, T, D = x.shape
         dt = F.softplus(self.dt_proj(x))                 # (B, T, D) input-dependent step, >0
         A = -torch.exp(self.A_log)                        # (D, d_state) negative real -> stable decay

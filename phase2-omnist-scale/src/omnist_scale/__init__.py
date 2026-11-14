@@ -2,8 +2,10 @@
 
 Keeps OmniST's distribution-free inductive coverage guarantee while re-engineering the engine for
 scale. Contributions (NEW, outside omnist/):
-  ssm_temporal   - selective state-space (Mamba-style) temporal block: linear-time, parallel scan.
-  fast_attention - O(N.k) spatial attention with a proven equivalence bound to exact attention.
+  ssm_temporal   - diagonal state-space temporal block with an input-dependent step size. The scan
+                   is currently SEQUENTIAL (about 2x slower than the GRU); a parallel scan is planned.
+  fast_attention - O(N.k) spatial attention; numerical equivalence to exact attention is measured
+                   (V2); a speed or memory advantage is not yet demonstrated.
   conformal      - PLANNED (not yet implemented): scalable conditional conformal. The V1/V2 gates use
                    standard split-conformal calibration inline.
 
