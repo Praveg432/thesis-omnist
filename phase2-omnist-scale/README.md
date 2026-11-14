@@ -77,8 +77,8 @@ omnist-scale/
 A systems + trustworthy-ML contribution: certified coverage at scale, not a SOTA-accuracy claim or a
 new SSM. The MambaOut analog is a real risk (a gated-conv/GRU may match the SSM at small T/N) — V4 is
 the kill-gate for it. Certifying coverage at *thousands of real sensors* needs a real dataset that
-size (a data gate, not an architecture gate). Supersedes the retired `../adaptive-st-conformal/`
-(see its `ARCHIVED-LEARNINGS.md`).
+size (a data gate, not an architecture gate). Supersedes an earlier, retired fusion idea
+(adaptive spatio-temporal conformal) that was a no-go on real data; it is not part of this thesis.
 
 ## License
 MIT. External-source content in docs rephrased for licensing compliance.

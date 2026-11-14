@@ -42,11 +42,12 @@ The difficulty is holding a finite-sample statistical guarantee steady while the
 is rebuilt and the network keeps growing.
 
 The technical path is clear. The quadratic spatial step is replaced by one that looks only at each
-sensor's nearest neighbours — provably the same answer, far less memory — bringing large networks
-within reach of ordinary hardware. The slow sequential time model gives way to a modern state-space
-block that handles long sequences in linear time and in parallel. Most important, the
-conformal-prediction layer that produces the guarantee is reworked so it stays valid as the network
-scales, and so the guarantee holds more evenly from sensor to sensor rather than only on average.
+sensor's nearest neighbours — numerically the same answer in testing, far less memory — bringing
+large networks within reach of ordinary hardware. The slow sequential time model gives way to a
+modern state-space block that handles long sequences in linear time and in parallel. Most important,
+the conformal-prediction layer that produces the guarantee will be reworked so it stays valid as the
+network scales, and so the guarantee holds more evenly from sensor to sensor rather than only on
+average.
 
 Early runs on real air-quality data back the idea: the rebuilt engine matches the original model's
 accuracy, keeps its coverage guarantee, and the nearest-neighbour attention gives numerically the

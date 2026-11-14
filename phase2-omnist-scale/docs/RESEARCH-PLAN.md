@@ -11,8 +11,8 @@ parallel over time, and certifies coverage at scale.*
 ## 1. Lineage (honest)
 
 Direct successor to the author's published **OmniST** (arXiv:2611.04256), reusing its backbone as the
-baseline. Supersedes the retired `../adaptive-st-conformal/` fusion (NO-GO on real data — see its
-`ARCHIVED-LEARNINGS.md`). The retired effort's key carried lesson: *validate any claim against a
+baseline. Supersedes an earlier, retired fusion idea (adaptive spatio-temporal conformal; no-go on real
+data, not part of this thesis). The retired effort's key carried lesson: *validate any claim against a
 deployable-strength backbone early*; this project's make-or-break (V1) does exactly that.
 
 ## 2. Problem

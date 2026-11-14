@@ -4,7 +4,8 @@ Keeps OmniST's distribution-free inductive coverage guarantee while re-engineeri
 scale. Contributions (NEW, outside omnist/):
   ssm_temporal   - selective state-space (Mamba-style) temporal block: linear-time, parallel scan.
   fast_attention - O(N.k) spatial attention with a proven equivalence bound to exact attention.
-  conformal      - split + scalable conditional conformal (coverage preserved at scale).
+  conformal      - PLANNED (not yet implemented): scalable conditional conformal. The V1/V2 gates use
+                   standard split-conformal calibration inline.
 
 Baseline (reused, attributed): omnist/ = the published OmniST backbone (GRU + exact attention).
 """

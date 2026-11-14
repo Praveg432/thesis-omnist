@@ -148,17 +148,24 @@ public project repository [7].
 
 ## 5. Work in Progress — Phase 2: Scaling the Engine While Preserving the Guarantee
 
-The Phase-1 limitations define three re-engineering fronts, all implemented, with the two most
-critical validation gates already executed.
+The Phase-1 limitations define three re-engineering fronts. Two are implemented and have passed their
+first validation gates on real data; the third is planned for Semester 4.
 
-### 5.1 Implemented components
+### 5.1 Components
+
+**Implemented (Semester 3):**
 
 1. **Sub-quadratic spatial attention** — a vectorized nearest-neighbour attention with cost and memory
    that grow linearly in (sensors × neighbours) instead of quadratically, using a cached spatial index.
 2. **Parallel temporal block** — a selective state-space model that processes the time sequence in
    linear time and in parallel, as a drop-in replacement for the sequential recurrent model.
+
+**Planned (Semester 4), not yet implemented:**
+
 3. **Scalable conditional conformal** — a calibration scheme intended to keep coverage valid as the
-   network scales and to even out per-sensor coverage.
+   network scales and to even out per-sensor coverage. The Semester-3 parity and equivalence checks
+   below use the same standard split-conformal calibration as Phase 1; they do not yet include this
+   component.
 
 ### 5.2 Validation completed this period
 
@@ -172,6 +179,8 @@ or break the guarantee. They have both passed on real data.
 
 ### 5.3 Remaining Phase-2 work (planned for Semester 4)
 
+- **Scalable conditional conformal:** implement the third front and evaluate it against standard
+  split-conformal calibration.
 - **Coverage at scale:** certify that coverage stays valid as the sensor count grows toward thousands.
   *Main residual risk: this needs a real sensor dataset of that size; where unavailable, realistic
   replication is used with the explicit caveat that replication cannot by itself certify coverage.*
@@ -198,7 +207,7 @@ research from a set of experiments into a tool others can use — the usability 
 
 Phase 1 is complete: the forecaster has been formulated and validated on four real datasets across
 three domains, with the coverage guarantee holding under topology change and under drift, and the work
-is on record as a preprint. Phase 2 is underway: the scaled engine is implemented, and its two
+is on record as a preprint. Phase 2 is underway: the scaled engine (sub-quadratic attention and parallel temporal block) is implemented, and its two
 make-or-break checks (accuracy/coverage parity with the original, and equivalence of the sub-quadratic
 attention) have both passed on real data. The remaining Semester-4 work is the coverage-at-scale
 certification, the full evaluation, and the packaging of the method into a reusable library.

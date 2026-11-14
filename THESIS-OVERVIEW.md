@@ -24,7 +24,7 @@ to the thousands-of-sensors regime (Phase 2).
 
 | | Phase 1 — OmniST | Phase 2 — OmniST-Scale |
 |---|---|---|
-| Design | **Done** | **Done** (fast attention, SSM block, scalable conformal implemented) |
+| Design | **Done** | **Partial** — fast attention and SSM block implemented; scalable conditional conformal planned for Semester 4 |
 | Validation on real data | **Done** — 4 datasets, 3 domains, up to 325 real sensors | **Partial** — V1 parity + V2 equivalence passed on real Delhi |
 | Pending | — | V3 coverage-at-scale, V4 SSM crossover, full multi-seed eval, demo |
 | Artifact | preprint arXiv:2611.04256 + full code/experiments/paper | code + two executed vetting gates |

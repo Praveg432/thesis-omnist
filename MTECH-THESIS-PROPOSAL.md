@@ -110,7 +110,8 @@ new backbone (SSMs exist). It is the combination.
 2. **Selective state-space (Mamba-style) temporal block** (`ssm_temporal.BidirectionalSSM`).
    Linear-time, parallel-scan, constant per-step state — a drop-in for the GRU, with an honest
    ablation of where the SSM earns its keep (long T / large N).
-3. **Coverage preserved at scale** (`conformal.py`). Show the finite-sample inductive coverage holds
+3. **Coverage preserved at scale** (planned module `conformal.py`; not yet implemented — the V1/V2
+   gates use standard split-conformal calibration). Show the finite-sample inductive coverage holds
    as N grows, and tighten conditional coverage with a scalable conditional-conformal scheme
    generalizing OmniST's partial Mondrian fix. This is the novel core; speed alone is not novel.
 
@@ -141,7 +142,7 @@ new backbone (SSMs exist). It is the combination.
 
 ## 4. Impact
 
-- Extends a proven, trustable capability (certified inductive UQ under dynamic topology) from 325
+- Extends a validated, trustable capability (certified inductive UQ under dynamic topology) from 325
   sensors to the city/national scale where it is actually needed.
 - Delivers a reusable artifact — a scalable, certified forecaster matching OmniST's accuracy/coverage
   at a fraction of the compute, with throughput/memory curves to thousands of nodes on commodity (M4
@@ -198,9 +199,12 @@ new backbone (SSMs exist). It is the combination.
 
 - **Phase 1:** `phase1-omnist/` (`README.md`, `FINDINGS-AND-IMPACT.md`, `RESULTS-INDEX.md`, committed
   `results/*.json`, `paper/`); preprint arXiv:2611.04256.
-- **Phase 2:** `phase2-omnist-scale/` (`README.md`, `docs/RESEARCH-PLAN.md`, `docs/VETTING-REPORT.md`,
-  `experiments/V1_ssm_matches_omnist.py`, `experiments/V2_attention_equivalence.py`,
-  `results/V1_ssm_matches_omnist_results.json`, `results/V2_attention_equivalence_results.json`).
+- **Phase 2:** `phase2-omnist-scale/` (`phase2-omnist-scale/README.md`,
+  `phase2-omnist-scale/docs/RESEARCH-PLAN.md`, `phase2-omnist-scale/docs/VETTING-REPORT.md`,
+  `phase2-omnist-scale/experiments/V1_ssm_matches_omnist.py`,
+  `phase2-omnist-scale/experiments/V2_attention_equivalence.py`,
+  `phase2-omnist-scale/results/V1_ssm_matches_omnist_results.json`,
+  `phase2-omnist-scale/results/V2_attention_equivalence_results.json`).
 - **Claim → evidence map:** `EXPERIMENTS-INDEX.md`.
 
 *External-source content was rephrased for compliance with licensing restrictions. Novelty verdicts
