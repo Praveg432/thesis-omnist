@@ -5,19 +5,20 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "omnist-scale"
 version = "0.1.0"
-description = "Scalable, certified topology-invariant spatiotemporal forecasting: sub-quadratic attention + SSM temporal backbone + distribution-free coverage at scale"
+description = "Topology-invariant spatiotemporal forecasting research code: neighbour attention, a state-space temporal block, and conformal calibration experiments"
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [{ name = "Praveg Vashishtha" }]
 license = { text = "MIT" }
 keywords = [
     "spatiotemporal forecasting", "conformal prediction", "state space models",
-    "scalable attention", "topology invariance", "trustworthy ml",
+    "scalable attention", "topology invariance", "uncertainty quantification",
 ]
 dependencies = [
     "numpy>=1.26",
     "scipy>=1.11",
     "scikit-learn>=1.4",
+    "pandas>=2.0",
 ]
 
 [project.optional-dependencies]

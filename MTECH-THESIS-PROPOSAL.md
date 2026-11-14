@@ -1,8 +1,9 @@
 # M.Tech Thesis Proposal
 
-## Certified Topology-Invariant Spatiotemporal Forecasting with Trustworthy Uncertainty at Unseen Sensors, and Its Scaling to Large Networks
+## Topology-Invariant Spatiotemporal Forecasting with Calibrated Uncertainty at Unseen Sensors, and Its Scaling to Large Networks
 
 **Candidate:** Praveg Vashishtha (ID No. IITP006424)
+**Date:** November 2026
 **Supervisor:** Pankaj Chaswal
 **Program:** M.Tech, Computer Science and Engineering, IIT Patna
 **Hardware envelope:** Apple M4 Pro (MPS, ~24 GB unified memory), single machine, no cluster
@@ -12,14 +13,14 @@
 > its engine scale toward thousands of sensors and study how its coverage behaves as the network
 > grows (Phase 2).
 
-**Terminology.** "Certified" in the title means marginal coverage from split conformal prediction,
-with calibration on stations the model never saw. Stations are split at random into train,
-calibration and test sets, so a test station is exchangeable with the calibration stations. The
-exchangeable unit is the station, not the individual score: scores within a station are dependent and
-the conformal quantile pools them, so the coverage statement is approximate, improving with the number
-of calibration stations. It is checked empirically over many random splits. It is not a guarantee for
-every station, and it is not a guarantee against arbitrary spatial dependence. Whether to keep the
-word in the title is the supervisor's decision.
+**Terminology.** "Calibrated coverage" means marginal coverage from split conformal prediction, with calibration on
+stations the model never saw. Stations are split at random into train, calibration and test sets, so
+a test station is exchangeable with the calibration stations. The exchangeable unit is the station,
+not the individual score: scores within a station are dependent and the conformal quantile pools
+them, so the coverage statement is approximate, and the approximation improves with the number of
+calibration stations (8 in the Delhi experiments, 3 in Beijing). It is checked empirically over many
+random splits. It is not a guarantee for every station and not a guarantee against arbitrary spatial
+dependence. The title is subject to the supervisor's approval.
 
 ---
 

@@ -4,10 +4,11 @@
 
 | | |
 |---|---|
-| **Project Title** | Certified Topology-Invariant Spatiotemporal Forecasting with Trustworthy Uncertainty at Unseen Sensors, and Its Scaling to Large Networks |
+| **Project Title** | Topology-Invariant Spatiotemporal Forecasting with Calibrated Uncertainty at Unseen Sensors, and Its Scaling to Large Networks |
 | **Candidate** | Praveg Vashishtha |
 | **ID No.** | IITP006424 |
 | **Supervisor** | Pankaj Chaswal |
+| **Date** | November 2026 |
 | **Program / Semester** | M.Tech (CSE) — Semester 3 Progress Report |
 | **Hardware** | Apple M4 Pro (MPS, ~24 GB unified memory); single machine, no cluster |
 
@@ -16,14 +17,30 @@
 > the IIT Patna M.Tech Thesis Manual. The project has two phases: **Phase 1 (OmniST)**, completed and
 > re-evaluated this semester, and **Phase 2 (scaling)**, planned for Semester 4.
 >
-> **Terminology.** "Certified coverage" in the title means marginal coverage from split conformal
-> prediction, with calibration on stations the model never saw. Stations are split at random into
-> train, calibration and test sets, so a test station is exchangeable with the calibration stations.
-> The exchangeable unit is the station, not the individual score: scores within a station are
-> dependent and the conformal quantile pools them, so the coverage statement is approximate, and the
-> approximation improves with the number of calibration stations (8 in the Delhi experiments, 3 in
-> Beijing). It is checked empirically over many random splits. It is not a guarantee for every
-> station and not a guarantee against arbitrary spatial dependence.
+> **Terminology.** "Calibrated coverage" means marginal coverage from split conformal prediction, with calibration on
+> stations the model never saw. Stations are split at random into train, calibration and test sets, so
+> a test station is exchangeable with the calibration stations. The exchangeable unit is the station,
+> not the individual score: scores within a station are dependent and the conformal quantile pools
+> them, so the coverage statement is approximate, and the approximation improves with the number of
+> calibration stations (8 in the Delhi experiments, 3 in Beijing). It is checked empirically over many
+> random splits. It is not a guarantee for every station and not a guarantee against arbitrary spatial
+> dependence.
+
+---
+
+## Abstract
+
+Cities and states run on data from large sensor networks, such as air-quality monitors, traffic detectors, weather stations and power-grid meters, and they use that data to forecast what comes next and to act on it. Whether such a system is usable in the field comes down to two things.
+
+The first is that the network never stays still. Sensors fail, drop offline for maintenance, or are installed in new places. A forecasting model has to keep working through all of that, and it often has to predict at a spot where no sensor has ever recorded anything, without being retrained each time the layout changes. The second is that a single predicted number is rarely enough to act on. A pollution advisory or a traffic decision needs a range the operator can trust: an interval calibrated to contain the true value with a stated probability. A forecast that looks confident but is quietly wrong is more dangerous than no forecast at all.
+
+The first phase of this thesis built a forecaster that addresses both. We call it OmniST. It does not depend on how the sensor network is wired, and it attaches conformal prediction intervals with a stated coverage level to its predictions at locations it never trained on. We evaluated it on five real networks covering air quality, weather and traffic, using repeated random splits of the stations into training, calibration and test sets. With a target of 90%, the average coverage at unseen sensors came out between 87.6% and 90.6%. This phase is complete and has been released as a preprint, which has not been submitted for publication.
+
+The evaluation also showed where the method is weak. Coverage varies from split to split and from station to station, so the average hides some badly covered sites. A new sensor placed far from the existing ones might be expected to fare worse, and in one sparse weather network it did: coverage fell by about 1.4 points for each additional typical station spacing. In the dense urban and traffic networks it did not, even when whole regions were held out. The engine also does not scale. Its attention grows with the square of the sensor count, its time model runs step by step, and its coverage has been checked on at most a few hundred real sensors.
+
+The second phase takes these limits as its problem. When a sensor is placed at a new site, can its interval be calibrated using the geometry of that site, meaning its distance to the existing sensors and their local density, so that coverage holds where distance matters without harming networks where it does not? The work also asks whether the approach carries to larger networks, and it shows how an agency could use the intervals, through alerts whose miss rate for true exceedances is controlled.
+
+The technical path has three parts. Attention that looks only at each sensor's nearest neighbours gave essentially the same output as the exact version in testing, and its memory advantage at large sensor counts is still to be measured. Calibration will be localised by site geometry, using a pool of scores built by holding out spatial blocks, together with an estimate of the coverage risk at each site that states its assumptions. Finally, the method will be packaged as a reusable PyTorch library. The coverage statement is marginal and approximate. It is not a guarantee for every station, and the thesis reports these limits alongside its results.
 
 ---
 
@@ -337,8 +354,8 @@ no. 4, pp. 494–591, 2023.
 [6] A. Gu and T. Dao, "Mamba: Linear-Time Sequence Modeling with Selective State Spaces,"
 *arXiv:2312.00752*, 2023.
 
-[7] P. Vashishtha, "thesis-omnist: Certified Topology-Invariant Spatiotemporal Forecasting and Its
-Scaling (project repository)," 2026. [Online]. Available:
+[7] P. Vashishtha, "thesis-omnist: Topology-Invariant Spatiotemporal Forecasting with Calibrated Uncertainty, and
+Its Scaling (project repository)," 2026. [Online]. Available:
 https://github.com/Praveg432/thesis-omnist
 
 [8] P. Vashishtha, "OmniST: Topology-Invariant Spatiotemporal Forecasting with Guaranteed-Coverage

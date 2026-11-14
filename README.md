@@ -1,4 +1,4 @@
-# Certified Topology-Invariant Spatiotemporal Forecasting with Trustworthy Uncertainty at Unseen Sensors, and Its Scaling to Large Networks
+# Topology-Invariant Spatiotemporal Forecasting with Calibrated Uncertainty at Unseen Sensors, and Its Scaling to Large Networks
 
 **M.Tech Thesis — Department of Computer Science and Engineering, IIT Patna**
 **Candidate:** Praveg Vashishtha
@@ -8,62 +8,19 @@
 
 ## Abstract
 
-Cities and states now run on data from large sensor networks — air-quality monitors, traffic
-detectors, weather stations, power-grid meters — and they use that data to forecast what comes next
-and act on it. Whether such a system is usable in the field comes down to two things.
+Cities and states run on data from large sensor networks, such as air-quality monitors, traffic detectors, weather stations and power-grid meters, and they use that data to forecast what comes next and to act on it. Whether such a system is usable in the field comes down to two things.
 
-The first is that the network never stays still. Sensors fail, drop offline for maintenance, or get
-installed in new places. A forecasting model has to keep working through all of that, and it often
-has to predict at a spot where no sensor has ever recorded anything, without being retrained each
-time the layout changes. The second is that a single predicted number is rarely enough to act on. A
-pollution advisory or a traffic decision needs a range the operator can actually trust — an interval
-calibrated to contain the true value with a stated probability. A forecast that looks confident but
-is quietly wrong is more dangerous than no forecast at all.
+The first is that the network never stays still. Sensors fail, drop offline for maintenance, or are installed in new places. A forecasting model has to keep working through all of that, and it often has to predict at a spot where no sensor has ever recorded anything, without being retrained each time the layout changes. The second is that a single predicted number is rarely enough to act on. A pollution advisory or a traffic decision needs a range the operator can trust: an interval calibrated to contain the true value with a stated probability. A forecast that looks confident but is quietly wrong is more dangerous than no forecast at all.
 
-The first phase of this thesis designed a forecaster that delivers both. We call it OmniST: it does
-not care how the sensor network is wired, it attaches conformal prediction intervals with a stated
-coverage level to its predictions at locations it never trained on, and it keeps that coverage when
-the network changes. We validated it on four real datasets across air quality, traffic, and weather,
-and have released it as a preprint. Building and validating that method is the first contribution of
-the thesis.
+The first phase of this thesis built a forecaster that addresses both. We call it OmniST. It does not depend on how the sensor network is wired, and it attaches conformal prediction intervals with a stated coverage level to its predictions at locations it never trained on. We evaluated it on five real networks covering air quality, weather and traffic, using repeated random splits of the stations into training, calibration and test sets. With a target of 90%, the average coverage at unseen sensors came out between 87.6% and 90.6%. This phase is complete and has been released as a preprint, which has not been submitted for publication.
 
-That first phase also surfaced a hard limit, and the second phase is built to remove it. OmniST does
-not scale. Its spatial computation grows with the square of the sensor count, its temporal model runs
-step by step, and its coverage has only been checked on networks of up to a few hundred real sensors.
-That is exactly the wrong ceiling, because the places where a resilient, trustable forecaster matters
-most — city-wide and national monitoring grids — have thousands of sensors, not hundreds. So the
-second problem the thesis takes on is to make a calibrated, topology-independent forecaster run
-efficiently at the scale of thousands of sensors without losing the calibration that is the whole
-point of it.
+The evaluation also showed where the method is weak. Coverage varies from split to split and from station to station, so the average hides some badly covered sites. A new sensor placed far from the existing ones might be expected to fare worse, and in one sparse weather network it did: coverage fell by about 1.4 points for each additional typical station spacing. In the dense urban and traffic networks it did not, even when whole regions were held out. The engine also does not scale. Its attention grows with the square of the sensor count, its time model runs step by step, and its coverage has been checked on at most a few hundred real sensors.
 
-The timing matters. Sensing networks are expanding quickly, and when a forecaster breaks as sensors
-come and go, or reports confidence it cannot stand behind, the cost lands on public-safety and
-resource decisions. Making the model merely faster is neither the real difficulty nor anything new.
-The difficulty is keeping the coverage close to its target while the engine underneath it is rebuilt
-and the network keeps growing.
+The second phase takes these limits as its problem. When a sensor is placed at a new site, can its interval be calibrated using the geometry of that site, meaning its distance to the existing sensors and their local density, so that coverage holds where distance matters without harming networks where it does not? The work also asks whether the approach carries to larger networks, and it shows how an agency could use the intervals, through alerts whose miss rate for true exceedances is controlled.
 
-The technical path has three parts. The quadratic spatial step is replaced by one that looks only at
-each sensor's nearest neighbours; it gave numerically the same output as the exact version in
-testing, and its memory advantage at large sensor counts is still to be measured. A state-space block
-is the candidate replacement for the sequential time model: with a parallel scan it could process a
-long sequence at once, which remains to be built and measured. Most important, the calibration layer
-will be reworked so that coverage holds more evenly from sensor to sensor rather than only on
-average, and its behaviour is evaluated over many random splits of the stations.
+The technical path has three parts. Attention that looks only at each sensor's nearest neighbours gave essentially the same output as the exact version in testing, and its memory advantage at large sensor counts is still to be measured. Calibration will be localised by site geometry, using a pool of scores built by holding out spatial blocks, together with an estimate of the coverage risk at each site that states its assumptions. Finally, the method will be packaged as a reusable PyTorch library. The coverage statement is marginal and approximate. It is not a guarantee for every station, and the thesis reports these limits alongside its results.
 
-Early results are encouraging but preliminary. On real air-quality data a first parity check found
-the rebuilt engine close to the original model in accuracy and coverage; that check used a permissive
-protocol and is being repeated under a stricter one before it is relied on. The thesis aims to
-deliver a calibrated, scalable forecaster for large real networks, with its limits stated, useful
-wherever environmental, traffic, and infrastructure monitoring has to keep working as the sensors on
-the ground change.
-
-**Terminology.** In the title and throughout, "certified" means marginal coverage from split conformal
-prediction with calibration on stations the model never saw. Stations are split at random into train,
-calibration and test sets, so a test station is exchangeable with the calibration stations. The
-exchangeable unit is the station, not the individual score, so the coverage statement is approximate
-and improves with the number of calibration stations. It is checked empirically over many random
-splits. It is not a guarantee for every station or against arbitrary spatial dependence. See
-`phase2-omnist-scale/docs/RESEARCH-PLAN.md`, Section 1.
+**Terminology.** In the title and throughout, "calibrated coverage" means marginal coverage from split conformal prediction, with calibration on stations the model never saw. Stations are split at random into train, calibration and test sets, so a test station is exchangeable with the calibration stations. The exchangeable unit is the station, not the individual score: scores within a station are dependent and the conformal quantile pools them, so the coverage statement is approximate, and the approximation improves with the number of calibration stations (8 in the Delhi experiments, 3 in Beijing). It is checked empirically over many random splits. It is not a guarantee for every station and not a guarantee against arbitrary spatial dependence. See `phase2-omnist-scale/docs/RESEARCH-PLAN.md`, Section 1.
 
 ---
 

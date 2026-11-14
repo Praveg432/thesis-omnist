@@ -3,6 +3,15 @@
 What OmniST's findings actually mean for deployable systems, and the cross-domain / cross-case
 evidence that makes those findings rigorous rather than a single-dataset artifact.
 
+
+> **Addendum after the preliminary review (read first).** This document is the preprint-era record.
+> Its coverage numbers come from the original protocol (calibration on training-station residuals,
+> 3 to 7 fixed held-out stations), and its words "certified" and "guarantee" should be read as
+> approximate marginal coverage with the station as the exchangeable unit. Under the stricter
+> random-split evaluation (experiment C1, see `RESULTS-INDEX.md`), mean coverage at unseen stations
+> was 0.876 to 0.906 against a 0.90 target across five networks, and experiment C2 found a coverage
+> decline with distance from the training network only in the sparse weather network.
+
 ---
 
 ## 1. The three findings, stated plainly

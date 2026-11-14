@@ -17,7 +17,7 @@ made after a preliminary review and a novelty assessment.
 
 | Check | Result |
 |---|---|
-| Phase 1 tests | 13 of 13 passed |
+| Phase 1 tests | 50 of 50 passed: 13 original, 12 for the distance-analysis code (including a planted-slope check and a station-confound check), and 25 integrity checks on the C1, C2 and C3 result files |
 | Phase 2 tests | 18 of 18 passed (4 original, 14 added for the review fixes and the verdict logic) |
 | Experiment C1 (random disjoint-station evaluation), five datasets | Completed: Delhi 20 splits, Beijing 20, weather 20, PeMSD7-M 6, PeMS-BAY 6 |
 | Experiment C2 (contiguous-region holdout, coverage against distance), five datasets | Completed with the same split counts. Within-station analysis computed from C1 and C2 together. |
@@ -29,6 +29,9 @@ made after a preliminary review and a novelty assessment.
 | Number check (`tools/check_report_numbers.py`) | Every C1 and C2 table entry, the C3 figures, the V1 and T1 figures, the V2 minimum cosine and the IGNNK errors quoted in the report and proposal match the result files |
 | Link and path audit (`tools/audit_links.py`) | 21 Markdown files, 0 broken links, 0 missing paths |
 | Number check | Verified 25 quoted figures; deliberately corrupting one number made it fail with exit code 1 |
+| Submission text check (`tools/check_submission_text.py`) | Title identical in README, proposal and report; 15 words and within the manual's rules; abstract 580 words (limit 600) and identical in README and report; the abstract's coverage range and slope tie to the result files; deliberately breaking the title made it fail |
+| References 1 to 6 | Titles and authors checked against arXiv metadata |
+| C2 geometry | Regions and distances recomputed independently from the raw station coordinates for Delhi, Beijing and weather |
 
 ## 3. Checked by reading committed result files, not re-run
 
@@ -70,13 +73,18 @@ made after a preliminary review and a novelty assessment.
 - The baselines E-STGCN and IGNNK are the author's re-implementations, and equal tuning effort has not
   been verified.
 - The year-feature check in C1 was uninformative by construction (the temporal embedding is periodic,
+- Venue and page details of references [1], [3], [4] and [5] were not verified; arXiv confirms only titles
+  and authors.
+- The C2 regions and distances could not be recomputed for the two traffic datasets from a fresh clone,
+  because their raw files are gitignored.
+- The title and the Semester-4 scope have not been approved by the supervisor.
   so 0.0 and 1.0 are identical).
 
 ## 5. Corrections made
 
 | Finding | Correction |
 |---|---|
-| "Certified" coverage rested on training-station calibration and a few fixed held-out stations | C1 added; "certified" defined as approximate marginal coverage with the station as the exchangeable unit; the original-protocol numbers relabelled as the record |
+| "Certified" coverage rested on training-station calibration and a few fixed held-out stations | C1 added; coverage defined as approximate marginal coverage with the station as the exchangeable unit; the original-protocol numbers relabelled as the record; the word "certified" removed from the title and abstract in favour of "calibrated" |
 | Three of five C1 means sit below 0.90 | Wording changed from "supports" to "consistent with the nominal level"; mild under-coverage stated as not excluded |
 | The large-network result used 7 held-out sensors | Stated in every document; C1 evaluates PeMS-BAY with 45 test sensors per split |
 | The state-space block is sequential and about twice as slow as the GRU | Descriptions corrected; T1 added; the block is an optional extension in the plan |
@@ -88,6 +96,9 @@ made after a preliminary review and a novelty assessment.
 | A coverage bound from total variation was proposed | C3 shows it would be vacuous; replaced in the plan by a threshold-specific, empirically validated estimate |
 | Novelty of geometry-aware calibration overstated | Close prior art identified and cited; the contribution is scoped as a combination plus a measured finding |
 | Plan lacked acceptance criteria | Rewritten with work packages, criteria and fallbacks fixed in advance; the scope is marked as pending supervisor approval |
+| The Phase 2 package metadata omitted pandas and still advertised certified coverage and an SSM backbone | Dependency added; description and keywords corrected |
+| The analysis code behind the distance finding had no tests | Tests added, including recovery of a planted slope and immunity to a station-noisiness confound |
+| The title promised a guarantee the thesis does not claim | Title changed from "Certified ... Trustworthy Uncertainty" to "... Calibrated Uncertainty"; subject to supervisor approval |
 | The library was described as a NumPy tool | Described as a PyTorch package |
 
 ## 6. State of the work
@@ -110,5 +121,5 @@ python3 experiments/C2_region_holdout_distance.py analyse
 python3 experiments/C3_score_shift_vs_distance.py delhi_air_quality
 cd ../phase2-omnist-scale && python3 -m pytest -q
 python3 experiments/T1_ssm_vs_gru_timing.py
-cd .. && python3 tools/audit_links.py && python3 tools/check_report_numbers.py
+cd .. && python3 tools/audit_links.py && python3 tools/check_report_numbers.py && python3 tools/check_submission_text.py
 ```

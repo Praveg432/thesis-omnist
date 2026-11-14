@@ -21,13 +21,13 @@ negative result still yields a defensible thesis chapter.
 | The state-space block is sequential and about 2x slower than the GRU (T1) | Demoted to an optional extension (X2). "Parallel in time" is no longer claimed. |
 | Neighbour attention matches exact attention in output, but no memory or speed advantage was measured | WP3 measures peak memory and time against N. |
 | The first parity gate (V1) could not fail | V1b replaces it, with paired equivalence, fixed margins, and a separate gate for the attention swap alone. |
-| "Certified" described an empirical, marginal, approximate result | Section 1 defines the term and its limits. |
+| The title word "certified" overstated an empirical, marginal, approximate result | The title now says "calibrated"; Section 1 defines the term and its limits. |
 | The large-network claim rested on 7 held-out sensors | C1 re-evaluated it; WP3 adds a larger real network. |
 | **C2:** coverage falls with distance from the training network only in the sparse weather network (about 1.4 points per extra network spacing); not in the dense urban and traffic networks | The geometry-aware work (WP1, WP2) targets sparse networks and must not harm dense ones. |
 | **C3:** differences between station score distributions are no larger than the estimator's noise floor (about 0.13) at roughly 360 dependent scores per station, and do not grow with distance in the weather data | A coverage bound built on total-variation distance would be vacuous. WP2 uses a threshold-specific, empirically validated diagnostic instead. |
 | The coordinate embedding uses Delhi-specific constants | A local coordinate frame is a precondition (WP0) for any new region and for portability (X1). |
 
-## 1. Terminology: what "certified" means in this thesis
+## 1. Terminology: what "calibrated coverage" means in this thesis
 
 Split conformal prediction gives finite-sample marginal coverage **if** the calibration scores and the
 test score are exchangeable. In this thesis the stations are split at random into train, calibration
@@ -48,7 +48,7 @@ term is used:
 4. A calibration set that is small relative to the number of scores carries sampling noise of the
    order of the split-to-split spread seen in C1 (standard deviation 0.02 to 0.05).
 
-Where a shorter word is needed, the thesis uses "calibrated". The title wording is the advisor's call.
+The thesis uses "calibrated" and not "certified" for this reason. The title is subject to the advisor's approval.
 
 ## 2. Problem and research question
 
