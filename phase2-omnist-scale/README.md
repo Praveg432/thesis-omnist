@@ -23,7 +23,7 @@ Builds directly on the author's OmniST preprint. Runs on a single Apple M4 Pro (
 | Exact attention, O(N^2) memory; the older "scalable" path loops in Python | O(N·k) neighbour attention | Implemented. Numerically equal to exact on random tokens (V2). **No memory or speed advantage measured yet.** |
 | Sequential GRU temporal model | State-space temporal block | Implemented as a **sequential** scan, about **2x slower** than the GRU (T1). A parallel scan is planned. |
 | Coverage checked to 325 real sensors | Coverage studied as N grows, with random station splits | Phase 1 re-evaluation done (C1). Larger real network and scaling study planned. |
-| Conditional coverage only partly addressed | Localised / conditional calibration | **Not implemented.** Planned. |
+| Conditional coverage only partly addressed | Geometry-aware calibration at new sites | **Not implemented.** Planned. Distance matters only in sparse networks (C2). |
 
 ## Status
 
@@ -78,7 +78,7 @@ phase2-omnist-scale/
 └── tests/
 ```
 
-`conformal.py` (localised calibration) is **planned** and does not exist yet.
+`conformal.py` (geometry-aware calibration) is **planned** and does not exist yet.
 
 ## Honest scope
 A systems and calibration contribution, not an accuracy record and not a new state-space model. A

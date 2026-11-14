@@ -16,11 +16,14 @@
 > the IIT Patna M.Tech Thesis Manual. The project has two phases: **Phase 1 (OmniST)**, completed and
 > re-evaluated this semester, and **Phase 2 (scaling)**, planned for Semester 4.
 >
-> **Terminology.** "Certified coverage" in the title means finite-sample marginal coverage from split
-> conformal prediction when stations are split at random into train, calibration and test sets, so
-> that calibration and test scores are exchangeable across stations. It is checked empirically over
-> many random splits. It is not a guarantee for every station and not a guarantee against arbitrary
-> spatial dependence.
+> **Terminology.** "Certified coverage" in the title means marginal coverage from split conformal
+> prediction, with calibration on stations the model never saw. Stations are split at random into
+> train, calibration and test sets, so a test station is exchangeable with the calibration stations.
+> The exchangeable unit is the station, not the individual score: scores within a station are
+> dependent and the conformal quantile pools them, so the coverage statement is approximate, and the
+> approximation improves with the number of calibration stations (8 in the Delhi experiments, 3 in
+> Beijing). It is checked empirically over many random splits. It is not a guarantee for every
+> station and not a guarantee against arbitrary spatial dependence.
 
 ---
 
@@ -44,11 +47,13 @@ networks (thousands of sensors) and to study how its coverage behaves as the net
    **(Phase 1: completed.)**
 2. Equip it with conformal prediction intervals at unseen sensor locations and evaluate the coverage on
    real data from several domains, using random disjoint splits of stations. **(Phase 1: completed.)**
-3. Make the engine sub-quadratic in the number of sensors and time-parallel, and measure memory and
-   time against network size. **(Phase 2: planned.)**
-4. Evaluate and improve per-station coverage with a localised calibration method, and study coverage
-   as the network grows. **(Phase 2: planned.)**
-5. Deliver a reusable, installable PyTorch package. **(Phase 2: planned.)**
+3. Calibrate prediction intervals at newly placed sensors using the geometry of the site (distance to
+   and density of the training sensors), so that coverage holds where distance matters without harming
+   networks where it does not, and give a per-site coverage-risk estimate. **(Phase 2: planned.)**
+4. Make the engine sub-quadratic in the number of sensors, measure memory and time against network
+   size, and study coverage as the network grows. **(Phase 2: planned.)**
+5. Demonstrate alerts with a controlled miss rate at unseen sites, and deliver a reusable, installable
+   PyTorch package. **(Phase 2: planned.)**
 
 **Out of scope.** The contribution is a calibrated, scalable system and an honest evaluation of its
 coverage, not a point-accuracy record and not a new state-space model.
@@ -63,11 +68,12 @@ The design sits among four lines of work (references in Section 8).
   work shows that common kriging evaluation protocols leak spatial information and proposes a
   leakage-free partition that separates training, validation and testing in space and time [11].
 - **Conformal prediction.** Split conformal prediction [4], [5] gives finite-sample coverage when
-  calibration and test scores are exchangeable. Two directly relevant extensions exist: conformal
-  prediction for inductive graph models, which corrects the shift in calibration scores caused by new
-  nodes [9], and conformal prediction for spatially dependent data, which addresses failure of
-  exchangeability under spatial dependence and scales through nearest-neighbour approximations [10].
-  Neither is used in the present work yet; both are comparison points for Phase 2.
+  calibration and test scores are exchangeable. Extensions relevant here: weighted conformal
+  prediction under covariate shift [14] and beyond exchangeability [15], randomised localisation for
+  local guarantees [16], local spatial conformal prediction [17], cluster-aware calibration of
+  spatiotemporal forecasts by sampling density [18], conformal prediction for inductive graph models
+  [9], conformal prediction for spatially dependent data [10], and conformal risk control [19]. None is
+  used in the present work yet; they are the comparison points and building blocks for Phase 2.
 - **Efficient sequence and spatiotemporal models.** Selective state-space models [6] process
   sequences in linear time. STGformer [12] reports a 100-fold speedup and a 99.8% reduction in GPU
   memory against the STAEformer baseline during batch inference on a California road graph with
@@ -124,12 +130,14 @@ across sensor sets. Experiment C1 therefore repeats the evaluation as follows.
 Reading the table:
 
 - Mean coverage over random splits is close to the 0.90 target in every dataset, and every interval
-  contains 0.90. This supports the marginal coverage statement under the random-split protocol.
+  contains 0.90, so the results are consistent with the nominal level. Three of the five point
+  estimates sit below it (by 0.7 to 2.4 points: Delhi, PeMSD7-M, PeMS-BAY), so mild under-coverage is
+  possible and is not excluded by these data.
 - Individual splits vary. The standard deviation over splits is 0.02 to 0.05, and in the weather data
   coverage ranged from 0.79 to 0.99. Only 33% to 55% of splits reached 0.90, which is what one expects
   when the mean sits near the target.
 - Coverage is marginal. Some stations are badly under-covered (minimum per-station coverage 0.40 to
-  0.86). This motivates the localised calibration planned for Phase 2.
+  0.86). This motivates the geometry-aware calibration planned for Phase 2, although Section 4.4 shows the distance effect is confined to the sparse network.
 - Calibrating on training stations gave similar average coverage on these data (the disjoint-station
   value minus the training-station value ranged from -0.014 to +0.018). The exchangeability concern
   did not produce a large average error here, but the assumption remains unsupported for that
@@ -137,7 +145,50 @@ Reading the table:
 - Test errors (mean absolute error, in each dataset's units) were 27.6 (Delhi), 49.3 (Beijing), 5.8
   (weather), 10.3 (PeMSD7-M) and 5.5 (PeMS-BAY).
 
-### 4.4 Original-protocol results (kept as a record)
+### 4.4 Does distance from the training network matter? (experiments C2 and C3)
+
+A new sensor placed far from the existing network may be harder to predict than one placed near it,
+and calibration stations scattered inside the network may then overstate coverage there. Experiment C2
+tests this. In each dataset a contiguous region of stations (a random station and its nearest
+neighbours) is held out instead of scattered stations, a separate set of calibration stations is drawn
+from outside the region, and the model is trained on the rest. For every test station the distance to
+its nearest training station is recorded in units of the network spacing (the median nearest-neighbour
+distance among all stations of the dataset). Because the same station is held out in several splits at
+different distances, the effect of distance can be estimated within a station, which removes the
+influence of stations that are simply noisier.
+
+| Dataset | Region-holdout coverage (mean, standard deviation over splits) | Scattered holdout (C1) | Distance to nearest training station, test vs calibration (spacings) | Change in coverage per extra spacing, within station [95% interval] |
+|---|---|:---:|:---:|---|
+| Delhi PM2.5 | 0.899 (0.023) | 0.893 | 2.31 vs 1.35 | +0.0037 [+0.0016, +0.0064] |
+| Beijing PM2.5 | 0.893 (0.020) | 0.903 | 1.78 vs 1.83 | -0.0002 [-0.0056, +0.0022] |
+| NOAA weather | 0.876 (0.088) | 0.906 | 2.79 vs 1.29 | -0.0136 [-0.0221, -0.0063] |
+| PeMSD7-M traffic | 0.885 (0.048) | 0.876 | 17.95 vs 2.32 | +0.0005 [+0.0001, +0.0009] |
+| PeMS-BAY traffic | 0.914 (0.009) | 0.892 | 64.99 vs 4.96 | +0.0000 [-0.0000, +0.0001] |
+
+Reading the table:
+
+- A distance effect appears only in the sparse weather network (station spacing about 81 km).
+  Coverage there falls by about 1.4 points per extra spacing, and from about 0.93 in the nearest third
+  of test stations to 0.84 in the farthest third under region holdout.
+- In the dense urban and traffic networks, held-out regions sat 1.7 to 13 times farther from the
+  network than the calibration stations (Delhi, PeMSD7-M, PeMS-BAY) and coverage stayed near the
+  target; the within-station slopes are close to zero (Delhi's is slightly positive). The coverage
+  result of Section 4.3 is therefore more robust to distance than feared in those networks.
+- Distances in the two traffic datasets are in a reconstructed plane with heavy-tailed density, so
+  their large values are not comparable with the others.
+- Only one sparse network, of 30 stations, was available, so the weather result is the evidence of a
+  single dataset.
+
+Experiment C3 asks whether a coverage bound built on the total-variation distance between station
+score distributions could be informative. The estimated distance between held-out stations had a
+median of 0.12 in Delhi and 0.18 in the weather data, against a noise floor of 0.13 obtained by
+splitting one station's own scores into random halves. In the weather data it did not grow with
+separation (Spearman correlation -0.02). With about 360 dependent scores per station the estimator
+cannot resolve differences below roughly 0.13, which exceeds the 0.10 miscoverage budget, so a
+total-variation bound would be vacuous. The Semester-4 plan therefore uses a threshold-specific
+estimate of coverage loss instead (Section 6).
+
+### 4.5 Original-protocol results (kept as a record)
 
 The first protocol gave coverage 0.914 ± 0.006 (Delhi, 10 seeds), 0.928 ± 0.003 (Beijing, 10),
 0.919 ± 0.007 (weather, 10) and 0.915 ± 0.009 (PeMSD7-M, 6), where ± is the standard deviation over
@@ -161,11 +212,13 @@ were not repeated under C1 and carry the stated caveats.
 - **Dropout robustness.** Dataset-mean coverage with 30% or 50% of sensors removed was 0.912 to 0.931
   under the original protocol; individual seeds went as low as 0.89.
 
-### 4.5 Threats to validity and limitations
+### 4.6 Threats to validity and limitations
 
 - **Marginal, not conditional coverage.** Per-station coverage varies widely (Section 4.3).
-- **Exchangeability is assumed.** Spatial and temporal dependence can break it. C1 measures the
-  outcome over random splits; it is not a proof.
+- **Exchangeability is assumed, at the level of stations.** Spatial and temporal dependence can break
+  it, and the pooled quantile treats the many dependent scores of one station as if they were
+  independent calibration points, so the effective calibration size is the number of calibration
+  stations (3 to 45 here). C1 measures the outcome over random splits; it is not a proof.
 - **Small station sets.** The Beijing and weather datasets have 12 and 30 stations, so each split
   tests 3 to 6 stations.
 - **Coordinates.** The two traffic datasets use sensor coordinates reconstructed from the published
@@ -180,9 +233,15 @@ were not repeated under C1 and carry the stated caveats.
   test year aliases to the latest training year. A check that set the feature to 1.0 therefore
   changed nothing, and it was uninformative by construction. No effect on results was found; a better
   year encoding is a Semester-4 cleanup.
+- **Coordinate normalisation.** The coordinate embedding centres and scales its inputs with constants
+  fixed for Delhi (latitude centre 28.6 with scale 0.2, longitude centre 77.1 with scale 0.3). For the
+  other datasets the inputs fall far outside the intended range (for example longitude near -120 in
+  the weather data). Training adapted to this and the attention uses true distances, so the results
+  above stand, but a model trained in one region cannot be expected to transfer to another without a
+  local coordinate frame. Cross-region transfer has not been tested.
 - **Baselines.** E-STGCN and IGNNK are the author's re-implementations.
 
-### 4.6 Dissemination
+### 4.7 Dissemination
 
 The Phase-1 work has been released as a preprint [8] (arXiv:2611.04256). It has not been submitted to
 any journal or conference. The code, experiment scripts and committed results for both phases are in
@@ -199,7 +258,7 @@ review corrected what had been claimed for them.
 |---|---|---|
 | Neighbour attention (cost proportional to sensors × neighbours) | Implemented | Output cosine similarity to exact attention is at least 0.99987 for N up to 2,000 on random tokens with shared weights. **No memory measurement exists and no speed advantage appeared**: at N=2,000 the two paths took 189 ms and 182 ms, and at small N the neighbour path was slower. |
 | State-space temporal block | Implemented as a **sequential** scan | About 2.0 to 2.2 times slower than the GRU at sequence lengths 60, 240 and 960 (29.0 vs 14.0 ms, 115.7 vs 53.3 ms, 462.3 vs 233.7 ms). No time-parallel advantage exists. Only the step size is input-dependent. |
-| Localised calibration | **Not implemented** | Planned (work package WP1). |
+| Geometry-aware calibration | **Not implemented** | Planned (work package WP1). |
 | First parity check (V1) | Preliminary | 3 seeds, Delhi: the rebuilt engine had MAE 65.62 against 64.56 and coverage 0.944 against 0.948. The pass criteria were too permissive to be informative (the coverage band was widened to [0.723, 1.028], accuracy tolerance was 10%, calibration used training stations), so this is not evidence of parity. |
 
 ### 5.2 Defects found and fixed
@@ -215,35 +274,44 @@ review corrected what had been claimed for them.
   baseline error, 0.03 in coverage), 10 seeds, and interval widths reported. It has been smoke-tested
   only.
 
-## 6. Plan for Semester 4
+## 6. Plan for Semester 4 (proposed, pending supervisor approval)
 
-All acceptance criteria are fixed before the experiments are run, and each work package has a
-fallback so that a negative result is still a thesis result.
+The plan was revised twice: after the preliminary review, and after assessing five candidate ideas for
+novelty against verified prior work and experiments C2 and C3. All acceptance criteria are fixed
+before the experiments are run, and each work package has a fallback, so that a negative result is
+still a thesis result.
 
 | Package | Work | Acceptance criterion | Fallback |
 |---|---|---|---|
-| WP0 | Run V1b; check that the LargeST benchmark [13] (8,600 sensors) is usable; fix a timing baseline | V1b verdict recorded; data decision made | Decide the state-space line and data plan from the outcome |
-| WP1 | Localised calibration; compare with [9] and [10] | Over at least 20 random splits on three datasets, mean coverage within 0.02 of 0.90 and improved 10th-percentile per-station coverage without widening intervals by more than 10% | Empirical study of when random-split conformal coverage holds and fails |
-| WP2 | Parallel prefix scan for the state-space block | Matches the sequential version within 1e-4 for T up to 960 and is no slower than the GRU for T ≥ 240 | Drop the time-parallel claim |
-| WP3 | Peak memory and time against N (325 to 8,600); neighbour-set agreement | At least 5× lower peak memory than exact attention at N ≥ 2,000; agreement ≥ 0.99 | Restrict the claim to equivalence |
-| WP4 | Coverage against N on a larger real network | Mean coverage within 0.02 of 0.90 at every size, spread over at least 10 splits reported | State evidence to 325 sensors only; never use replicated sensors to claim coverage |
-| WP5 | Stronger baselines with equal tuning; leakage-free protocol [11] | Official-code IGNNK or equivalent compared at equal budget | Cut first if time is short |
-| WP6 | Reusable PyTorch package with tests and an example | Installs in a fresh environment and reproduces the Delhi result within the spread over splits | Scope to forecaster plus calibration |
-| WP7 | Thesis in the IIT Patna format, 60 to 70 pages, at least 30 verified references | Supervisor review | None |
+| WP0 | Corrected parity gate V1b (for the attention swap alone and for the full model); a local coordinate frame replacing the Delhi constants; a large sparse network from GHCN-Daily station data; check that LargeST [13] is usable; timing baseline | V1b attention gate recorded; Phase 1 coverage unchanged under the local frame; data decision made | Smaller curated sparse network |
+| WP1 | Geometry-aware calibration at new sites: a calibration pool from spatial-block cross-fitting, kernel localisation in geometry space with randomised localisation [16]; compared with [9], [10], [14], [17], [18] | On sparse networks over at least 20 random region splits: far-tertile coverage within 0.03 of 0.90, mean coverage within 0.02, mean width at most 10% above the global baseline. On dense networks: no worse than the global baseline by more than 0.01 in coverage or 5% in width | Characterisation of when distance matters (C2 extended to the large network) |
+| WP2 | Per-site coverage-risk estimate from geometry using a threshold-specific shift, not total variation, with an explicit assumption (plug-in diagnostics have precedent in [20]) | Spearman correlation of at least 0.5 between predicted and observed region coverage loss over at least 20 regions, and lower error than the constant predictor | Report that coverage loss is not predictable from geometry |
+| WP3 | Peak memory and time against N (325 to 8,600); neighbour-set agreement; coverage against N on PeMS-BAY, the large sparse network and, if usable, a LargeST subset | At least 5 times lower peak memory than exact attention at N ≥ 2,000; agreement ≥ 0.99; mean coverage within 0.02 of 0.90 at every size | Restrict the claim to equivalence; state evidence to 325 sensors |
+| WP4 | Exceedance alerts with a controlled miss rate at unseen sites, using conformal risk control [19] | Mean miss rate at or below the target plus 0.02 over random splits, with the false-alarm rate reported against a naive baseline | Miss rate against the number of calibration exceedances |
+| WP5 | Stronger baselines with equal tuning; leakage-free protocol [11]; reusable PyTorch package | Package installs in a fresh environment and reproduces the Delhi result within the spread over splits | Cut baselines first if time is short |
+| WP6 | Thesis in the IIT Patna format, with at least 30 verified references | Supervisor review | None |
 
-Timeline: month 1 WP0; month 2 WP1; month 3 WP2 and WP3; month 4 WP4 and WP5; month 5 WP6; month 6
-WP7 and the final literature re-scan.
+Optional, only if WP0 to WP4 are on schedule at the end of month 4: transfer between cities with few
+target calibration stations; a time-parallel state-space block; sensor placement guided by the
+coverage-risk estimate. The state-space line was demoted because the current block is about twice as
+slow as the GRU.
+
+Timeline: month 1 WP0; month 2 WP1 design; month 3 WP1 evaluation and WP2; month 4 WP3 and WP4;
+month 5 WP5; month 6 WP6 and the final literature re-scan.
 
 ## 7. Summary of Progress
 
 Phase 1 is complete. The forecaster was formulated, validated on four real datasets, released as a
 preprint, and re-evaluated this semester over random disjoint station splits. Mean coverage was close
 to the 0.90 target on all five networks, with considerable variation between splits and between
-stations. Phase 2 is planned: a neighbour attention that matches exact attention in output and a
-sequential state-space block exist, but neither has shown a speed or memory advantage yet, localised
-calibration is not implemented, and the first parity check was too permissive to count. A preliminary
-review identified these points, and the code, documents and plan have been corrected accordingly. The
-Semester-4 plan has acceptance criteria and fallbacks for each work package.
+stations. Two further experiments showed that coverage falls with distance from the training network
+only in the sparse weather network, and that a coverage bound based on total-variation distance would
+be vacuous at the available sample sizes. Phase 2 is planned: a neighbour attention that matches
+exact attention in output and a sequential state-space block exist, but neither has shown a speed or
+memory advantage, geometry-aware calibration is not implemented, and the first parity check was too
+permissive to count. A preliminary review and a novelty assessment shaped the Semester-4 plan, which
+centres on geometry-aware calibration at new sites, with acceptance criteria and fallbacks for each
+work package, pending supervisor approval.
 
 ---
 
@@ -295,6 +363,28 @@ Available: https://arxiv.org/abs/2410.00385
 "LargeST: A Benchmark Dataset for Large-Scale Traffic Forecasting," in *Advances in Neural Information
 Processing Systems (NeurIPS)*, 2023. [Online]. Available: https://arxiv.org/abs/2306.08259
 
+[14] R. J. Tibshirani, R. F. Barber, E. J. Candes, and A. Ramdas, "Conformal Prediction Under
+Covariate Shift," *arXiv:1904.06019*, 2019. [Online]. Available: https://arxiv.org/abs/1904.06019
+
+[15] R. F. Barber, E. J. Candes, A. Ramdas, and R. J. Tibshirani, "Conformal prediction beyond
+exchangeability," *arXiv:2202.13415*, 2022. [Online]. Available: https://arxiv.org/abs/2202.13415
+
+[16] R. Hore and R. F. Barber, "Conformal prediction with local weights: randomization enables local
+guarantees," *arXiv:2310.07850*, 2023. [Online]. Available: https://arxiv.org/abs/2310.07850
+
+[17] H. Mao, R. Martin, and B. Reich, "Valid model-free spatial prediction," *arXiv:2006.15640*, 2020.
+[Online]. Available: https://arxiv.org/abs/2006.15640
+
+[18] G. Kim, C. Y. Lim, W.-T. Wang, H.-Y. Huang, et al., "Cluster-Aware Conformal Calibration for
+Spatio-Temporal Distributional Prediction," *arXiv:2606.06753*, 2026. [Online]. Available:
+https://arxiv.org/abs/2606.06753
+
+[19] A. N. Angelopoulos, S. Bates, A. Fisch, L. Lei, et al., "Conformal Risk Control,"
+*arXiv:2208.02814*, 2022. [Online]. Available: https://arxiv.org/abs/2208.02814
+
+[20] Y. Zhu, J. Yu, L. Li, G. Zhang, et al., "Conformalized Large Language Models under Configuration
+Shift," *arXiv:2608.01460*, 2026. [Online]. Available: https://arxiv.org/abs/2608.01460
+
 ---
 
 ## Appendix A: Supplementary Results
@@ -309,7 +399,27 @@ Processing Systems (NeurIPS)*, 2023. [Online]. Available: https://arxiv.org/abs/
 | PeMSD7-M traffic | 0.031 | 0.830 to 0.917 | 0.33 | 44.1 | 10.3 |
 | PeMS-BAY traffic | 0.019 | 0.863 to 0.917 | 0.33 | 22.9 | 5.5 |
 
-**A.2 Phase 2, measurements on existing components.**
+**A.2 Distance experiments (C2 and C3), additional statistics.**
+
+| Dataset | Coverage by distance tertile, near / middle / far (region holdout) | Spearman correlation of station coverage with distance, scattered / region holdout |
+|---|---|---|
+| Delhi PM2.5 | 0.905 / 0.904 / 0.894 | -0.018 / -0.075 |
+| Beijing PM2.5 | 0.876 / 0.891 / 0.918 | +0.566 / +0.796 |
+| NOAA weather | 0.930 / 0.897 / 0.843 | -0.305 / -0.270 |
+| PeMSD7-M traffic | 0.815 / 0.896 / 0.881 | -0.006 / -0.037 |
+| PeMS-BAY traffic | 0.942 / 0.924 / 0.909 | +0.015 / -0.088 |
+
+Tertile edges come from the pooled distances of both arms, so the nearest bins of the two traffic
+datasets hold few region stations (4 and 3). Correlation p-values are optimistic because stations
+repeat across splits. Beijing's positive correlation probably reflects the type of station (12
+stations) and not distance.
+
+| Dataset | Median total-variation distance between stations | Noise floor (random halves of one station) | Nearest vs farthest quartile of pairs | Loss if weight is spread over the 3 nearest stations (median) |
+|---|:---:|:---:|:---:|:---:|
+| Delhi PM2.5 | 0.120 | 0.133 | 0.107 vs 0.127 | 0.113 |
+| NOAA weather | 0.176 | 0.133 | 0.224 vs 0.194 | 0.188 |
+
+**A.3 Phase 2, measurements on existing components.**
 
 | Measurement | Setting | Result |
 |---|---|---|

@@ -99,7 +99,7 @@ The block evaluates its recurrence in a Python loop over time, so it is sequenti
 as slow as the GRU at every length, and both grow linearly in T. Earlier documents described it as a
 "parallel scan" and "parallel in time"; that was incorrect. Only the step size is input-dependent;
 B and C are fixed parameters, so it is a partial version of Mamba's selection mechanism. A parallel
-prefix scan is a planned work package (WP2) with an explicit acceptance test.
+prefix scan is an optional extension (X2 in the plan) with an explicit acceptance test.
 
 ## Defects found and fixed in existing code
 
@@ -123,7 +123,7 @@ a size bound (see above).
 
 ## What remains
 
-See [`RESEARCH-PLAN.md`](RESEARCH-PLAN.md): V1b with 10 seeds, localised calibration, a parallel scan,
+See [`RESEARCH-PLAN.md`](RESEARCH-PLAN.md): V1b with 10 seeds, geometry-aware calibration, a coverage-risk estimate,
 memory and time against N, coverage on a larger real network, stronger baselines, and a PyTorch
 package. Each work package has an acceptance criterion and a fallback fixed in advance.
 

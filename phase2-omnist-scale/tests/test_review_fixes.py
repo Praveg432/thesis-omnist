@@ -78,9 +78,9 @@ def test_paired_equivalence_declares_equivalent_for_tiny_consistent_differences(
     assert res["verdict"] == "equivalent"
 
 
-def test_paired_equivalence_flags_worse_when_interval_above_margin():
+def test_paired_equivalence_flags_above_when_interval_exceeds_margin():
     res = paired_equivalence([0.10, 0.11, 0.09, 0.12, 0.10], margin=0.03)
-    assert res["verdict"] == "worse"
+    assert res["verdict"] == "above"
 
 
 def test_paired_equivalence_is_inconclusive_when_noisy_or_too_few_pairs():
@@ -91,6 +91,35 @@ def test_paired_equivalence_is_inconclusive_when_noisy_or_too_few_pairs():
 def test_paired_equivalence_rejects_nonpositive_margin():
     with pytest.raises(ValueError):
         paired_equivalence([0.0, 0.1], margin=0.0)
+
+
+def test_paired_equivalence_flags_a_large_drop_not_just_a_large_rise():
+    """A coverage drop of 0.1 against a 0.03 margin must be reported as 'below', not inconclusive."""
+    res = paired_equivalence([-0.10, -0.11, -0.09, -0.12, -0.10], margin=0.03)
+    assert res["verdict"] == "below"
+
+
+def test_v1b_gate_fails_when_coverage_collapses():
+    from omnist_scale.stats import parity_verdict
+    mae = paired_equivalence([0.1, -0.2, 0.0, 0.1], margin=5.0)       # accuracy equivalent
+    cov = paired_equivalence([-0.10, -0.11, -0.09, -0.12], margin=0.03)
+    assert parity_verdict(mae, cov) == "NO-GO"
+
+
+def test_v1b_gate_accepts_equivalent_or_better_accuracy_with_equivalent_coverage():
+    from omnist_scale.stats import parity_verdict
+    cov = paired_equivalence([0.001, -0.002, 0.0005, 0.001], margin=0.03)
+    equivalent = paired_equivalence([0.1, -0.2, 0.0, 0.1], margin=5.0)
+    better = paired_equivalence([-9.0, -9.5, -8.8, -9.2], margin=5.0)
+    assert parity_verdict(equivalent, cov) == "GO"
+    assert parity_verdict(better, cov) == "GO", "clearly lower error is non-inferior"
+
+
+def test_v1b_gate_is_inconclusive_when_either_test_is():
+    from omnist_scale.stats import parity_verdict
+    cov = paired_equivalence([0.001, -0.002, 0.0005, 0.001], margin=0.03)
+    noisy = paired_equivalence([3.0, -4.0, 6.0, -5.0], margin=5.0)
+    assert parity_verdict(noisy, cov) == "INCONCLUSIVE"
 
 
 def test_mean_ci_basic():

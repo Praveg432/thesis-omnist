@@ -12,11 +12,14 @@
 > its engine scale toward thousands of sensors and study how its coverage behaves as the network
 > grows (Phase 2).
 
-**Terminology.** "Certified" in the title means finite-sample marginal coverage from split conformal
-prediction under a random, disjoint split of stations into train, calibration and test sets, where
-calibration and test scores are exchangeable across stations. It is checked empirically over many
-random splits. It is not a guarantee for every station, and it is not a guarantee against arbitrary
-spatial dependence. Whether to keep the word in the title is the supervisor's decision.
+**Terminology.** "Certified" in the title means marginal coverage from split conformal prediction,
+with calibration on stations the model never saw. Stations are split at random into train,
+calibration and test sets, so a test station is exchangeable with the calibration stations. The
+exchangeable unit is the station, not the individual score: scores within a station are dependent and
+the conformal quantile pools them, so the coverage statement is approximate, improving with the number
+of calibration stations. It is checked empirically over many random splits. It is not a guarantee for
+every station, and it is not a guarantee against arbitrary spatial dependence. Whether to keep the
+word in the title is the supervisor's decision.
 
 ---
 
@@ -26,12 +29,13 @@ spatial dependence. Whether to keep the word in the title is the supervisor's de
   **Built and validated** on four real datasets from three domains, and re-evaluated after review
   under a stricter protocol (Section 2). Released as a **preprint (arXiv:2611.04256)**, not submitted
   to any venue. It is a timestamped record of thesis work, not external prior art.
-- **Phase 2: OmniST-Scale.** Scaling the engine and studying coverage as the network grows.
-  **Planned for Semester 4.** Existing: an implemented neighbour attention whose output matches exact
+- **Phase 2: OmniST-Scale.** Calibration at newly placed sensors using the geometry of the site, and
+  scaling toward larger networks. **Planned for Semester 4; the scope is proposed and pending
+  supervisor approval.** Existing: an implemented neighbour attention whose output matches exact
   attention on random inputs, and a state-space block that currently runs sequentially and is slower
   than the GRU. A first parity check exists but is preliminary and is replaced by a stricter one that
   has not been run. See `phase2-omnist-scale/docs/RESEARCH-PLAN.md` for work packages, acceptance
-  criteria and fallbacks.
+  criteria, fallbacks and the novelty assessment.
 
 ---
 
@@ -79,12 +83,15 @@ latter two, over many splits. Target coverage 0.90. The 95% interval is over spl
 
 What this shows:
 - Mean coverage over random splits is close to the target in every dataset, and every interval
-  contains 0.90. This supports the marginal coverage claim under the random-split protocol.
+  contains 0.90, so the results are consistent with the nominal level. Three of the five point
+  estimates sit below it (by 0.7 to 2.4 points), so mild under-coverage is possible and is not
+  excluded.
 - Individual splits vary: the standard deviation over splits is 0.02 to 0.05, and in the weather data
   coverage ranged from 0.79 to 0.99. Only 33% to 55% of splits reached 0.90, as expected when the
   mean is near the target.
 - Coverage is marginal. Individual stations can be badly under-covered (minimum 0.40 to 0.86, tenth
-  percentile 0.72 to 0.88). This is the case for the localised calibration planned in Phase 2.
+  percentile 0.72 to 0.88). This is the case for the geometry-aware calibration planned in Phase 2, although Section 2.3
+  shows that the distance effect is confined to the sparse network.
 - Calibrating on training stations, as the original experiments did, gave similar average coverage
   here (disjoint-calibration coverage minus training-station coverage ranged from -0.014 to +0.018
   across the five datasets). The review's concern about exchangeability did not translate
@@ -108,7 +115,26 @@ Other original-protocol results, none re-tested under C1:
 - Large network: coverage 0.921 on PeMS-BAY with **7 held-out sensors in one fixed split**. Under C1
   the same data give 0.892 over 6 random splits with 45 test sensors each.
 
-### 2.3 Limits that define Phase 2
+### 2.3 Does distance from the training network matter? (experiments C2 and C3)
+
+Experiment C2 holds out a contiguous region of stations, calibrates on stations outside it, and
+measures per-station coverage against the distance to the nearest training station, in units of the
+network spacing, using the variation within each station across splits. A distance effect appears only
+in the sparse weather network: coverage falls by 0.0136 per extra spacing [95% interval -0.0221,
+-0.0063], from about 0.93 in the nearest third of stations to 0.84 in the farthest third. In Delhi,
+Beijing, PeMSD7-M and PeMS-BAY the within-station slopes are within 0.004 of zero, although the
+held-out regions of Delhi, PeMSD7-M and PeMS-BAY sat 1.7 to 13 times farther from the network than the
+calibration stations. Region-holdout coverage was 0.899, 0.893, 0.876, 0.885 and 0.914 (Delhi,
+Beijing, weather, PeMSD7-M, PeMS-BAY), with a split-to-split standard deviation of 0.088 in the
+weather data. Only one sparse network of 30 stations was available.
+
+Experiment C3 estimates the total-variation distance between the score distributions of different
+stations, which a non-exchangeable conformal coverage bound would charge against coverage. It was 0.12
+(median) in Delhi and 0.18 in the weather data, no larger than the 0.13 noise floor obtained by
+splitting one station's scores into random halves, and it did not grow with distance in the weather
+data. A total-variation bound would therefore be vacuous at about 360 dependent scores per station.
+
+### 2.4 Limits that define Phase 2
 
 1. Exact attention needs O(N²) memory.
 2. The temporal model is a sequential GRU.
@@ -116,30 +142,42 @@ Other original-protocol results, none re-tested under C1:
    reconstructed from the distance matrix, not measured latitude and longitude.
 4. Coverage is marginal, with large per-station spread (Section 2.1).
 5. Dropout robustness (30 to 50% of sensors removed) was shown under the original protocol only.
+6. The coordinate embedding is centred and scaled with constants fixed for Delhi, so inputs for other
+   regions are far outside the intended range. Training adapted, but cross-region transfer is
+   untested and would need a local coordinate frame.
 
 ---
 
-## 3. Phase 2: OmniST-Scale (planned)
+## 3. Phase 2: OmniST-Scale (planned; scope proposed, pending supervisor approval)
 
-> **Research question.** Can the forecaster be made sub-quadratic in the number of sensors, with
-> time-parallel temporal processing, while keeping accuracy and the random-split coverage behaviour of
-> Phase 1, and how does that coverage behave as the network grows?
+> **Research question.** When a sensor is placed at a new site, can its prediction interval be
+> calibrated using the geometry of the site (distance to, and density of, the training sensors) so
+> that coverage holds where distance matters without harming networks where it does not, and does the
+> approach carry to larger networks?
 
-The work packages, with acceptance criteria and fallbacks fixed in advance, are in
-`phase2-omnist-scale/docs/RESEARCH-PLAN.md`. In summary:
+The scope follows a novelty assessment of five candidate ideas against verified prior work and
+experiments C2 and C3. Close prior art exists for localised and spatial conformal calibration
+(Mao, Martin and Reich; Kim et al., 2026; Hore and Barber; Tibshirani et al.), so the contribution is
+scoped as the combination for a deep inductive forecaster, with an honest finding about when it
+matters, and not as a new theorem. The work packages, acceptance criteria, fallbacks and the full
+assessment are in `phase2-omnist-scale/docs/RESEARCH-PLAN.md`. In summary:
 
 | Package | Content | Fallback if it fails |
 |---|---|---|
-| WP0 | Corrected parity gate V1b (10 seeds, paired equivalence); check that LargeST (8,600 sensors) is usable | Decide SSM line and data plan from the outcome |
-| WP1 | Localised calibration; comparison with two published conformal methods | Empirical study of when random-split conformal coverage holds and fails |
-| WP2 | Parallel prefix scan for the state-space block; must match the sequential version and be no slower than the GRU for T ≥ 240 | Drop the time-parallel claim |
-| WP3 | Peak memory and time against N; neighbour-set agreement | Restrict the claim to equivalence |
-| WP4 | Coverage against N on a larger real network | State coverage evidence to 325 sensors only |
-| WP5 | Stronger baselines with equal tuning; leakage-free protocol | Cut first if time is short |
-| WP6 | Reusable PyTorch package with tests and an example | Scoped to the forecaster plus calibration |
-| WP7 | Thesis in IIT Patna format | None |
+| WP0 | Corrected parity gate V1b (attention swap alone, and the full model); local coordinate frame; a large sparse network from GHCN-Daily; check that LargeST is usable | Smaller curated sparse network |
+| WP1 | Geometry-aware calibration at new sites: spatial-block calibration pool, kernel localisation in geometry space with randomised localisation; compared with five published methods | Characterisation of when distance matters |
+| WP2 | Per-site coverage-risk estimate from geometry using a threshold-specific shift (total variation is vacuous, C3), with an explicit assumption | Report that coverage loss is not predictable from geometry |
+| WP3 | Peak memory and time against N; neighbour-set agreement; coverage against N on a large sparse network | Restrict the claim to equivalence |
+| WP4 | Alerts with a controlled miss rate at unseen sites (conformal risk control) | Miss rate against calibration sample size |
+| WP5 | Stronger baselines with equal tuning; leakage-free protocol; reusable PyTorch package | Cut baselines first |
+| WP6 | Thesis in IIT Patna format | None |
 
-Current status of the existing Phase 2 components (details in `phase2-omnist-scale/docs/VETTING-REPORT.md`):
+Optional, if WP0 to WP4 are on schedule at the end of month 4: transfer between cities, a
+time-parallel state-space block, and sensor placement guided by the coverage-risk estimate. The
+state-space line was demoted because the current block is about twice as slow as the GRU.
+
+Current status of the existing Phase 2 components (details in
+`phase2-omnist-scale/docs/VETTING-REPORT.md`):
 - Neighbour attention: output cosine similarity to exact attention at least 0.99987 on random tokens
   for N up to 2,000. No memory or speed advantage has been shown.
 - State-space block: sequential, about 2.0 to 2.2 times slower than the GRU at T = 60, 240 and 960.
@@ -149,10 +187,11 @@ Current status of the existing Phase 2 components (details in `phase2-omnist-sca
 
 ## 4. Impact
 
-- A forecaster that keeps producing intervals at sensors it never saw, with its coverage behaviour
-  measured honestly over random station splits.
-- A reusable PyTorch package for practitioners, if WP6 is completed.
-- An evaluation of where marginal conformal coverage holds and where individual stations fall short.
+- A forecaster that keeps producing intervals at sensors it never saw, with its coverage measured over
+  random station splits.
+- Deployment guidance: where the coverage at a new sensor can be trusted (dense networks, per C2) and
+  where it needs care (sparse networks), with a per-site risk estimate if WP2 succeeds.
+- Alerts with a controlled miss rate at unseen sites (WP4) and a reusable PyTorch package (WP5).
 
 ---
 
@@ -160,27 +199,31 @@ Current status of the existing Phase 2 components (details in `phase2-omnist-sca
 
 | Period | Work | Status |
 |---|---|---|
-| Semester 3 | Phase 1 design and validation; preprint; stricter C1 re-evaluation; review corrections | Done |
-| Semester 4, month 1 | WP0: V1b, LargeST check, timing baseline; start WP1 | Planned |
-| Month 2 | WP1 implementation and study | Planned |
-| Month 3 | WP2 parallel scan; WP3 memory and time study | Planned |
-| Month 4 | WP4 coverage against N; WP5 baselines | Planned |
-| Month 5 | WP6 package; ablations | Planned |
-| Month 6 | WP7 write-up; final literature re-scan; supervisor review | Planned |
+| Semester 3 | Phase 1 design and validation; preprint; stricter C1 re-evaluation; C2 and C3; review corrections; revised Phase 2 plan | Done |
+| Semester 4, month 1 | WP0: V1b, local coordinate frame, large sparse network, LargeST check, timing baseline | Planned |
+| Month 2 | WP1 design and implementation | Planned |
+| Month 3 | WP1 evaluation; WP2 coverage-risk estimate | Planned |
+| Month 4 | WP3 memory and coverage against N; WP4 alerts | Planned |
+| Month 5 | WP5 baselines and package; optional extension if on schedule | Planned |
+| Month 6 | WP6 write-up; final literature re-scan; supervisor review | Planned |
 
 ---
 
 ## 6. Risks and honest limits
 
-- **Data.** A large real network may not be usable. Replicating sensors is never used to claim
-  coverage.
-- **State-space block.** A pure PyTorch scan may not beat the GRU on MPS. The claim is dropped if so.
-- **Calibration.** A localised variant may not improve per-station coverage. The thesis then reports
-  the failure analysis.
-- **Exchangeability.** Spatial and temporal dependence can break the assumption behind the coverage
-  statement. C1 measures the outcome; it does not prove validity.
+- **The geometry effect is narrow.** C2 found a distance effect in one 30-station network. WP0 builds a
+  larger sparse network to test it; if it does not replicate, WP1 becomes the characterisation
+  fallback.
+- **Data.** The GHCN subset may have too many gaps, and LargeST may be unusable. Replicating sensors
+  is never used to claim coverage.
+- **Small effective calibration size.** Localised calibration can leave few stations near a site; the
+  method abstains when it cannot calibrate.
+- **Conditional exchangeability** (the score depends on the site only through its geometry) may fail;
+  it is tested, not assumed.
+- **Exchangeability** across stations can break under spatial and temporal dependence. C1 measures
+  the outcome; it does not prove validity.
 - **Baselines.** E-STGCN and IGNNK are the author's re-implementations.
-- **Scope.** WP5 and the ablations are cut first if time runs short.
+- **Scope.** Optional extensions are cut first if time runs short.
 
 ---
 
@@ -188,12 +231,13 @@ Current status of the existing Phase 2 components (details in `phase2-omnist-sca
 
 1. OmniST, a topology-invariant forecaster with calibrated intervals at unseen sensors, validated on
    four real datasets with a random-split protocol (Phase 1).
-2. An empirical characterisation of marginal versus per-station coverage under random disjoint-station
-   splits (Phase 1, extended in Phase 2).
-3. A neighbour attention with measured equivalence to exact attention and measured memory and time
-   against N (Phase 2).
-4. A localised calibration method, or a documented analysis of why it did not help (Phase 2).
-5. A reusable PyTorch package (Phase 2).
+2. A measured characterisation of when distance from the training network matters for coverage at a
+   new sensor: it does in the sparse weather network and not in the dense networks tested (C2).
+3. Geometry-aware calibration for newly placed sensors, with a per-site coverage-risk estimate, or a
+   documented analysis of why it did not help (Phase 2).
+4. A neighbour attention with measured memory and time against N, and coverage against N on a large
+   sparse network (Phase 2).
+5. Alerts with a controlled miss rate at unseen sites, and a reusable PyTorch package (Phase 2).
 
 ---
 
@@ -202,6 +246,10 @@ Current status of the existing Phase 2 components (details in `phase2-omnist-sca
 - **Phase 1:** `phase1-omnist/` (`README.md`, `FINDINGS-AND-IMPACT.md`, `RESULTS-INDEX.md`, committed
   `results/*.json`, `paper/`); preprint arXiv:2611.04256. Primary evidence:
   `phase1-omnist/experiments/C1_rigorous_inductive_eval.py` and `phase1-omnist/results/exp_C1_*.json`.
+  Distance experiments: `phase1-omnist/experiments/C2_region_holdout_distance.py`,
+  `phase1-omnist/experiments/C3_score_shift_vs_distance.py`,
+  `phase1-omnist/results/exp_C2_analysis.json` and
+  `phase1-omnist/results/exp_C3_delhi_air_quality.json`.
 - **Phase 2:** `phase2-omnist-scale/` (`phase2-omnist-scale/README.md`,
   `phase2-omnist-scale/docs/RESEARCH-PLAN.md`, `phase2-omnist-scale/docs/VETTING-REPORT.md`,
   `phase2-omnist-scale/experiments/V1_ssm_matches_omnist.py`,

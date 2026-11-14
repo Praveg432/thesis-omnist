@@ -17,6 +17,8 @@ Paths are relative to the repo root. Phase 1 lives in `phase1-omnist/`, Phase 2 
 | # | Claim | Script | Result files | Status |
 |---|---|---|---|---|
 | C1 | Coverage at unseen stations over many random train/calibration/test station splits, with calibration on disjoint unseen stations; also the old training-station calibration on the same trained models; per-station coverage; interval width | `phase1-omnist/experiments/C1_rigorous_inductive_eval.py`, summary by `phase1-omnist/experiments/C1_summarise.py` | `phase1-omnist/results/exp_C1_delhi_air_quality.json`, `exp_C1_beijing_air_quality.json`, `exp_C1_ghcn_weather.json`, `exp_C1_pemsd7_traffic.json`, `exp_C1_pemsbay_traffic.json` | EXECUTED |
+| C2 | Per-station coverage against distance to the nearest training station under contiguous-region holdout, and the same analysis of the C1 scattered holdouts; within-station slopes | `phase1-omnist/experiments/C2_region_holdout_distance.py` (`analyse` mode) | `phase1-omnist/results/exp_C2_delhi_air_quality.json`, `exp_C2_beijing_air_quality.json`, `exp_C2_ghcn_weather.json`, `exp_C2_pemsd7_traffic.json`, `exp_C2_pemsbay_traffic.json`, `exp_C2_analysis.json` | EXECUTED |
+| C3 | Total-variation distance between station score distributions, noise floor, and relation to distance (feasibility of a total-variation coverage bound) | `phase1-omnist/experiments/C3_score_shift_vs_distance.py` | `phase1-omnist/results/exp_C3_delhi_air_quality.json`, `exp_C3_ghcn_weather.json` | EXECUTED |
 
 ### Original protocol (calibration on training-station residuals, fixed held-out stations)
 
@@ -50,10 +52,10 @@ Full claim-to-file map for Phase 1: `phase1-omnist/RESULTS-INDEX.md`.
 | V1b | Corrected parity gate: disjoint calibration stations, paired equivalence with margins fixed in advance, 10 seeds | `phase2-omnist-scale/experiments/V1b_parity_equivalence.py` | *(written when V1b is run in full; none exists yet)* | PLANNED (smoke-tested only) |
 | V2 | Neighbour attention output equals exact attention (random tokens, shared weights); no memory measured | `phase2-omnist-scale/experiments/V2_attention_equivalence.py` | `phase2-omnist-scale/results/V2_attention_equivalence_results.json` | EXECUTED; limited scope |
 | T1 | Diagnostic: the state-space block is sequential and slower than the GRU | `phase2-omnist-scale/experiments/T1_ssm_vs_gru_timing.py` | `phase2-omnist-scale/results/T1_ssm_vs_gru_timing.json` | EXECUTED (diagnostic) |
-| WP1 | Localised calibration and comparison with two published conformal methods | *(planned)* | *(planned)* | PLANNED |
-| WP2 | Time-parallel scan, equal to the sequential version, no slower than the GRU | *(planned)* | *(planned)* | PLANNED |
-| WP3 | Peak memory and time against N, stronger equivalence test | *(planned)* | *(planned)* | PLANNED |
-| WP4 | Coverage as the network grows, on a larger real network if usable | *(planned)* | *(planned)* | PLANNED |
+| WP1 | Geometry-aware calibration at new sites, compared with five published methods | *(planned)* | *(planned)* | PLANNED |
+| WP2 | Per-site coverage-risk estimate from geometry (threshold-specific shift) | *(planned)* | *(planned)* | PLANNED |
+| WP3 | Peak memory and time against N; coverage against N on a large sparse network | *(planned)* | *(planned)* | PLANNED |
+| WP4 | Alerts with a controlled miss rate at unseen sites (conformal risk control) | *(planned)* | *(planned)* | PLANNED |
 
 Acceptance criteria and fallbacks for each work package: `phase2-omnist-scale/docs/RESEARCH-PLAN.md`.
 
@@ -66,5 +68,8 @@ Acceptance criteria and fallbacks for each work package: `phase2-omnist-scale/do
 - *Nearest-neighbour attention gives numerically the same output as exact* → V2. EXECUTED, with the
   scope limits stated above.
 - *A first parity check found the rebuilt engine close to the original* → V1. PRELIMINARY.
-- *Memory advantage at large sensor counts; time-parallel state-space block; localised calibration;
-  coverage on larger networks* → WP1 to WP4. PLANNED. No number is asserted for these.
+- *Coverage falls with distance from the training network only in the sparse weather network* → C2.
+  EXECUTED. *A total-variation coverage bound would be vacuous* → C3. EXECUTED.
+- *Memory advantage at large sensor counts; geometry-aware calibration; per-site coverage-risk
+  estimate; alerts with a controlled miss rate; coverage on larger networks* → WP1 to WP4. PLANNED.
+  No number is asserted for these.

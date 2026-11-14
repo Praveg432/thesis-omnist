@@ -42,7 +42,7 @@ import torch
 
 from omnist_scale.omnist.omnist_model import ModelConfig
 from omnist_scale.scalable_model import OmniSTScale
-from omnist_scale.stats import mean_ci, paired_equivalence
+from omnist_scale.stats import mean_ci, paired_equivalence, parity_verdict
 
 # ---- pre-registered constants -------------------------------------------------------------------
 ALPHA = 0.10
@@ -200,13 +200,16 @@ def run(quick: bool = False) -> dict:
                                   MAE_MARGIN_FRACTION * base_mae, EQUIVALENCE_LEVEL)
     cov_test = paired_equivalence([f["coverage"] - b["coverage"] for f, b in zip(full, base)],
                                   COVERAGE_MARGIN, EQUIVALENCE_LEVEL)
-    verdicts = {mae_test["verdict"], cov_test["verdict"]}
-    if verdicts == {"equivalent"}:
-        verdict = "GO"
-    elif "worse" in verdicts:
-        verdict = "NO-GO"
-    else:
-        verdict = "INCONCLUSIVE"
+    verdict = parity_verdict(mae_test, cov_test)
+
+    # Attention swap alone (gru+fast against gru+exact): the gate that matters if the state-space
+    # block is dropped from the thesis.
+    attn = rows["gru+fast"]
+    attn_mae_test = paired_equivalence([f["mae"] - b["mae"] for f, b in zip(attn, base)],
+                                       MAE_MARGIN_FRACTION * base_mae, EQUIVALENCE_LEVEL)
+    attn_cov_test = paired_equivalence([f["coverage"] - b["coverage"] for f, b in zip(attn, base)],
+                                       COVERAGE_MARGIN, EQUIVALENCE_LEVEL)
+    verdict_attention_only = parity_verdict(attn_mae_test, attn_cov_test)
 
     out = {
         "experiment": "V1b parity gate (supersedes V1): ssm+fast vs gru+exact, paired equivalence",
@@ -219,12 +222,15 @@ def run(quick: bool = False) -> dict:
                            "coverage_margin": COVERAGE_MARGIN, "ci_level": EQUIVALENCE_LEVEL},
         "variants": summary, "per_seed": rows,
         "mae_equivalence": mae_test, "coverage_equivalence": cov_test, "verdict": verdict,
+        "attention_only": {"mae_equivalence": attn_mae_test, "coverage_equivalence": attn_cov_test,
+                           "verdict": verdict_attention_only},
         "note": "fps_at_N37 is measured at N=37 on random inputs and is not a scaling measurement.",
         "runtime_seconds": round(time.time() - t0, 1)}
     RESULTS_DIR.mkdir(exist_ok=True)
     path = RESULTS_DIR / ("V1b_quick.json" if quick else "V1b_parity_equivalence_results.json")
     path.write_text(json.dumps(out, indent=2, default=float))
-    print(json.dumps({"verdict": verdict, "mae": mae_test, "coverage": cov_test}, indent=2, default=float))
+    print(json.dumps({"verdict_ssm_plus_fast": verdict, "verdict_attention_only": verdict_attention_only,
+                      "mae": mae_test, "coverage": cov_test}, indent=2, default=float))
     return out
 
 

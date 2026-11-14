@@ -14,6 +14,13 @@ Headline datasets are real; see `src/data_*.py` for provenance.
 > weather 0.906, PeMSD7-M 0.876, PeMS-BAY 0.892 (target 0.90). The original-protocol values quoted
 > below are 1 to 2.5 points higher and should not be used as headlines. Baseline comparisons, dropout
 > robustness, drift handling and the 7-sensor PeMS-BAY run below have not been repeated under C1.
+>
+> Two further experiments test whether distance from the training network matters. **C2**
+> (`experiments/C2_region_holdout_distance.py`, results in `results/exp_C2_analysis.json`) holds out
+> contiguous regions and measures per-station coverage against distance to the nearest training
+> station: a distance effect appears only in the sparse weather network. **C3**
+> (`experiments/C3_score_shift_vs_distance.py`) shows that total-variation distances between
+> station score distributions are no larger than the estimator's noise floor.
 
 
 ## Datasets (all real)

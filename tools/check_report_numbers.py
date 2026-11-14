@@ -18,9 +18,12 @@ DOMAIN_LABEL = {"delhi_air_quality": "Delhi PM2.5", "beijing_air_quality": "Beij
                 "ghcn_weather": "NOAA weather", "pemsd7_traffic": "PeMSD7-M traffic",
                 "pemsbay_traffic": "PeMS-BAY traffic"}
 failures = []
+checked = 0
 
 
 def need(doc: str, text: str, why: str) -> None:
+    global checked
+    checked += 1
     if text not in DOCS[doc]:
         failures.append(f"{doc}: missing '{text}' ({why})")
 
@@ -59,7 +62,36 @@ ig = json.load(open(os.path.join(P1, "exp_ignnk_inductive.json")))["results_by_d
 need("SEM3-PROGRESS-REPORT.md", f"{ig['omnist_inductive_mae'][0]:.1f} for OmniST against {ig['ignnk_inductive_mae'][0]:.1f}",
      "IGNNK MAE")
 
+# ---- C2 (distance experiment) rows in the report -------------------------------------------------
+import numpy as np  # noqa: E402
+
+c2_analysis = json.load(open(os.path.join(P1, "exp_C2_analysis.json")))
+for dom, label in DOMAIN_LABEL.items():
+    splits = json.load(open(os.path.join(P1, f"exp_C2_{dom}.json")))["splits"]
+    cov = np.array([s["coverage"] for s in splits])
+    test_d = np.mean([np.mean(s["test_d1"]) for s in splits])
+    cal_d = np.mean([np.mean(s["cal_d1"]) for s in splits])
+    scattered = json.load(open(os.path.join(P1, f"exp_C1_{dom}.json")))["aggregate"]["disjoint_calibration"][
+        "coverage_over_splits"]["mean"]
+    ws = c2_analysis[dom]["within_station"]
+    row = (f"| {label} | {cov.mean():.3f} ({cov.std(ddof=1):.3f}) | {scattered:.3f} | "
+           f"{test_d:.2f} vs {cal_d:.2f} | {ws['slope_per_spacing']:+.4f} [{ws['ci95'][0]:+.4f}, {ws['ci95'][1]:+.4f}] |")
+    need("SEM3-PROGRESS-REPORT.md", row, f"C2 table row for {dom}")
+
+# ---- C3 (total-variation feasibility) figures ----------------------------------------------------
+c3 = {d: json.load(open(os.path.join(P1, f"exp_C3_{d}.json"))) for d in ("delhi_air_quality", "ghcn_weather")}
+for dom, label in (("delhi_air_quality", "Delhi PM2.5"), ("ghcn_weather", "NOAA weather")):
+    d = c3[dom]
+    row = (f"| {label} | {d['tv_pairs']['median']:.3f} | {d['noise_floor_random_halves_median']:.3f} | "
+           f"{d['tv_pairs']['nearest_quartile_median']:.3f} vs {d['tv_pairs']['farthest_quartile_median']:.3f} | "
+           f"{d['bound_loss_3_nearest_median']:.3f} |")
+    need("SEM3-PROGRESS-REPORT.md", row, f"C3 table row for {dom}")
+need("SEM3-PROGRESS-REPORT.md", f"{c3['delhi_air_quality']['tv_pairs']['median']:.2f} in Delhi and "
+     f"{c3['ghcn_weather']['tv_pairs']['median']:.2f} in the weather data", "C3 medians in the text")
+need("SEM3-PROGRESS-REPORT.md", f"(Spearman correlation {c3['ghcn_weather']['tv_pairs']['spearman_rho_distance']:.2f})",
+     "C3 weather correlation")
+
 if failures:
     print("\n".join(failures))
     sys.exit(1)
-print("all quoted numbers match the committed result files")
+print(f"all {checked} quoted figures match the committed result files")

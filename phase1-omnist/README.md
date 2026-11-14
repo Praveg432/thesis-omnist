@@ -104,8 +104,8 @@ paper/        LaTeX source (IEEEtran) + references.bib
 The contribution is the *capability* (guaranteed inductive UQ under dynamic topology), not a
 point-accuracy SOTA. Baselines (E-STGCN, IGNNK) are faithful reimplementations, not the authors'
 original code. Coverage has been checked on up to 325 real sensors; evaluating thousands of nodes
-awaits a larger real benchmark. The conformal coverage statement is marginal (finite-sample, under
-exchangeability across randomly chosen stations), with a partial Mondrian fix for conditional
+awaits a larger real benchmark. The conformal coverage statement is marginal and approximate (it
+assumes exchangeability across randomly chosen stations), with a partial Mondrian fix for conditional
 coverage. See the addendum in `RESULTS-INDEX.md` for the stricter random-split evaluation (C1).
 
 ## Citation

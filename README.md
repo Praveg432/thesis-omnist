@@ -57,11 +57,13 @@ deliver a calibrated, scalable forecaster for large real networks, with its limi
 wherever environmental, traffic, and infrastructure monitoring has to keep working as the sensors on
 the ground change.
 
-**Terminology.** In the title and throughout, "certified" means finite-sample marginal coverage from
-split conformal prediction under a random, disjoint split of stations into train, calibration and
-test sets, where calibration and test scores are exchangeable across stations. It is checked
-empirically over many random splits. It is not a guarantee for every station or against arbitrary
-spatial dependence. See `phase2-omnist-scale/docs/RESEARCH-PLAN.md`, Section 1.
+**Terminology.** In the title and throughout, "certified" means marginal coverage from split conformal
+prediction with calibration on stations the model never saw. Stations are split at random into train,
+calibration and test sets, so a test station is exchangeable with the calibration stations. The
+exchangeable unit is the station, not the individual score, so the coverage statement is approximate
+and improves with the number of calibration stations. It is checked empirically over many random
+splits. It is not a guarantee for every station or against arbitrary spatial dependence. See
+`phase2-omnist-scale/docs/RESEARCH-PLAN.md`, Section 1.
 
 ---
 
@@ -71,7 +73,7 @@ spatial dependence. See `phase2-omnist-scale/docs/RESEARCH-PLAN.md`, Section 1.
 |---|---|---|
 | Contribution | Design + validate a topology-invariant forecaster with calibrated (conformal) intervals at unseen sensors | Make that forecaster scale (sub-quadratic attention, time-parallel temporal block) and study how its coverage behaves as the network grows |
 | Status | **Built and validated** (4 real datasets, 3 domains); stricter random-split re-evaluation (C1) done; released as preprint arXiv:2611.04256 (not submitted for publication) | **Planned.** Attention equivalence measured (V2). A preliminary parity check (V1) exists and is superseded by the stricter V1b, not yet run. Temporal block currently sequential. |
-| Engine | coordinate tokenizer + k-NN attention (**exact O(N²)**) + **BiGRU** + inductive split/online conformal | **O(N·k)** attention + state-space temporal block + localised calibration (**not yet implemented**) |
+| Engine | coordinate tokenizer + k-NN attention (**exact O(N²)**) + **BiGRU** + inductive split/online conformal | **O(N·k)** attention + state-space temporal block + geometry-aware calibration (**not yet implemented**) |
 | Coverage checked at | up to 325 real sensors (PeMS-BAY) | to be extended toward thousands if a usable real network is available |
 | Folder | [`phase1-omnist/`](phase1-omnist/) | [`phase2-omnist-scale/`](phase2-omnist-scale/) |
 
