@@ -15,7 +15,7 @@ system (OmniST). Phase 2 makes it run at the scale real networks have, and studi
 behaves as the network grows.
 
 The through-line is one property: **conformal prediction intervals at unseen sensor locations, with
-coverage close to a stated target**. "Calibrated coverage" in the title means approximate marginal
+coverage close to a stated target**. "Calibrated coverage" in this thesis means approximate marginal
 coverage under a random, disjoint split of stations into train, calibration and test sets (the
 exchangeable unit is the station); it is checked empirically over many random splits and is not a
 guarantee for every station.

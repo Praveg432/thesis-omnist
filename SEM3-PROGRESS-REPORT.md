@@ -4,7 +4,7 @@
 
 | | |
 |---|---|
-| **Project Title** | Topology-Invariant Spatiotemporal Forecasting with Calibrated Uncertainty at Unseen Sensors, and Its Scaling to Large Networks |
+| **Project Title** | Uncertainty Quantification for Spatiotemporal Forecasting at Unseen Sensor Locations in Evolving Networks |
 | **Candidate** | Praveg Vashishtha |
 | **ID No.** | IITP006424 |
 | **Supervisor** | Pankaj Chaswal |
@@ -15,7 +15,9 @@
 > **Scope of this report.** This is a Semester-3 progress report. It documents the completed work,
 > states its limits, and gives the plan for Semester 4. The full thesis after Semester 4 will follow
 > the IIT Patna M.Tech Thesis Manual. The project has two phases: **Phase 1 (OmniST)**, completed and
-> re-evaluated this semester, and **Phase 2 (scaling)**, planned for Semester 4.
+> re-evaluated this semester, and **Phase 2**, which asks where that coverage fails, whether it
+> holds as networks grow, and whether the intervals are useful. Phase 2 is planned for Semester 4
+> and partly measured (`phase2-omnist-scale/docs/CONSOLIDATED-FINDINGS.md`).
 >
 > **Terminology.** "Calibrated coverage" means marginal coverage from split conformal prediction, with calibration on
 > stations the model never saw. Stations are split at random into train, calibration and test sets, so
@@ -30,17 +32,15 @@
 
 ## Abstract
 
-Cities and states run on data from large sensor networks, such as air-quality monitors, traffic detectors, weather stations and power-grid meters, and they use that data to forecast what comes next and to act on it. Whether such a system is usable in the field comes down to two things.
+Sensor networks for air quality, traffic and weather are used to forecast conditions and to act on them. Two features of real deployments make this hard. The networks change: sensors fail, go offline and are installed at new sites, so forecasts are often needed at locations the model has never seen. And a single predicted value is not enough to act on. An operator needs an interval that contains the true value with a stated probability, and needs to know where that statement can be trusted.
 
-The first is that the network never stays still. Sensors fail, drop offline for maintenance, or are installed in new places. A forecasting model has to keep working through all of that, and it often has to predict at a spot where no sensor has ever recorded anything, without being retrained each time the layout changes. The second is that a single predicted number is rarely enough to act on. A pollution advisory or a traffic decision needs a range the operator can trust: an interval calibrated to contain the true value with a stated probability. A forecast that looks confident but is quietly wrong is more dangerous than no forecast at all.
+This thesis studies uncertainty quantification for forecasting at sensor locations a model was not trained on, in networks whose layout changes. Its first part, now complete and released as a preprint, built and evaluated OmniST. OmniST is a forecaster that does not depend on a fixed network layout, so it can predict at a new sensor without being retrained, and it attaches split conformal prediction intervals to its forecasts at unseen sensors. On five real networks covering air quality, weather and traffic, with stations split at random into training, calibration and test sets many times over, average coverage at unseen sensors was between 87.6% and 90.6% for a 90% target. The evaluation also showed the limits of an average. Coverage varied from split to split, and some individual stations were covered far less often than the target. It fell with distance from the training network in one sparse weather network, by about 1.4 points per typical station spacing, but not in the denser networks. And the cost of the model's attention grows with the square of the number of sensors.
 
-The first phase of this thesis built a forecaster that addresses both. We call it OmniST. It does not depend on how the sensor network is wired, and it attaches conformal prediction intervals with a stated coverage level to its predictions at locations it never trained on. We evaluated it on five real networks covering air quality, weather and traffic, using repeated random splits of the stations into training, calibration and test sets. With a target of 90%, the average coverage at unseen sensors came out between 87.6% and 90.6%. This phase is complete and has been released as a preprint, which has not been submitted for publication.
+The remaining work asks three open questions. First, where does coverage at a new site fail, and can calibration that accounts for the site's position relative to the existing network repair it without harming sites that are already well covered? Second, does the approach continue to hold, in coverage and in compute, as networks grow from hundreds toward thousands of sensors? Third, are the intervals useful as well as calibrated, judged against simple forecasting baselines and in decision tasks such as threshold alerts with a controlled miss rate? Early measurements bear on the last two. Restricting attention to each sensor's nearest neighbours reduced the attention layer's inference memory about seventeenfold at 8,000 sensors, with no gain below about a thousand. Replacing the recurrent time model with a state-space block brought no speed gain on this hardware. On real traffic data the intervals were narrower than those of a persistence forecast but wider than those of a seasonal one.
 
-The evaluation also showed where the method is weak. Coverage varies from split to split and from station to station, so the average hides some badly covered sites. A new sensor placed far from the existing ones might be expected to fare worse, and in one sparse weather network it did: coverage fell by about 1.4 points for each additional typical station spacing. In the dense urban and traffic networks it did not, even when whole regions were held out. The engine also does not scale. Its attention grows with the square of the sensor count, its time model runs step by step, and its coverage has been checked on at most a few hundred real sensors.
+The expected contributions are an evaluation protocol for coverage at unseen sensors that uses only information available at forecast time, a characterisation of where and why that coverage fails, the methods tried to repair it together with their measured effect, and open, reproducible code. Each question is answered by measurement against criteria fixed in advance, so a negative answer is reported as a finding of the thesis. Coverage statements throughout are marginal and approximate, not guarantees for every sensor.
 
-The second phase takes these limits as its problem. When a sensor is placed at a new site, can its interval be calibrated using the geometry of that site, meaning its distance to the existing sensors and their local density, so that coverage holds where distance matters without harming networks where it does not? The work also asks whether the approach carries to larger networks, and it shows how an agency could use the intervals, through alerts whose miss rate for true exceedances is controlled.
-
-The technical path has three parts. Attention that looks only at each sensor's nearest neighbours gave essentially the same output as the exact version in testing, and its memory advantage at large sensor counts is still to be measured. Calibration will be localised by site geometry, using a pool of scores built by holding out spatial blocks, together with an estimate of the coverage risk at each site that states its assumptions. Finally, the method will be packaged as a reusable PyTorch library. The coverage statement is marginal and approximate. It is not a guarantee for every station, and the thesis reports these limits alongside its results.
+**Keywords:** spatiotemporal forecasting; uncertainty quantification; conformal prediction; inductive forecasting; sensor networks.
 
 ---
 

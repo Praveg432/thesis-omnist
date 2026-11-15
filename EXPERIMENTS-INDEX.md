@@ -67,17 +67,25 @@ Acceptance criteria and fallbacks for each work package: `phase2-omnist-scale/do
 
 ## How the abstract maps to status
 
-- *Phase 1 forecaster, validated on four real datasets* → C1 and rows 1 to 12 above. EXECUTED.
-- *Released as a preprint* → arXiv:2611.04256, not submitted for publication.
-- *Nearest-neighbour attention gives numerically the same output as exact* → V2. EXECUTED, with the
-  scope limits stated above.
-- *A first parity check found the rebuilt engine close to the original* → V1. PRELIMINARY.
-- *Coverage falls with distance from the training network only in the sparse weather network* → C2.
-  EXECUTED. *A total-variation coverage bound would be vacuous* → C3. EXECUTED.
-- *Its memory advantage at large sensor counts is still to be measured* → partly measured by V4
-  (15 Nov): 7.2x less inference memory at N=4000, 16.7x at N=8000, but 2.6x at N=2000 and 2.6x for
-  training at N=4000. The abstract has **not** been updated with these numbers.
-- *Geometry-aware calibration; per-site coverage-risk estimate; alerts with a controlled miss rate;
-  coverage on larger real networks* → WP1, WP2, WP4, WP3. PLANNED. No number is asserted for these.
+Abstract of 15 Nov 2026 (`SUBMISSION-TITLE-AND-ABSTRACT.md`). Every factual sentence in it is a completed
+measurement; the remaining work is stated as questions.
+
+- *OmniST, released as a preprint* → arXiv:2611.04256, not submitted for publication.
+- *Five real networks, random splits, average coverage between 87.6% and 90.6%* → C1. EXECUTED.
+- *Coverage varied from split to split; some stations covered far less often than the target* → C1
+  per-station coverage (minimum 0.40 to 0.86). EXECUTED.
+- *Coverage fell with distance in one sparse weather network, about 1.4 points per spacing, not in the
+  denser networks* → C2. EXECUTED.
+- *Attention cost grows with the square of the number of sensors* → design of exact attention; V4.
+- *Nearest-neighbour attention cut inference memory about seventeenfold at 8,000 sensors, no gain below
+  about a thousand* → V4: 16.7x at N=8000, 7.2x at N=4000, 2.6x at N=2000, at most 1.0x at N <= 1000;
+  training memory 2.6x at N=4000. EXECUTED.
+- *The state-space block brought no speed gain* → V4, T1. EXECUTED.
+- *On real traffic, intervals narrower than persistence, wider than seasonal* → V3 (PeMS-BAY). EXECUTED.
+- *Three open questions* (failure and repair of coverage at new sites; growth to thousands of sensors;
+  usefulness and alerts) → WP1/WP2, WP3, WP4/WP5. PLANNED. No number is asserted for them.
+
+Numbers in the abstract are checked against the result files by `tools/check_submission_text.py` and
+`tools/check_draft_abstract.py`.
 
 Full Phase 2 numbers, protocol notes and corrections: `phase2-omnist-scale/docs/CONSOLIDATED-FINDINGS.md`.

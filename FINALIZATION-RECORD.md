@@ -151,3 +151,30 @@ worst tercile 0.906). Details in `phase2-omnist-scale/docs/CONSOLIDATED-FINDINGS
 real network above 325 sensors. Three seeds per V3 cell; V3b has one seed. Timings in V3 were taken
 while other jobs shared the machine; V4 is the timing reference. The abstract, proposal and
 Semester-3 report were not changed.
+
+## 9. Title and abstract revised for initial submission (15 Nov 2026)
+
+| Item | Before | After |
+|---|---|---|
+| Title | *Topology-Invariant Spatiotemporal Forecasting with Calibrated Uncertainty at Unseen Sensors, and Its Scaling to Large Networks* (15 words) | *Uncertainty Quantification for Spatiotemporal Forecasting at Unseen Sensor Locations in Evolving Networks* (12 words) |
+| Abstract | 580 words; promised specific Phase 2 methods (geometry-localised calibration with spatial-block pools, a PyTorch library) | 503 words (514 with the keywords line); states only completed measurements as facts and the remaining work as three open questions; says negative answers are findings |
+| Keywords | none | five, identical in the README and report |
+
+Reason: the title and abstract should stay accurate if Phase 2 methods change, give negative results,
+or are re-scoped. The scenario check is in `SUBMISSION-TITLE-AND-ABSTRACT.md`, Section 2. A switch to an
+unrelated topic (for example SafeTTA) would still need a new title.
+
+Applied to `README.md`, `MTECH-THESIS-PROPOSAL.md` (title, one-sentence thesis, Phase 2 scope note),
+`SEM3-PROGRESS-REPORT.md` (title, scope note, abstract) and `SEM3-PROGRESS-REPORT.pdf` (regenerated with
+`tools/md_to_pdf.py`; 14 pages; extracted text contains the new title and abstract and none of the old
+title). Text that referred to the old title or abstract was updated in `THESIS-OVERVIEW.md`,
+`EXPERIMENTS-INDEX.md` (claim-to-evidence map for the new abstract) and
+`phase2-omnist-scale/docs/RESEARCH-PLAN.md`. Section 2 of this record describes the earlier title and is
+left as a record.
+
+Checks: `tools/check_submission_text.py` (title rules, identical title and abstract across documents,
+coverage range and slope tied to C1/C2), `tools/check_draft_abstract.py` (all abstract figures, including
+the Phase 2 memory, state-space and traffic-width statements, tied to the result files),
+`tools/check_report_numbers.py`, `tools/check_phase2_findings.py`, `tools/audit_links.py`.
+
+Still pending: supervisor approval of the title and the Phase 2 scope. The public preprint is unchanged.

@@ -1,6 +1,6 @@
 # M.Tech Thesis Proposal
 
-## Topology-Invariant Spatiotemporal Forecasting with Calibrated Uncertainty at Unseen Sensors, and Its Scaling to Large Networks
+## Uncertainty Quantification for Spatiotemporal Forecasting at Unseen Sensor Locations in Evolving Networks
 
 **Candidate:** Praveg Vashishtha (ID No. IITP006424)
 **Date:** November 2026
@@ -8,10 +8,10 @@
 **Program:** M.Tech, Computer Science and Engineering, IIT Patna
 **Hardware envelope:** Apple M4 Pro (MPS, ~24 GB unified memory), single machine, no cluster
 
-> **One-sentence thesis.** Design a spatiotemporal forecaster that produces calibrated prediction
-> intervals at unseen sensor locations and keeps working as the network changes (Phase 1), then make
-> its engine scale toward thousands of sensors and study how its coverage behaves as the network
-> grows (Phase 2).
+> **One-sentence thesis.** Build and evaluate uncertainty quantification for forecasting at sensor
+> locations a model was not trained on, in networks whose layout changes (Phase 1, complete), then
+> establish where that coverage fails and whether it can be repaired, whether it holds as networks
+> grow, and whether the intervals are useful against simple baselines (Phase 2).
 
 **Terminology.** "Calibrated coverage" means marginal coverage from split conformal prediction, with calibration on
 stations the model never saw. Stations are split at random into train, calibration and test sets, so
@@ -30,12 +30,15 @@ dependence. The title is subject to the supervisor's approval.
   **Built and validated** on four real datasets from three domains, and re-evaluated after review
   under a stricter protocol (Section 2). Released as a **preprint (arXiv:2611.04256)**, not submitted
   to any venue. It is a timestamped record of thesis work, not external prior art.
-- **Phase 2: OmniST-Scale.** Calibration at newly placed sensors using the geometry of the site, and
-  scaling toward larger networks. **Planned for Semester 4; the scope is proposed and pending
-  supervisor approval.** Existing: an implemented neighbour attention whose output matches exact
-  attention on random inputs, and a state-space block that currently runs sequentially and is slower
-  than the GRU. A first parity check exists but is preliminary and is replaced by a stricter one that
-  has not been run. See `phase2-omnist-scale/docs/RESEARCH-PLAN.md` for work packages, acceptance
+- **Phase 2: OmniST-Scale.** Three open questions: where coverage at a new site fails and whether
+  calibration that accounts for the site's position can repair it; whether the approach holds, in
+  coverage and compute, as networks grow; and whether the intervals are useful against simple
+  baselines. **Planned for Semester 4; the scope is proposed and pending supervisor approval.**
+  Measured so far (`phase2-omnist-scale/docs/CONSOLIDATED-FINDINGS.md`): neighbour attention matches
+  exact attention in output and uses about 17 times less inference memory at 8,000 sensors, with no
+  gain below about 1,000; the state-space block brought no speed gain and is dropped; on real traffic
+  the intervals are narrower than persistence but wider than a seasonal forecast. A first parity check
+  is preliminary and is replaced by a stricter one that has not been run. See `phase2-omnist-scale/docs/RESEARCH-PLAN.md` for work packages, acceptance
   criteria, fallbacks and the novelty assessment.
 
 ---

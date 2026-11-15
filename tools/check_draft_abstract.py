@@ -50,6 +50,10 @@ r8 = v4[8000]["exact_mem_mb"] / v4[8000]["fast_mem_mb"]
 check(16.0 <= r8 < 18.0 and "seventeenfold at 8,000 sensors" in abstract, f"memory ratio at 8000 is {r8:.1f}")
 check(all(v4[N]["exact_mem_mb"] / v4[N]["fast_mem_mb"] <= 1.05 for N in (100, 500, 1000))
       and "no gain below about a thousand" in abstract, "claimed no gain below 1000 does not hold")
+tmp = json.load(open(os.path.join(P2, "V4_scaling_crossover_results.json")))["temporal"]
+check(all(r["ssm_chunked_fwdbwd_ms"] > r["gru_fwdbwd_ms"] and r["ssm_sequential_fwdbwd_ms"] > r["gru_fwdbwd_ms"]
+          for r in tmp) and "state-space block brought no speed gain" in abstract,
+      "claimed no speed gain from the state-space block does not hold at every T")
 v3 = json.load(open(os.path.join(P2, "V3_coverage_at_scale_real.json")))["real_pemsbay"]
 order_ok = all(v["persist"]["deployable"]["width"]["mean"] > v["model"]["deployable"]["width"]["mean"]
                > v["seasonal"]["deployable"]["width"]["mean"] for v in v3.values())
