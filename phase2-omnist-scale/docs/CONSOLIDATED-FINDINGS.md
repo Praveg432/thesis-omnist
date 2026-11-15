@@ -12,7 +12,7 @@ resettable peak counter). Memory ratios therefore describe CPU-side tensor memor
 | Id | What | Result file |
 |---|---|---|
 | V4 | Memory and time against N (exact vs neighbour attention); time against T (GRU vs SSM sequential vs SSM chunked) | `results/V4_scaling_crossover_results.json` |
-| V3 | Coverage and interval width against N, node-exchangeable split (train 55% / calibration 20% / test 25%), two calibration protocols; real PeMS-BAY (N=325, real coordinates) and a synthetic ladder to N=4000 | `results/V3_coverage_at_scale_real.json`, `..._synthetic.json` |
+| V3 | Coverage and interval width against N, node-exchangeable split (train 55% / calibration 20% / test 25%), two calibration protocols; real PeMS-BAY (N=325, real coordinates) and a synthetic ladder to N=4000 | `results/V3_coverage_at_scale_real.json`, `results/V3_coverage_at_scale_synthetic.json` |
 | V3b | Real-data training-budget sweep (300, 1200, 3000 steps), one seed | `results/V3b_training_budget.json` |
 | X2 audit | Chunked closed-form SSM scan against the sequential scan (relative L2 and max absolute difference, T from 16 to 500) | `tests/test_consolidation.py`, `src/omnist_scale/ssm_temporal.py` |
 | Data check | Real PeMS-BAY coordinates against the released adjacency | Section 4 |

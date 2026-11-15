@@ -132,10 +132,10 @@ brought into this repository and re-run on the corrected Phase 2 code (hash-keye
 | Check | Result |
 |---|---|
 | Phase 1 tests | 50 of 50 passed (unchanged) |
-| Phase 2 tests | 24 of 24 passed: the 18 earlier ones plus 6 in `tests/test_consolidation.py` (chunked-scan closeness, default SSM mode, conformal band, group coverage, deployable calibration valid when stationary and under-covering when residual scale grows) |
-| V4 memory/time against N and T | Run live; `results/V4_scaling_crossover_results.json` |
-| V3 coverage against N, real PeMS-BAY and synthetic | Run live, 3 seeds; `results/V3_coverage_at_scale_real.json`, `results/V3_coverage_at_scale_synthetic.json` |
-| V3b training budget | Run live, one seed; `results/V3b_training_budget.json` |
+| Phase 2 tests | 24 of 24 passed: the 18 earlier ones plus 6 in `phase2-omnist-scale/tests/test_consolidation.py` (chunked-scan closeness, default SSM mode, conformal band, group coverage, deployable calibration valid when stationary and under-covering when residual scale grows) |
+| V4 memory/time against N and T | Run live; `phase2-omnist-scale/results/V4_scaling_crossover_results.json` |
+| V3 coverage against N, real PeMS-BAY and synthetic | Run live, 3 seeds; `phase2-omnist-scale/results/V3_coverage_at_scale_real.json`, `phase2-omnist-scale/results/V3_coverage_at_scale_synthetic.json` |
+| V3b training budget | Run live, one seed; `phase2-omnist-scale/results/V3b_training_budget.json` |
 | PeMS-BAY coordinate file | `pems_bay_coords.csv` order matches the adjacency: Spearman -1.000 over 19,281 pairs; shuffled control -0.010 |
 | New number check (`tools/check_phase2_findings.py`) | 28 Phase 2 figures in the findings document, overview, brief and index match the result files; corrupting one figure made it exit 1. It caught two rounding errors (17.6% and 20.7% written; 17.5% and 20.8% correct), now fixed |
 | Earlier checks | `check_report_numbers.py` 25 of 25; `check_submission_text.py` OK; `audit_links.py` 0 broken links, 0 missing paths |

@@ -73,7 +73,7 @@ Not an OmniST work package. Summarised because the progression decision compares
 |---|---|---|
 | OmniST (Phase 1), C1 to C3 | `phase1-omnist/` | complete |
 | OmniST-Scale (Phase 2) | `phase2-omnist-scale/` | in progress; see consolidated findings |
-| Retired fusion | `../adaptive-st-conformal/` (has its own `ARCHIVED-LEARNINGS.md`) | retired, kept |
+| Retired fusion | `../adaptive-st-conformal/` (has its own archived-learnings note) | retired, kept |
 | SafeTTA | `../safe-tta/`, `../thesis/` | parallel candidate |
 | Earlier scaffold of Phase 2 | `../omnist-scale/` | superseded by `phase2-omnist-scale/`; V3 and V4 are re-run there on the corrected code; V1 is not re-run (V1b is the planned replacement) |
 | Thesis-track vetting | `../mtech-thesis-vetting/` | external input to the decision |
