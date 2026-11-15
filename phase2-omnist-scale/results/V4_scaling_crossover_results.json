@@ -1,0 +1,131 @@
+{
+  "experiment": "V4 scaling/crossover: spatial (exact vs fast) and temporal (GRU vs SSM) cost",
+  "device": "mps",
+  "spatial": [
+    {
+      "N": 100,
+      "exact_ms": 1.43,
+      "exact_mem_mb": 3.625,
+      "fast_ms": 1.54,
+      "fast_mem_mb": 28.34375,
+      "knn_build_ms": 1.7
+    },
+    {
+      "N": 500,
+      "exact_ms": 3.38,
+      "exact_mem_mb": 12.5625,
+      "fast_ms": 2.44,
+      "fast_mem_mb": 31.5625,
+      "knn_build_ms": 1.9
+    },
+    {
+      "N": 1000,
+      "exact_ms": 3.08,
+      "exact_mem_mb": 34.390625,
+      "fast_ms": 3.72,
+      "fast_mem_mb": 35.9375,
+      "knn_build_ms": 2.5
+    },
+    {
+      "N": 2000,
+      "exact_ms": 6.62,
+      "exact_mem_mb": 115.0625,
+      "fast_ms": 2.96,
+      "fast_mem_mb": 43.5625,
+      "knn_build_ms": 4.3
+    },
+    {
+      "N": 4000,
+      "exact_ms": 25.41,
+      "exact_mem_mb": 416.75,
+      "fast_ms": 4.41,
+      "fast_mem_mb": 58.0625,
+      "knn_build_ms": 6.8
+    },
+    {
+      "N": 8000,
+      "exact_ms": 78.67,
+      "exact_mem_mb": 1551.265625,
+      "fast_ms": 9.33,
+      "fast_mem_mb": 92.828125,
+      "knn_build_ms": 10.8
+    }
+  ],
+  "temporal": [
+    {
+      "T": 30,
+      "gru_fwdbwd_ms": 26.0,
+      "ssm_sequential_fwdbwd_ms": 38.4,
+      "ssm_chunked_fwdbwd_ms": 51.4
+    },
+    {
+      "T": 60,
+      "gru_fwdbwd_ms": 51.1,
+      "ssm_sequential_fwdbwd_ms": 78.8,
+      "ssm_chunked_fwdbwd_ms": 101.8
+    },
+    {
+      "T": 120,
+      "gru_fwdbwd_ms": 119.8,
+      "ssm_sequential_fwdbwd_ms": 173.0,
+      "ssm_chunked_fwdbwd_ms": 204.7
+    },
+    {
+      "T": 240,
+      "gru_fwdbwd_ms": 224.4,
+      "ssm_sequential_fwdbwd_ms": 412.6,
+      "ssm_chunked_fwdbwd_ms": 409.7
+    },
+    {
+      "T": 480,
+      "gru_fwdbwd_ms": 462.1,
+      "ssm_sequential_fwdbwd_ms": 1332.5,
+      "ssm_chunked_fwdbwd_ms": 849.5
+    },
+    {
+      "T": 960,
+      "gru_fwdbwd_ms": 1030.7,
+      "ssm_sequential_fwdbwd_ms": 4584.9,
+      "ssm_chunked_fwdbwd_ms": 1828.5
+    }
+  ],
+  "spatial_memory_loglog_slope": {
+    "exact": 1.405994644539383,
+    "fast": 0.2576870640859807
+  },
+  "spatial_memory_ratio_exact_over_fast_at_max_N": 16.7,
+  "training_memory": [
+    {
+      "N": 500,
+      "exact_train_mb": 41.203125,
+      "fast_train_mb": 61.828125
+    },
+    {
+      "N": 1000,
+      "exact_train_mb": 85.640625,
+      "fast_train_mb": 85.859375
+    },
+    {
+      "N": 2000,
+      "exact_train_mb": 203.0625,
+      "fast_train_mb": 129.4375
+    },
+    {
+      "N": 4000,
+      "exact_train_mb": 574.78125,
+      "fast_train_mb": 219.5
+    }
+  ],
+  "training_memory_loglog_slope": {
+    "exact": 1.265211861147693,
+    "fast": 0.6075865411071892
+  },
+  "training_memory_ratio_exact_over_fast_at_max_N": 2.6,
+  "ssm_chunked_beats_gru_at_T": [],
+  "ssm_over_gru_time_ratio_at_max_T": 1.77,
+  "verdicts": {
+    "fast_attention_scales": true,
+    "ssm_earns_its_keep_on_speed": false
+  },
+  "runtime_seconds": 96.6
+}

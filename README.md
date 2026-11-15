@@ -44,6 +44,10 @@ prior art. Phase 2 builds directly on it.
   two-phase plan, gates, risks, contributions (committee-facing).
 - **The narrative + timeline:** [`THESIS-OVERVIEW.md`](THESIS-OVERVIEW.md) — what is done vs pending,
   mapped to the thesis timeline.
+- **Latest Phase 2 measurements (15 Nov):**
+  [`phase2-omnist-scale/docs/CONSOLIDATED-FINDINGS.md`](phase2-omnist-scale/docs/CONSOLIDATED-FINDINGS.md).
+- **What to decide next:** [`PROGRESSION-DECISION-BRIEF.md`](PROGRESSION-DECISION-BRIEF.md); background in
+  [`LEARNINGS-AND-RETIRED-DIRECTIONS.md`](LEARNINGS-AND-RETIRED-DIRECTIONS.md).
 - **Claim → evidence:** [`EXPERIMENTS-INDEX.md`](EXPERIMENTS-INDEX.md) — every claim in the abstract
   traced to the script that produces it and the committed result file, marked executed or pending.
 - **Phase 1 details:** [`phase1-omnist/README.md`](phase1-omnist/README.md) and

@@ -52,6 +52,10 @@ Full claim-to-file map for Phase 1: `phase1-omnist/RESULTS-INDEX.md`.
 | V1b | Corrected parity gate: disjoint calibration stations, paired equivalence with margins fixed in advance, 10 seeds | `phase2-omnist-scale/experiments/V1b_parity_equivalence.py` | *(written when V1b is run in full; none exists yet)* | PLANNED (smoke-tested only) |
 | V2 | Neighbour attention output equals exact attention (random tokens, shared weights); no memory measured | `phase2-omnist-scale/experiments/V2_attention_equivalence.py` | `phase2-omnist-scale/results/V2_attention_equivalence_results.json` | EXECUTED; limited scope |
 | T1 | Diagnostic: the state-space block is sequential and slower than the GRU | `phase2-omnist-scale/experiments/T1_ssm_vs_gru_timing.py` | `phase2-omnist-scale/results/T1_ssm_vs_gru_timing.json` | EXECUTED (diagnostic) |
+| V4 | Peak memory and time against N (exact vs neighbour attention, inference and training) and time against T (GRU vs state-space sequential vs chunked). CPU peak RSS, MPS time | `phase2-omnist-scale/experiments/V4_scaling_crossover.py` | `phase2-omnist-scale/results/V4_scaling_crossover_results.json` | EXECUTED (15 Nov). Partial WP3 evidence; WP3's 5x-at-N=2000 criterion **not met** (2.6x) |
+| V3 | Coverage and interval width against N, random train/calibration/test node split, deployable (chronological) and same-window calibration, vs persistence and seasonal-naive; real PeMS-BAY with real coordinates, synthetic ladder N=100 to 4000 | `phase2-omnist-scale/experiments/V3_coverage_at_scale.py` | `phase2-omnist-scale/results/V3_coverage_at_scale_real.json`, `phase2-omnist-scale/results/V3_coverage_at_scale_synthetic.json` | EXECUTED (15 Nov); 3 seeds; N>325 is synthetic |
+| V3b | Training-budget sweep on real PeMS-BAY (300, 1200, 3000 steps), deployable protocol | `phase2-omnist-scale/experiments/V3b_training_budget.py` | `phase2-omnist-scale/results/V3b_training_budget.json` | EXECUTED (15 Nov); one seed |
+| X2 audit | Chunked state-space scan against the sequential scan | `phase2-omnist-scale/tests/test_consolidation.py` | (test assertions; timings in V4) | EXECUTED; X2 criteria fail, X2 dropped |
 | WP1 | Geometry-aware calibration at new sites, compared with five published methods | *(planned)* | *(planned)* | PLANNED |
 | WP2 | Per-site coverage-risk estimate from geometry (threshold-specific shift) | *(planned)* | *(planned)* | PLANNED |
 | WP3 | Peak memory and time against N; coverage against N on a large sparse network | *(planned)* | *(planned)* | PLANNED |
@@ -70,6 +74,10 @@ Acceptance criteria and fallbacks for each work package: `phase2-omnist-scale/do
 - *A first parity check found the rebuilt engine close to the original* → V1. PRELIMINARY.
 - *Coverage falls with distance from the training network only in the sparse weather network* → C2.
   EXECUTED. *A total-variation coverage bound would be vacuous* → C3. EXECUTED.
-- *Memory advantage at large sensor counts; geometry-aware calibration; per-site coverage-risk
-  estimate; alerts with a controlled miss rate; coverage on larger networks* → WP1 to WP4. PLANNED.
-  No number is asserted for these.
+- *Its memory advantage at large sensor counts is still to be measured* → partly measured by V4
+  (15 Nov): 7.2x less inference memory at N=4000, 16.7x at N=8000, but 2.6x at N=2000 and 2.6x for
+  training at N=4000. The abstract has **not** been updated with these numbers.
+- *Geometry-aware calibration; per-site coverage-risk estimate; alerts with a controlled miss rate;
+  coverage on larger real networks* → WP1, WP2, WP4, WP3. PLANNED. No number is asserted for these.
+
+Full Phase 2 numbers, protocol notes and corrections: `phase2-omnist-scale/docs/CONSOLIDATED-FINDINGS.md`.

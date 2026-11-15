@@ -28,7 +28,7 @@ guarantee for every station.
 |---|---|---|
 | Design | Done | Neighbour attention and a sequential state-space block exist. Geometry-aware calibration is not implemented. |
 | Validation on real data | Done on four datasets. Re-evaluated over random disjoint-station splits (C1). | Attention output equals exact attention on random inputs (V2). A preliminary parity check (V1) is superseded by V1b, not yet run. |
-| Pending | Re-test of the baseline comparisons and dropout robustness under C1 | WP0 to WP6 of the proposed plan |
+| Pending | Re-test of the baseline comparisons and dropout robustness under C1 | WP0 to WP6 of the proposed plan; V3/V4 (15 Nov) give partial WP3 evidence, see Section 4 |
 | Artifact | Preprint arXiv:2611.04256, code, experiments, results | Code, plan with acceptance criteria |
 
 ---
@@ -70,6 +70,27 @@ coverage.
   10% error with 3 seeds.
 - **Code fixes after review.** A neighbour-cache key collision and unbounded cache were fixed, with
   regression tests; misleading docstrings were corrected.
+
+### Added on 15 Nov 2026 (consolidation; details in `phase2-omnist-scale/docs/CONSOLIDATED-FINDINGS.md`)
+
+- **Memory and time (V4).** Neighbour attention uses 7.2x less inference memory than exact at
+  N=4,000 and 16.7x at N=8,000, but only 2.6x at N=2,000 (the WP3 criterion asks 5x at N >= 2,000)
+  and 2.6x in training at N=4,000. Below about 1,000 sensors there is no advantage.
+- **State-space block (V4, X2).** A chunked scan was tried. It is 1.7 to 2.0 times slower than the GRU
+  at every T up to 960 and is not exact (clamped decay). X2's criteria fail; X2 is dropped.
+- **Coverage against N (V3).** Random train/calibration/test node split, calibration on earlier
+  windows applied to later ones (deployable). Real PeMS-BAY with its real coordinates: 0.918 and 0.921
+  (neighbour and exact attention). Synthetic, N=100 to 4,000: 0.880 to 0.914; N=4,000 sits at the edge
+  of its band. No real network above 325 sensors.
+- **Usefulness (V3, V3b).** On real traffic the intervals are tighter than persistence but about 21%
+  wider than a seasonal-naive forecast, and stay 22% wider after 3,000 training steps although point
+  error is then 7% lower. Stronger baselines (WP5) are needed before any usefulness claim.
+- **Distance groups (V3).** In PeMS-BAY the worst distance tercile is already at 0.906, consistent
+  with C2. WP1 has little to repair in dense networks; its case still rests on sparse networks.
+- **Data.** `pems_bay_coords.csv` is the real sensor coordinates in adjacency order (verified),
+  which removes the reconstructed-coordinate caveat for PeMS-BAY.
+- Retired explorations and transferable lessons: `LEARNINGS-AND-RETIRED-DIRECTIONS.md`.
+  Decision options: `PROGRESSION-DECISION-BRIEF.md`.
 
 ### Planned (Semester 4; scope proposed, pending supervisor approval)
 

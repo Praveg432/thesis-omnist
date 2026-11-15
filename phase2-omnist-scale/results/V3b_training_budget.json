@@ -1,0 +1,55 @@
+{
+  "experiment": "V3b training-budget sweep on real PeMS-BAY (seed 0, gru+fast), deployable protocol",
+  "rows": [
+    {
+      "steps": 300,
+      "train_s": 82.3,
+      "coverage_deployable": 0.9186991869918699,
+      "coverage_same_window": 0.9485772357723576,
+      "width_model_deployable": 23.95235252380371,
+      "width_seasonal_deployable": 15.866665840148926,
+      "width_persist_deployable": 28.70000648498535,
+      "mae_model": 3.6843202114105225,
+      "mae_seasonal": 3.4780960083007812,
+      "mae_persist": 3.8261313438415527,
+      "band": [
+        0.829543709511075,
+        0.9653663477859
+      ]
+    },
+    {
+      "steps": 1200,
+      "train_s": 364.4,
+      "coverage_deployable": 0.9264227642276422,
+      "coverage_same_window": 0.9449186991869919,
+      "width_model_deployable": 22.611507415771484,
+      "width_seasonal_deployable": 15.866665840148926,
+      "width_persist_deployable": 28.70000648498535,
+      "mae_model": 3.4779012203216553,
+      "mae_seasonal": 3.4780960083007812,
+      "mae_persist": 3.8261313438415527,
+      "band": [
+        0.829543709511075,
+        0.9653663477859
+      ]
+    },
+    {
+      "steps": 3000,
+      "train_s": 789.7,
+      "coverage_deployable": 0.9227642276422764,
+      "coverage_same_window": 0.9359756097560976,
+      "width_model_deployable": 19.365816116333008,
+      "width_seasonal_deployable": 15.866665840148926,
+      "width_persist_deployable": 28.70000648498535,
+      "mae_model": 3.229036569595337,
+      "mae_seasonal": 3.4780960083007812,
+      "mae_persist": 3.8261313438415527,
+      "band": [
+        0.829543709511075,
+        0.9653663477859
+      ]
+    }
+  ],
+  "model_beats_seasonal_naive_at_max_budget": false,
+  "verdict": "Width stays above seasonal-naive at the largest budget -> the patch-trained model is not competitive with a trivial seasonal predictor on this real traffic data."
+}

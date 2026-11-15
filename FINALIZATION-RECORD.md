@@ -123,3 +123,31 @@ cd ../phase2-omnist-scale && python3 -m pytest -q
 python3 experiments/T1_ssm_vs_gru_timing.py
 cd .. && python3 tools/audit_links.py && python3 tools/check_report_numbers.py && python3 tools/check_submission_text.py
 ```
+
+## 8. Consolidation of 15 Nov 2026
+
+Work done in sibling repositories (`../omnist-scale/`, `../adaptive-st-conformal/`, `../safe-tta/`) was
+brought into this repository and re-run on the corrected Phase 2 code (hash-keyed neighbour cache).
+
+| Check | Result |
+|---|---|
+| Phase 1 tests | 50 of 50 passed (unchanged) |
+| Phase 2 tests | 24 of 24 passed: the 18 earlier ones plus 6 in `tests/test_consolidation.py` (chunked-scan closeness, default SSM mode, conformal band, group coverage, deployable calibration valid when stationary and under-covering when residual scale grows) |
+| V4 memory/time against N and T | Run live; `results/V4_scaling_crossover_results.json` |
+| V3 coverage against N, real PeMS-BAY and synthetic | Run live, 3 seeds; `results/V3_coverage_at_scale_real.json`, `results/V3_coverage_at_scale_synthetic.json` |
+| V3b training budget | Run live, one seed; `results/V3b_training_budget.json` |
+| PeMS-BAY coordinate file | `pems_bay_coords.csv` order matches the adjacency: Spearman -1.000 over 19,281 pairs; shuffled control -0.010 |
+| New number check (`tools/check_phase2_findings.py`) | 28 Phase 2 figures in the findings document, overview, brief and index match the result files; corrupting one figure made it exit 1. It caught two rounding errors (17.6% and 20.7% written; 17.5% and 20.8% correct), now fixed |
+| Earlier checks | `check_report_numbers.py` 25 of 25; `check_submission_text.py` OK; `audit_links.py` 0 broken links, 0 missing paths |
+
+**Corrections made to results produced in `../omnist-scale/` before this consolidation.** The earlier
+V3 calibrated each window on the calibration stations' residuals at that same window, which needs
+targets unknown at forecast time. Under the deployable protocol: coverage at synthetic N=4,000 falls
+from 0.902 to 0.880; the model's interval on real traffic is 22% wider than seasonal-naive at 3,000
+steps, not 9% tighter; and the suggested 0.86 to 0.89 worst-group gap is not supported (real PeMS-BAY
+worst tercile 0.906). Details in `phase2-omnist-scale/docs/CONSOLIDATED-FINDINGS.md`, Section 6.
+
+**Not verified in this round.** V1b was not run. MPS memory was not measured (CPU peak RSS only). No
+real network above 325 sensors. Three seeds per V3 cell; V3b has one seed. Timings in V3 were taken
+while other jobs shared the machine; V4 is the timing reference. The abstract, proposal and
+Semester-3 report were not changed.

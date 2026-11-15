@@ -23,7 +23,7 @@ from .fast_attention import FastInductiveGAT
 
 class OmniSTScale(nn.Module):
     def __init__(self, config: ModelConfig, temporal: str = "gru", attention: str = "exact",
-                 d_state: int = 16):
+                 d_state: int = 16, ssm_mode: str = "sequential"):
         super().__init__()
         self.config = config
         self.temporal_kind = temporal
@@ -48,7 +48,8 @@ class OmniSTScale(nn.Module):
             self.temporal = BidirectionalGRU(config.d_model, config.n_temporal_layers, config.temporal_dropout)
         elif temporal == "ssm":
             self.temporal = BidirectionalSSM(config.d_model, d_state=d_state,
-                                             n_layers=config.n_temporal_layers, dropout=config.temporal_dropout)
+                                             n_layers=config.n_temporal_layers, dropout=config.temporal_dropout,
+                                             mode=ssm_mode)
         else:
             raise ValueError(f"temporal must be 'gru' or 'ssm', got {temporal}")
 
