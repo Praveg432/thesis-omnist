@@ -1,5 +1,9 @@
 # Progression Decision Brief (15 Nov 2026)
 
+> **Superseded on 16 Nov 2026 by [`THESIS-COMPLETION-PLAN.md`](THESIS-COMPLETION-PLAN.md)**, which adds
+> station-level (hierarchical) conformal, the new-sensor warm-up question, the contemporaneous-calibration
+> issue in C1, and new prior art (sequential whitening). Options A and B below are folded into it.
+
 One page to decide what Phase 2 does next. Evidence: `phase2-omnist-scale/docs/CONSOLIDATED-FINDINGS.md`
 (new), `FINALIZATION-RECORD.md` (Phase 1 and earlier Phase 2), `LEARNINGS-AND-RETIRED-DIRECTIONS.md`.
 

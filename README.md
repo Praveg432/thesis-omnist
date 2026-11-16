@@ -44,6 +44,7 @@ prior art. Phase 2 builds directly on it.
   mapped to the thesis timeline.
 - **Latest Phase 2 measurements (15 Nov):**
   [`phase2-omnist-scale/docs/CONSOLIDATED-FINDINGS.md`](phase2-omnist-scale/docs/CONSOLIDATED-FINDINGS.md).
+- **Plan to completion (12 weeks, from 16 Nov 2026):** [`THESIS-COMPLETION-PLAN.md`](THESIS-COMPLETION-PLAN.md).
 - **What to decide next:** [`PROGRESSION-DECISION-BRIEF.md`](PROGRESSION-DECISION-BRIEF.md); background in
   [`LEARNINGS-AND-RETIRED-DIRECTIONS.md`](LEARNINGS-AND-RETIRED-DIRECTIONS.md).
 - **Claim → evidence:** [`EXPERIMENTS-INDEX.md`](EXPERIMENTS-INDEX.md) — every claim in the abstract

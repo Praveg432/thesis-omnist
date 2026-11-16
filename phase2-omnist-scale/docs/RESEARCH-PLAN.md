@@ -5,6 +5,10 @@
 **Candidate:** Praveg Vashishtha (ID IITP006424) · IIT Patna, CSE · **Supervisor:** Pankaj Chaswal
 **Hardware:** Apple M4 Pro (MPS, ~24 GB)
 **Status of this document:** the scope in Sections 3 to 5 is a **proposal pending supervisor approval**.
+**16 Nov 2026:** the timeline (Section 4) and the spine are revised by
+[`THESIS-COMPLETION-PLAN.md`](../../THESIS-COMPLETION-PLAN.md) (12 weeks; adds hierarchical conformal and
+the new-sensor warm-up; trims WP2 to WP5; drops X1 to X3). Acceptance criteria below remain in force
+where that plan keeps the work package.
 
 ---
 
