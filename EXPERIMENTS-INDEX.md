@@ -47,7 +47,7 @@ initialisation. They are kept as the original record; C1 is the primary evidence
 | 17 | Calibrating on earlier years' errors repairs most of the air-quality shortfall (rule chosen post hoc) | `phase1-omnist/experiments/C1f_multiyear_calibration.py` | `phase1-omnist/results/exp_C1f_<domain>.json` | EXECUTED (Delhi, Beijing; 10 splits); confirmation pending |
 | 18 | Station-level (hierarchical) conformal is valid but conservative with 10 calibration stations | `phase1-omnist/experiments/C1g_hcp_comparison.py` | `phase1-omnist/results/exp_C1g_hcp_<domain>.json` | EXECUTED (Delhi, weather; 10 splits) |
 | 19 | A residual-to-last-value head does not close the gap to persistence | `phase1-omnist/experiments/C1b_chronological_eval.py` (`resid`) | `phase1-omnist/results/exp_C1b_resid_<domain>.json` | EXECUTED (weather, traffic); not adopted |
-| 20 | Pre-registered confirmation: the fixed rule gives 0.902, 0.890 and 0.908 (Delhi, Beijing, weather) and OmniST's intervals beat both simple forecasts | `phase1-omnist/experiments/C1h_confirmation.py`, `C1h_summarise.py` | `phase1-omnist/results/exp_C1h_<domain>.json`, `exp_C1h_verdicts.json` | EXECUTED; H1 to H3 pass on all three, H4 fails on weather |
+| 20 | Pre-registered confirmation: the fixed rule gives 0.902, 0.890 and 0.908 (Delhi, Beijing, weather) and OmniST's intervals beat both simple forecasts | `phase1-omnist/experiments/C1h_confirmation.py`, `phase1-omnist/experiments/C1h_summarise.py` | `phase1-omnist/results/exp_C1h_<domain>.json`, `phase1-omnist/results/exp_C1h_verdicts.json` | EXECUTED; H1 to H3 pass on all three, H4 fails on weather |
 Full claim-to-file map for Phase 1: `phase1-omnist/RESULTS-INDEX.md`.
 
 ---
