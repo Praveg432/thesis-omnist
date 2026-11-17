@@ -28,6 +28,10 @@ class ModelConfig:
     d_model: int = 128
     spatial_hidden: int = 128
     n_temporal_harmonics: int = 4
+    # Coordinate frame of the spatial embedding. Default = Delhi constants (legacy); for other networks
+    # set it from the training stations with cc_hash.training_coordinate_frame.
+    coord_center: tuple = (28.6, 77.1)
+    coord_scale: tuple = (0.2, 0.3)
 
     # GAT
     n_gat_heads: int = 4
@@ -63,6 +67,8 @@ class OmniST(nn.Module):
             d_model=config.d_model,
             spatial_hidden=config.spatial_hidden,
             n_temporal_harmonics=config.n_temporal_harmonics,
+            coord_center=config.coord_center,
+            coord_scale=config.coord_scale,
         )
 
         # 2. Inductive GAT (spatial context)

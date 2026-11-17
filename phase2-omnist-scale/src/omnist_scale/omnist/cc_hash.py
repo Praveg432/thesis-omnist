@@ -17,6 +17,21 @@ import torch.nn as nn
 import numpy as np
 
 
+LEGACY_COORD_CENTER = (28.6, 77.1)  # Delhi; kept as the default so committed results stay reproducible
+LEGACY_COORD_SCALE = (0.2, 0.3)
+
+
+def training_coordinate_frame(train_coords) -> tuple:
+    """(center, scale) = mean and standard deviation of the TRAINING stations' (lat, lon).
+
+    Calibration and test stations must not be passed in. Raises if the stations do not vary."""
+    arr = np.asarray(train_coords, dtype=float)
+    if arr.ndim != 2 or arr.shape[1] != 2 or arr.shape[0] < 2:
+        raise ValueError(f"need at least two training stations as an (n, 2) array, got shape {arr.shape}")
+    scale = arr.std(axis=0) + 1e-6
+    return tuple(float(c) for c in arr.mean(axis=0)), tuple(float(s) for s in scale)
+
+
 class SpatialMLP(nn.Module):
     """Learned MLP spatial embedding.
 
@@ -24,8 +39,14 @@ class SpatialMLP(nn.Module):
     Validated in Sprint 0 as best for N=37 with good inductive performance.
     """
 
-    def __init__(self, d_model: int, hidden_dim: int = 128):
+    def __init__(self, d_model: int, hidden_dim: int = 128,
+                 center: tuple = LEGACY_COORD_CENTER, scale: tuple = LEGACY_COORD_SCALE):
         super().__init__()
+        if len(center) != 2 or len(scale) != 2 or min(scale) <= 0:
+            raise ValueError(f"center and scale need two entries and positive scales, got {center}, {scale}")
+        # Persistent buffers: the frame is saved and restored with the model.
+        self.register_buffer("center", torch.tensor(center, dtype=torch.float32))
+        self.register_buffer("scale", torch.tensor(scale, dtype=torch.float32))
         self.mlp = nn.Sequential(
             nn.Linear(2, hidden_dim),
             nn.GELU(),
@@ -41,13 +62,9 @@ class SpatialMLP(nn.Module):
         Returns:
             embedding: (..., d_model)
         """
-        # Normalize coordinates to roughly [-1, 1] range for stable MLP input
-        # Delhi range: lat ~28.4-28.8, lon ~76.8-77.4
-        # General approach: center and scale
-        coords_centered = coords.clone()
-        coords_centered[..., 0] = (coords[..., 0] - 28.6) / 0.2   # lat: center=28.6, scale=0.2
-        coords_centered[..., 1] = (coords[..., 1] - 77.1) / 0.3   # lon: center=77.1, scale=0.3
-        return self.mlp(coords_centered)
+        # The default frame (Delhi constants) maps only Delhi to about [-1, 1]. For any other
+        # network pass a frame built from the training stations (training_coordinate_frame).
+        return self.mlp((coords - self.center) / self.scale)
 
 
 class TemporalEmbedding(nn.Module):
@@ -112,12 +129,14 @@ class CCHashTokenizer(nn.Module):
         d_model: int,
         spatial_hidden: int = 128,
         n_temporal_harmonics: int = 4,
+        coord_center: tuple = LEGACY_COORD_CENTER,
+        coord_scale: tuple = LEGACY_COORD_SCALE,
     ):
         super().__init__()
         self.d_model = d_model
 
         # Component embeddings
-        self.spatial_emb = SpatialMLP(d_model, hidden_dim=spatial_hidden)
+        self.spatial_emb = SpatialMLP(d_model, hidden_dim=spatial_hidden, center=coord_center, scale=coord_scale)
         self.temporal_emb = TemporalEmbedding(d_model, n_harmonics=n_temporal_harmonics)
         self.feature_emb = nn.Linear(n_features, d_model)
 

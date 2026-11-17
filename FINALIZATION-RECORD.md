@@ -215,3 +215,68 @@ below target (Delhi, Beijing), which is consistent with errors growing over the 
 scores were not saved, so this is untested. The expanding-window quantile is one choice; a rolling window
 or adaptive conformal inference may do better (plan item B). Two seeds' timings were taken with jobs in
 parallel. PeMS datasets have 6 splits.
+
+## 12. Coordinate-frame defect (reported 17 Nov 2026)
+
+The spatial embedding normalised every station's coordinates with Delhi constants,
+`(lat - 28.6) / 0.2` and `(lon - 77.1) / 0.3` (`phase1-omnist/src/cc_hash.py` and the identical copy in
+`phase2-omnist-scale/src/omnist_scale/omnist/cc_hash.py`; the Phase 2 scalable model imports it). The report
+came from a defect report written in the separate OmniST repository.
+
+| Item | Status |
+|---|---|
+| Both `cc_hash.py` copies identical; constants at lines 48 to 49 | Verified here |
+| Legacy MLP input range per network: Delhi 1.1, Beijing 131.9, weather 656.0, PeMSD7-M 651.3, PeMS-BAY 651.3 | Verified here from the loaders' coordinates |
+| C1 test MAE: Delhi 27.63, Beijing 49.30, weather 5.84, PeMSD7-M 10.33, PeMS-BAY 5.54 | Verified here from `exp_C1_*.json` |
+| Effect of a training-station frame: MAE and width fall on four networks, coverage within 0.0013 (same-window protocol) | **Relayed from the OmniST repository, not yet reproduced here.** The C1b runs below reproduce it on the thesis code |
+| The thesis tests could not detect it (`test_cc_hash.py` uses Delhi coordinates) | Confirmed; new test uses weather-like coordinates |
+
+**Code change (both phases).** `SpatialMLP` takes `center` and `scale` as persistent buffers; defaults are
+the legacy constants, so every committed result is reproducible. `ModelConfig.coord_center` and
+`coord_scale` pass the frame through; `training_coordinate_frame(train_coords)` builds it from the
+training stations only. Tests: `phase1-omnist/tests/test_coordinate_frame.py` (7) and
+`phase2-omnist-scale/tests/test_coordinate_frame.py` (2). Suites: Phase 1 65 passed, Phase 2 26 passed.
+
+**Which frame produced which result.**
+- Committed C1, C2, C3, C1b (`exp_C1b_<domain>.json`) and all Phase 2 results V1 to V4: **legacy constants.**
+- `exp_C1b_norm_<domain>.json`: training-station frame, same splits and seeds as C1b.
+- Not yet affected by the change but affected by the defect: C1 and C1b accuracy and width; every
+  comparison with persistence or seasonal-naive; Phase 2 accuracy and width results (V3, V3b). V2
+  (equivalence of attention on identical tokens) is not affected. C2 and C3 are possibly affected (score
+  scale) and need re-checking on weather.
+
+**Revised S5 criterion** (replaces "Phase 1 numbers unchanged within noise"): coverage unchanged within
+0.01 on every network under the same-window protocol; MAE and width reported before and after; PeMSD7-M
+included because it shows the largest effect.
+
+**Result of the thesis-code re-run (C1b, same splits and seeds; mean over splits).** Table from
+`phase1-omnist/experiments/C1b_summarise.py`; files `exp_C1b_<domain>.json` (legacy frame) and
+`exp_C1b_norm_<domain>.json` (training-station frame).
+
+| Dataset | Splits | MAE, legacy to frame | Chronological width, legacy to frame | Same-window coverage, legacy to frame | Chronological coverage, legacy to frame |
+|---|:---:|---|---|---|---|
+| Delhi | 20 | 27.63 to 28.53 | 89.4 to 90.0 | 0.896 to 0.893 | 0.818 to 0.811 |
+| Beijing | 20 | 49.30 to 48.48 | 139.9 to 138.7 | 0.905 to 0.907 | 0.777 to 0.778 |
+| Weather | 20 | 5.84 to 4.73 | 24.3 to 19.8 | 0.883 to 0.880 | 0.889 to 0.888 |
+| PeMSD7-M | 6 | 10.33 to 3.79 | 42.7 to 17.3 | 0.871 to 0.882 | 0.869 to 0.891 |
+| PeMS-BAY | 6 | 5.54 to 4.73 | 20.4 to 18.8 | 0.893 to 0.897 | 0.869 to 0.881 |
+
+- **The defect report is reproduced on the thesis code.** MAE and width fall on weather, PeMSD7-M and
+  PeMS-BAY (PeMSD7-M MAE falls 63% and width 59%), change little on Beijing, and rise slightly on Delhi
+  (+0.9 MAE). Same-window coverage moves by at most 0.011.
+- **Revised S5 criterion:** met on four networks. **PeMSD7-M misses it by 0.001** (same-window coverage
+  0.871 to 0.882, a change of 0.011, with 6 splits and a legacy-frame 95% interval over splits of 0.853 to 0.889), so it is
+  recorded as not met rather than rounded.
+- **The frame does not explain the chronological under-coverage.** Delhi (0.811) and Beijing (0.778) stay
+  far below 0.90 with the corrected frame. The abstract-revision trigger from Section 11 therefore stands.
+- On PeMSD7-M and PeMS-BAY chronological coverage rises (0.869 to 0.891, 0.869 to 0.881); with 6 splits
+  these changes are within the spread over splits and are not claimed as an effect.
+- Persistence comparison: with the frame, model MAE is 3.79 against 3.57 for persistence on PeMSD7-M
+  (relayed value, not re-run here), so the model still does not beat persistence there. Baseline tables
+  need re-running under the chosen frame (plan step S4).
+- The relayed measurements (OmniST repository) and these thesis-code numbers agree within about 0.5 MAE
+  on every network, for example weather 5.72 to 4.75 there and 5.84 to 4.73 here.
+
+**Decision needed.** Which frame the report and thesis use. Proposed: the training-station frame, with
+every legacy-frame result kept and labelled. Phase 2 results (V3, V3b, V4) were produced with the legacy
+frame; V3 and V3b accuracy and width must be re-run before any statement about usefulness is final.

@@ -31,7 +31,8 @@ class OmniSTScale(nn.Module):
 
         self.tokenizer = CCHashTokenizer(
             n_features=config.n_features, d_model=config.d_model,
-            spatial_hidden=config.spatial_hidden, n_temporal_harmonics=config.n_temporal_harmonics)
+            spatial_hidden=config.spatial_hidden, n_temporal_harmonics=config.n_temporal_harmonics,
+            coord_center=config.coord_center, coord_scale=config.coord_scale)
 
         if attention == "exact":
             self.gat_layers = nn.ModuleList([

@@ -16,8 +16,12 @@ Decision rules, fixed before the full run (THESIS-COMPLETION-PLAN.md, Section 0,
       90.6% range of the submitted abstract changes: file an abstract revision request;
   (c) chronological mean below 0.85 on a dataset: report as under-coverage.
 
-Run:  python experiments/C1b_chronological_eval.py <domain|all> [quick]
-Output: results/exp_C1b_<domain>.json (quick runs write results/C1b_quick_<domain>.json instead and
+Coordinate frame. Default: the legacy Delhi constants (reproduces the committed C1 models). Adding `norm`
+builds the frame from the TRAINING stations of each split (src.cc_hash.training_coordinate_frame); see
+FINALIZATION-RECORD.md, Section 12.
+
+Run:  python experiments/C1b_chronological_eval.py <domain|all> [quick] [norm]
+Output: results/exp_C1b_<domain>.json, or exp_C1b_norm_<domain>.json with `norm` (quick runs write results/C1b_quick_<domain>.json instead and
 never touch committed result files). Resumable: completed splits are skipped on restart.
 """
 import json
@@ -37,6 +41,7 @@ import torch
 torch.set_num_threads(2)
 
 import C1_rigorous_inductive_eval as c1
+from src.cc_hash import training_coordinate_frame
 from src.chronological_conformal import compare_protocols
 from src.data import DataConfig
 from src.omnist_model import ModelConfig, OmniST
@@ -46,7 +51,7 @@ WARMUP_FRACTION = 0.25
 PROTOCOLS = ("chronological", "same_window", "pooled")
 
 
-def run_split(name: str, spec: dict, split: int, n_stations: int, quick: bool) -> dict:
+def run_split(name: str, spec: dict, split: int, n_stations: int, quick: bool, norm: bool = False) -> dict:
     """Same split, seeds and training as C1.run_split; only the calibration protocol differs."""
     t0 = time.time()
     split_rng = np.random.default_rng(1000 + split)
@@ -61,8 +66,12 @@ def run_split(name: str, spec: dict, split: int, n_stations: int, quick: bool) -
     tcfg = TrainConfig(lr=1e-3, n_epochs=2 if quick else spec["epochs"], patience=spec["patience"],
                        batch_size=spec["batch"], loss_type="pot")
     train_ds, val_ds, _, meta = spec["prepare"](cfg, hold_out_stations=held)
+    frame = {}
+    if norm:
+        center, scale = training_coordinate_frame(np.asarray(meta["coords_all"])[meta["train_stations"]])
+        frame = {"coord_center": center, "coord_scale": scale}
     model = OmniST(ModelConfig(n_features=1, horizon=horizon, d_model=64, k_neighbors=8,
-                               knn_mode=spec.get("knn_mode", "exact")))
+                               knn_mode=spec.get("knn_mode", "exact"), **frame))
     train_model(model, train_ds, val_ds, tcfg, meta)
     cal_scores = c1.score_array(model, meta, c1.station_dataset(meta, cal_idx, window, horizon))
     test_scores = c1.score_array(model, meta, c1.station_dataset(meta, test_idx, window, horizon))
@@ -96,15 +105,17 @@ def aggregate(splits: list) -> dict:
     return out
 
 
-def run_domain(name: str, quick: bool) -> None:
+def run_domain(name: str, quick: bool, norm: bool = False) -> None:
     spec = c1.DOMAINS[name]
-    path = os.path.join(c1.RESULTS, f"C1b_quick_{name}.json" if quick else f"exp_C1b_{name}.json")
+    tag = "norm_" if norm else ""
+    path = os.path.join(c1.RESULTS, f"C1b_quick_{tag}{name}.json" if quick else f"exp_C1b_{tag}{name}.json")
     n_stations = spec["prepare"](DataConfig(window_size=spec["window"], horizon=spec["horizon"],
                                             n_features=1), hold_out_stations=[])[3]["coords_all"].shape[0]
     n_splits = 1 if quick else spec["splits"]
     state = {"experiment": "C1b chronological (forecast-time-only) calibration, same splits as C1",
              "domain": name, "n_stations": int(n_stations), "target_coverage": c1.TARGET,
-             "warmup_fraction": WARMUP_FRACTION, "splits": []}
+             "warmup_fraction": WARMUP_FRACTION,
+             "coordinate_frame": "training_stations" if norm else "legacy_delhi_constants", "splits": []}
     if os.path.exists(path):
         state = json.load(open(path))
     done = {s["split"] for s in state["splits"]}
@@ -112,7 +123,7 @@ def run_domain(name: str, quick: bool) -> None:
     for split in range(n_splits):
         if split in done:
             continue
-        res = run_split(name, spec, split, n_stations, quick)
+        res = run_split(name, spec, split, n_stations, quick, norm)
         state["splits"].append(res)
         print(f"  split {split}: chrono={res['chronological']['coverage']} "
               f"same_window={res['same_window']['coverage']} pooled={res['pooled']['coverage']} "
@@ -123,8 +134,9 @@ def run_domain(name: str, quick: bool) -> None:
 
 
 if __name__ == "__main__":
-    args = [a for a in sys.argv[1:] if a != "quick"]
+    args = [a for a in sys.argv[1:] if a not in ("quick", "norm")]
     quick_mode = "quick" in sys.argv[1:]
+    norm_mode = "norm" in sys.argv[1:]
     which = list(c1.DOMAINS) if (not args or args[0] == "all") else [args[0]]
     for dom in which:
-        run_domain(dom, quick_mode)
+        run_domain(dom, quick_mode, norm_mode)

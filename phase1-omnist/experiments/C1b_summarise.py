@@ -45,5 +45,32 @@ def main() -> None:
               f"{'; '.join(verdicts(chrono, c1_mean))} |")
 
 
+def frame_table() -> None:
+    """Legacy Delhi-constants frame against the training-station frame, same splits and seeds."""
+    rows = []
+    for dom in DOMAINS:
+        legacy_path = os.path.join(RESULTS, f"exp_C1b_{dom}.json")
+        norm_path = os.path.join(RESULTS, f"exp_C1b_norm_{dom}.json")
+        if not (os.path.exists(legacy_path) and os.path.exists(norm_path)):
+            continue
+        legacy, norm = json.load(open(legacy_path)), json.load(open(norm_path))
+        n = min(len(legacy["splits"]), len(norm["splits"]))
+        cells = []
+        for run in (legacy, norm):
+            a = run["aggregate"]
+            cells += [a["chronological"]["coverage_over_splits"]["mean"], a["same_window"]["coverage_over_splits"]["mean"],
+                      a["test_mae_over_splits"]["mean"], a["chronological"]["width_over_splits"]["mean"]]
+        rows.append((dom, n, cells, abs(cells[1] - cells[5]) <= 0.01))
+    if not rows:
+        return
+    print("\n| Dataset | Splits (legacy / norm) | Legacy: chrono cov, same-window cov, MAE, width | "
+          "Training-station frame: chrono cov, same-window cov, MAE, width | Same-window coverage within 0.01 |")
+    print("|---|:---:|---|---|:---:|")
+    for dom, n, c, ok in rows:
+        print(f"| {dom} | {n} | {c[0]:.3f}, {c[1]:.3f}, {c[2]:.2f}, {c[3]:.1f} | "
+              f"{c[4]:.3f}, {c[5]:.3f}, {c[6]:.2f}, {c[7]:.1f} | {'yes' if ok else 'NO'} |")
+
+
 if __name__ == "__main__":
     main()
+    frame_table()

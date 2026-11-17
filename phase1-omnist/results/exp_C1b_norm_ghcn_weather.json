@@ -1,0 +1,1353 @@
+{
+  "experiment": "C1b chronological (forecast-time-only) calibration, same splits as C1",
+  "domain": "ghcn_weather",
+  "n_stations": 30,
+  "target_coverage": 0.9,
+  "warmup_fraction": 0.25,
+  "coordinate_frame": "training_stations",
+  "splits": [
+    {
+      "split": 0,
+      "n_cal": 6,
+      "n_test": 6,
+      "test_stations": [
+        6,
+        7,
+        9,
+        14,
+        17,
+        21
+      ],
+      "cal_stations": [
+        0,
+        3,
+        8,
+        11,
+        12,
+        26
+      ],
+      "n_windows": 22,
+      "test_mae": 5.7279,
+      "first_scored_window": 6,
+      "n_scored_windows": 16,
+      "chronological": {
+        "coverage": 0.7153,
+        "width": 18.2064,
+        "per_station_coverage": [
+          0.5542,
+          0.6458,
+          0.725,
+          0.7542,
+          0.7333,
+          0.8792
+        ]
+      },
+      "same_window": {
+        "coverage": 0.7826,
+        "width": 18.2831,
+        "per_station_coverage": [
+          0.6292,
+          0.7417,
+          0.8042,
+          0.8375,
+          0.7833,
+          0.9
+        ]
+      },
+      "pooled": {
+        "coverage": 0.7507,
+        "width": 18.729,
+        "per_station_coverage": [
+          0.5792,
+          0.7292,
+          0.7708,
+          0.7917,
+          0.75,
+          0.8833
+        ]
+      },
+      "seconds": 42.9
+    },
+    {
+      "split": 1,
+      "n_cal": 6,
+      "n_test": 6,
+      "test_stations": [
+        0,
+        5,
+        8,
+        9,
+        22,
+        28
+      ],
+      "cal_stations": [
+        1,
+        4,
+        13,
+        20,
+        21,
+        26
+      ],
+      "n_windows": 22,
+      "test_mae": 4.5422,
+      "first_scored_window": 6,
+      "n_scored_windows": 16,
+      "chronological": {
+        "coverage": 0.9181,
+        "width": 19.5532,
+        "per_station_coverage": [
+          0.9458,
+          0.9792,
+          0.8708,
+          0.9042,
+          0.9208,
+          0.8875
+        ]
+      },
+      "same_window": {
+        "coverage": 0.8889,
+        "width": 18.3927,
+        "per_station_coverage": [
+          0.925,
+          0.975,
+          0.775,
+          0.9,
+          0.9292,
+          0.8292
+        ]
+      },
+      "pooled": {
+        "coverage": 0.9111,
+        "width": 19.1873,
+        "per_station_coverage": [
+          0.9375,
+          0.9792,
+          0.8542,
+          0.8917,
+          0.925,
+          0.8792
+        ]
+      },
+      "seconds": 25.5
+    },
+    {
+      "split": 2,
+      "n_cal": 6,
+      "n_test": 6,
+      "test_stations": [
+        3,
+        6,
+        9,
+        20,
+        21,
+        28
+      ],
+      "cal_stations": [
+        10,
+        12,
+        15,
+        17,
+        26,
+        27
+      ],
+      "n_windows": 22,
+      "test_mae": 4.5769,
+      "first_scored_window": 6,
+      "n_scored_windows": 16,
+      "chronological": {
+        "coverage": 0.85,
+        "width": 17.5778,
+        "per_station_coverage": [
+          0.9583,
+          0.6708,
+          0.8,
+          0.9708,
+          0.8875,
+          0.8125
+        ]
+      },
+      "same_window": {
+        "coverage": 0.8208,
+        "width": 16.7,
+        "per_station_coverage": [
+          0.975,
+          0.5833,
+          0.7542,
+          0.9708,
+          0.875,
+          0.7667
+        ]
+      },
+      "pooled": {
+        "coverage": 0.8479,
+        "width": 17.4847,
+        "per_station_coverage": [
+          0.9583,
+          0.6708,
+          0.7917,
+          0.9708,
+          0.8917,
+          0.8042
+        ]
+      },
+      "seconds": 28.3
+    },
+    {
+      "split": 3,
+      "n_cal": 6,
+      "n_test": 6,
+      "test_stations": [
+        4,
+        6,
+        8,
+        9,
+        22,
+        24
+      ],
+      "cal_stations": [
+        0,
+        11,
+        18,
+        23,
+        27,
+        29
+      ],
+      "n_windows": 22,
+      "test_mae": 5.783,
+      "first_scored_window": 6,
+      "n_scored_windows": 16,
+      "chronological": {
+        "coverage": 0.7562,
+        "width": 19.0574,
+        "per_station_coverage": [
+          0.6167,
+          0.5833,
+          0.7125,
+          0.7625,
+          0.9333,
+          0.9292
+        ]
+      },
+      "same_window": {
+        "coverage": 0.7444,
+        "width": 18.8412,
+        "per_station_coverage": [
+          0.5625,
+          0.5583,
+          0.6875,
+          0.7833,
+          0.9292,
+          0.9458
+        ]
+      },
+      "pooled": {
+        "coverage": 0.7694,
+        "width": 19.297,
+        "per_station_coverage": [
+          0.6333,
+          0.6,
+          0.7292,
+          0.7792,
+          0.9417,
+          0.9333
+        ]
+      },
+      "seconds": 36.8
+    },
+    {
+      "split": 4,
+      "n_cal": 6,
+      "n_test": 6,
+      "test_stations": [
+        7,
+        10,
+        19,
+        20,
+        24,
+        29
+      ],
+      "cal_stations": [
+        8,
+        9,
+        14,
+        17,
+        21,
+        23
+      ],
+      "n_windows": 22,
+      "test_mae": 3.9518,
+      "first_scored_window": 6,
+      "n_scored_windows": 16,
+      "chronological": {
+        "coverage": 0.9521,
+        "width": 18.5863,
+        "per_station_coverage": [
+          0.9583,
+          0.9625,
+          0.975,
+          0.9833,
+          0.9125,
+          0.9208
+        ]
+      },
+      "same_window": {
+        "coverage": 0.9437,
+        "width": 17.8155,
+        "per_station_coverage": [
+          0.9625,
+          0.9625,
+          0.9833,
+          0.9792,
+          0.8792,
+          0.8958
+        ]
+      },
+      "pooled": {
+        "coverage": 0.9528,
+        "width": 18.5198,
+        "per_station_coverage": [
+          0.9583,
+          0.9667,
+          0.975,
+          0.9792,
+          0.9167,
+          0.9208
+        ]
+      },
+      "seconds": 32.7
+    },
+    {
+      "split": 5,
+      "n_cal": 6,
+      "n_test": 6,
+      "test_stations": [
+        11,
+        16,
+        20,
+        21,
+        23,
+        27
+      ],
+      "cal_stations": [
+        3,
+        4,
+        7,
+        9,
+        25,
+        28
+      ],
+      "n_windows": 22,
+      "test_mae": 4.0954,
+      "first_scored_window": 6,
+      "n_scored_windows": 16,
+      "chronological": {
+        "coverage": 0.9785,
+        "width": 23.2789,
+        "per_station_coverage": [
+          0.9833,
+          1.0,
+          1.0,
+          0.9625,
+          0.9667,
+          0.9583
+        ]
+      },
+      "same_window": {
+        "coverage": 0.9736,
+        "width": 23.4538,
+        "per_station_coverage": [
+          0.9833,
+          0.9875,
+          0.975,
+          0.975,
+          0.9417,
+          0.9792
+        ]
+      },
+      "pooled": {
+        "coverage": 0.9889,
+        "width": 24.5153,
+        "per_station_coverage": [
+          0.9833,
+          0.9958,
+          1.0,
+          0.9917,
+          0.9792,
+          0.9833
+        ]
+      },
+      "seconds": 33.2
+    },
+    {
+      "split": 6,
+      "n_cal": 6,
+      "n_test": 6,
+      "test_stations": [
+        2,
+        3,
+        6,
+        8,
+        13,
+        17
+      ],
+      "cal_stations": [
+        7,
+        11,
+        15,
+        19,
+        22,
+        25
+      ],
+      "n_windows": 22,
+      "test_mae": 5.0464,
+      "first_scored_window": 6,
+      "n_scored_windows": 16,
+      "chronological": {
+        "coverage": 0.8056,
+        "width": 17.6921,
+        "per_station_coverage": [
+          0.7375,
+          0.9708,
+          0.7875,
+          0.6958,
+          0.85,
+          0.7917
+        ]
+      },
+      "same_window": {
+        "coverage": 0.8111,
+        "width": 16.7194,
+        "per_station_coverage": [
+          0.7458,
+          0.975,
+          0.7917,
+          0.6958,
+          0.8625,
+          0.7958
+        ]
+      },
+      "pooled": {
+        "coverage": 0.8007,
+        "width": 17.4145,
+        "per_station_coverage": [
+          0.7333,
+          0.9708,
+          0.7708,
+          0.6917,
+          0.8458,
+          0.7917
+        ]
+      },
+      "seconds": 34.2
+    },
+    {
+      "split": 7,
+      "n_cal": 6,
+      "n_test": 6,
+      "test_stations": [
+        12,
+        13,
+        18,
+        19,
+        23,
+        24
+      ],
+      "cal_stations": [
+        2,
+        4,
+        17,
+        25,
+        26,
+        29
+      ],
+      "n_windows": 22,
+      "test_mae": 5.2997,
+      "first_scored_window": 6,
+      "n_scored_windows": 16,
+      "chronological": {
+        "coverage": 0.8924,
+        "width": 21.579,
+        "per_station_coverage": [
+          0.975,
+          0.9,
+          0.8292,
+          0.7833,
+          0.9208,
+          0.9458
+        ]
+      },
+      "same_window": {
+        "coverage": 0.9167,
+        "width": 22.1493,
+        "per_station_coverage": [
+          0.9958,
+          0.9125,
+          0.8667,
+          0.8667,
+          0.9125,
+          0.9458
+        ]
+      },
+      "pooled": {
+        "coverage": 0.9049,
+        "width": 22.1723,
+        "per_station_coverage": [
+          0.975,
+          0.9167,
+          0.8333,
+          0.825,
+          0.9292,
+          0.95
+        ]
+      },
+      "seconds": 30.3
+    },
+    {
+      "split": 8,
+      "n_cal": 6,
+      "n_test": 6,
+      "test_stations": [
+        6,
+        7,
+        14,
+        18,
+        25,
+        27
+      ],
+      "cal_stations": [
+        8,
+        9,
+        12,
+        13,
+        20,
+        28
+      ],
+      "n_windows": 22,
+      "test_mae": 4.9643,
+      "first_scored_window": 6,
+      "n_scored_windows": 16,
+      "chronological": {
+        "coverage": 0.8653,
+        "width": 18.2901,
+        "per_station_coverage": [
+          0.8417,
+          0.8958,
+          0.9125,
+          0.8667,
+          0.775,
+          0.9
+        ]
+      },
+      "same_window": {
+        "coverage": 0.8104,
+        "width": 17.8488,
+        "per_station_coverage": [
+          0.7083,
+          0.7958,
+          0.8708,
+          0.8083,
+          0.7708,
+          0.9083
+        ]
+      },
+      "pooled": {
+        "coverage": 0.8639,
+        "width": 18.1442,
+        "per_station_coverage": [
+          0.8333,
+          0.9,
+          0.9042,
+          0.8625,
+          0.7833,
+          0.9
+        ]
+      },
+      "seconds": 33.0
+    },
+    {
+      "split": 9,
+      "n_cal": 6,
+      "n_test": 6,
+      "test_stations": [
+        7,
+        10,
+        14,
+        15,
+        16,
+        24
+      ],
+      "cal_stations": [
+        3,
+        6,
+        12,
+        19,
+        26,
+        29
+      ],
+      "n_windows": 22,
+      "test_mae": 4.5385,
+      "first_scored_window": 6,
+      "n_scored_windows": 16,
+      "chronological": {
+        "coverage": 0.916,
+        "width": 18.5634,
+        "per_station_coverage": [
+          0.8417,
+          0.8708,
+          0.9208,
+          0.9875,
+          0.9833,
+          0.8917
+        ]
+      },
+      "same_window": {
+        "coverage": 0.9313,
+        "width": 18.577,
+        "per_station_coverage": [
+          0.875,
+          0.9,
+          0.9208,
+          0.9958,
+          0.9917,
+          0.9042
+        ]
+      },
+      "pooled": {
+        "coverage": 0.9153,
+        "width": 18.5181,
+        "per_station_coverage": [
+          0.8417,
+          0.8708,
+          0.9167,
+          0.9875,
+          0.9833,
+          0.8917
+        ]
+      },
+      "seconds": 25.2
+    },
+    {
+      "split": 10,
+      "n_cal": 6,
+      "n_test": 6,
+      "test_stations": [
+        1,
+        16,
+        17,
+        23,
+        26,
+        29
+      ],
+      "cal_stations": [
+        3,
+        6,
+        7,
+        8,
+        9,
+        14
+      ],
+      "n_windows": 22,
+      "test_mae": 4.2922,
+      "first_scored_window": 6,
+      "n_scored_windows": 16,
+      "chronological": {
+        "coverage": 0.909,
+        "width": 18.1745,
+        "per_station_coverage": [
+          0.975,
+          0.9708,
+          0.8708,
+          0.8917,
+          0.85,
+          0.8958
+        ]
+      },
+      "same_window": {
+        "coverage": 0.8688,
+        "width": 17.8466,
+        "per_station_coverage": [
+          0.9208,
+          0.9542,
+          0.8917,
+          0.8083,
+          0.8042,
+          0.8333
+        ]
+      },
+      "pooled": {
+        "coverage": 0.9125,
+        "width": 18.5385,
+        "per_station_coverage": [
+          0.975,
+          0.9708,
+          0.8917,
+          0.8958,
+          0.8458,
+          0.8958
+        ]
+      },
+      "seconds": 33.4
+    },
+    {
+      "split": 11,
+      "n_cal": 6,
+      "n_test": 6,
+      "test_stations": [
+        5,
+        6,
+        14,
+        20,
+        26,
+        27
+      ],
+      "cal_stations": [
+        3,
+        10,
+        11,
+        18,
+        24,
+        25
+      ],
+      "n_windows": 22,
+      "test_mae": 4.7428,
+      "first_scored_window": 6,
+      "n_scored_windows": 16,
+      "chronological": {
+        "coverage": 0.9514,
+        "width": 21.8243,
+        "per_station_coverage": [
+          0.9958,
+          0.85,
+          0.9417,
+          0.9917,
+          0.975,
+          0.9542
+        ]
+      },
+      "same_window": {
+        "coverage": 0.9285,
+        "width": 20.991,
+        "per_station_coverage": [
+          0.9833,
+          0.8667,
+          0.9167,
+          0.9708,
+          0.8792,
+          0.9542
+        ]
+      },
+      "pooled": {
+        "coverage": 0.9542,
+        "width": 21.9596,
+        "per_station_coverage": [
+          0.9917,
+          0.875,
+          0.9375,
+          0.9875,
+          0.975,
+          0.9583
+        ]
+      },
+      "seconds": 36.1
+    },
+    {
+      "split": 12,
+      "n_cal": 6,
+      "n_test": 6,
+      "test_stations": [
+        1,
+        6,
+        18,
+        21,
+        25,
+        27
+      ],
+      "cal_stations": [
+        3,
+        4,
+        10,
+        13,
+        20,
+        22
+      ],
+      "n_windows": 22,
+      "test_mae": 4.5066,
+      "first_scored_window": 6,
+      "n_scored_windows": 16,
+      "chronological": {
+        "coverage": 0.8667,
+        "width": 17.1103,
+        "per_station_coverage": [
+          0.9625,
+          0.6542,
+          0.9375,
+          0.9,
+          0.8292,
+          0.9167
+        ]
+      },
+      "same_window": {
+        "coverage": 0.8069,
+        "width": 15.404,
+        "per_station_coverage": [
+          0.9417,
+          0.5292,
+          0.8875,
+          0.8792,
+          0.7375,
+          0.8667
+        ]
+      },
+      "pooled": {
+        "coverage": 0.8451,
+        "width": 16.423,
+        "per_station_coverage": [
+          0.9625,
+          0.6208,
+          0.9167,
+          0.8833,
+          0.7958,
+          0.8917
+        ]
+      },
+      "seconds": 34.5
+    },
+    {
+      "split": 13,
+      "n_cal": 6,
+      "n_test": 6,
+      "test_stations": [
+        3,
+        8,
+        9,
+        14,
+        15,
+        17
+      ],
+      "cal_stations": [
+        2,
+        10,
+        12,
+        13,
+        19,
+        20
+      ],
+      "n_windows": 22,
+      "test_mae": 4.9526,
+      "first_scored_window": 6,
+      "n_scored_windows": 16,
+      "chronological": {
+        "coverage": 0.9,
+        "width": 23.1465,
+        "per_station_coverage": [
+          0.9875,
+          0.7958,
+          0.8375,
+          0.9167,
+          0.9958,
+          0.8667
+        ]
+      },
+      "same_window": {
+        "coverage": 0.9236,
+        "width": 22.0341,
+        "per_station_coverage": [
+          0.9542,
+          0.8667,
+          0.9292,
+          0.9125,
+          0.975,
+          0.9042
+        ]
+      },
+      "pooled": {
+        "coverage": 0.9076,
+        "width": 23.4854,
+        "per_station_coverage": [
+          0.9833,
+          0.7833,
+          0.8458,
+          0.9417,
+          0.9958,
+          0.8958
+        ]
+      },
+      "seconds": 35.1
+    },
+    {
+      "split": 14,
+      "n_cal": 6,
+      "n_test": 6,
+      "test_stations": [
+        1,
+        4,
+        10,
+        14,
+        17,
+        28
+      ],
+      "cal_stations": [
+        9,
+        12,
+        21,
+        23,
+        25,
+        26
+      ],
+      "n_windows": 22,
+      "test_mae": 4.6462,
+      "first_scored_window": 6,
+      "n_scored_windows": 16,
+      "chronological": {
+        "coverage": 0.8854,
+        "width": 18.2727,
+        "per_station_coverage": [
+          0.9833,
+          0.9,
+          0.8708,
+          0.8917,
+          0.8625,
+          0.8042
+        ]
+      },
+      "same_window": {
+        "coverage": 0.8771,
+        "width": 17.8603,
+        "per_station_coverage": [
+          0.9792,
+          0.875,
+          0.8833,
+          0.8875,
+          0.8583,
+          0.7792
+        ]
+      },
+      "pooled": {
+        "coverage": 0.8903,
+        "width": 18.3257,
+        "per_station_coverage": [
+          0.9833,
+          0.9083,
+          0.8833,
+          0.8917,
+          0.8667,
+          0.8083
+        ]
+      },
+      "seconds": 34.5
+    },
+    {
+      "split": 15,
+      "n_cal": 6,
+      "n_test": 6,
+      "test_stations": [
+        11,
+        20,
+        21,
+        23,
+        24,
+        27
+      ],
+      "cal_stations": [
+        2,
+        3,
+        6,
+        9,
+        14,
+        16
+      ],
+      "n_windows": 22,
+      "test_mae": 4.4638,
+      "first_scored_window": 6,
+      "n_scored_windows": 16,
+      "chronological": {
+        "coverage": 0.9736,
+        "width": 23.268,
+        "per_station_coverage": [
+          0.9833,
+          1.0,
+          0.9667,
+          0.9667,
+          0.975,
+          0.95
+        ]
+      },
+      "same_window": {
+        "coverage": 0.9194,
+        "width": 22.0966,
+        "per_station_coverage": [
+          0.9542,
+          0.9292,
+          0.9125,
+          0.9167,
+          0.8833,
+          0.9208
+        ]
+      },
+      "pooled": {
+        "coverage": 0.9861,
+        "width": 24.436,
+        "per_station_coverage": [
+          0.9833,
+          1.0,
+          0.9833,
+          0.9792,
+          0.9875,
+          0.9833
+        ]
+      },
+      "seconds": 34.3
+    },
+    {
+      "split": 16,
+      "n_cal": 6,
+      "n_test": 6,
+      "test_stations": [
+        5,
+        8,
+        12,
+        17,
+        19,
+        20
+      ],
+      "cal_stations": [
+        2,
+        4,
+        7,
+        9,
+        25,
+        29
+      ],
+      "n_windows": 22,
+      "test_mae": 4.6929,
+      "first_scored_window": 6,
+      "n_scored_windows": 16,
+      "chronological": {
+        "coverage": 0.9354,
+        "width": 24.8706,
+        "per_station_coverage": [
+          1.0,
+          0.85,
+          0.9875,
+          0.9208,
+          0.8542,
+          1.0
+        ]
+      },
+      "same_window": {
+        "coverage": 0.9576,
+        "width": 23.9195,
+        "per_station_coverage": [
+          0.9792,
+          0.9083,
+          0.9792,
+          0.9375,
+          0.9708,
+          0.9708
+        ]
+      },
+      "pooled": {
+        "coverage": 0.9563,
+        "width": 26.0353,
+        "per_station_coverage": [
+          0.9958,
+          0.8875,
+          0.9875,
+          0.9542,
+          0.9125,
+          1.0
+        ]
+      },
+      "seconds": 34.7
+    },
+    {
+      "split": 17,
+      "n_cal": 6,
+      "n_test": 6,
+      "test_stations": [
+        2,
+        3,
+        12,
+        14,
+        22,
+        29
+      ],
+      "cal_stations": [
+        1,
+        7,
+        17,
+        23,
+        24,
+        25
+      ],
+      "n_windows": 22,
+      "test_mae": 4.4706,
+      "first_scored_window": 6,
+      "n_scored_windows": 16,
+      "chronological": {
+        "coverage": 0.9069,
+        "width": 20.7515,
+        "per_station_coverage": [
+          0.6917,
+          0.9833,
+          0.9708,
+          0.8792,
+          0.95,
+          0.9667
+        ]
+      },
+      "same_window": {
+        "coverage": 0.9132,
+        "width": 20.0357,
+        "per_station_coverage": [
+          0.7083,
+          0.9833,
+          0.9833,
+          0.925,
+          0.9375,
+          0.9417
+        ]
+      },
+      "pooled": {
+        "coverage": 0.9007,
+        "width": 20.3966,
+        "per_station_coverage": [
+          0.6875,
+          0.9792,
+          0.9708,
+          0.8625,
+          0.95,
+          0.9542
+        ]
+      },
+      "seconds": 34.3
+    },
+    {
+      "split": 18,
+      "n_cal": 6,
+      "n_test": 6,
+      "test_stations": [
+        1,
+        5,
+        17,
+        23,
+        24,
+        26
+      ],
+      "cal_stations": [
+        10,
+        11,
+        14,
+        19,
+        27,
+        28
+      ],
+      "n_windows": 22,
+      "test_mae": 4.3636,
+      "first_scored_window": 6,
+      "n_scored_windows": 16,
+      "chronological": {
+        "coverage": 0.9396,
+        "width": 19.458,
+        "per_station_coverage": [
+          0.9917,
+          0.9833,
+          0.875,
+          0.9333,
+          0.9292,
+          0.925
+        ]
+      },
+      "same_window": {
+        "coverage": 0.9292,
+        "width": 19.8683,
+        "per_station_coverage": [
+          0.9792,
+          0.9917,
+          0.8875,
+          0.8917,
+          0.9292,
+          0.8958
+        ]
+      },
+      "pooled": {
+        "coverage": 0.9431,
+        "width": 19.989,
+        "per_station_coverage": [
+          0.9875,
+          0.9833,
+          0.8833,
+          0.9417,
+          0.9333,
+          0.9292
+        ]
+      },
+      "seconds": 30.3
+    },
+    {
+      "split": 19,
+      "n_cal": 6,
+      "n_test": 6,
+      "test_stations": [
+        0,
+        10,
+        11,
+        18,
+        28,
+        29
+      ],
+      "cal_stations": [
+        5,
+        7,
+        12,
+        13,
+        14,
+        21
+      ],
+      "n_windows": 22,
+      "test_mae": 4.8798,
+      "first_scored_window": 6,
+      "n_scored_windows": 16,
+      "chronological": {
+        "coverage": 0.8451,
+        "width": 17.5058,
+        "per_station_coverage": [
+          0.875,
+          0.7792,
+          0.9375,
+          0.7917,
+          0.8083,
+          0.8792
+        ]
+      },
+      "same_window": {
+        "coverage": 0.85,
+        "width": 16.8856,
+        "per_station_coverage": [
+          0.9167,
+          0.7917,
+          0.9667,
+          0.8,
+          0.775,
+          0.85
+        ]
+      },
+      "pooled": {
+        "coverage": 0.8458,
+        "width": 17.4392,
+        "per_station_coverage": [
+          0.8792,
+          0.7833,
+          0.9417,
+          0.7917,
+          0.8042,
+          0.875
+        ]
+      },
+      "seconds": 34.5
+    }
+  ],
+  "aggregate": {
+    "chronological": {
+      "coverage_over_splits": {
+        "mean": 0.8881,
+        "sd": 0.0686,
+        "ci95": [
+          0.856,
+          0.9202
+        ],
+        "min": 0.7153,
+        "max": 0.9785,
+        "n": 20
+      },
+      "width_over_splits": {
+        "mean": 19.8383,
+        "sd": 2.3461,
+        "ci95": [
+          18.7403,
+          20.9364
+        ],
+        "min": 17.1103,
+        "max": 24.8706,
+        "n": 20
+      },
+      "per_station_coverage": {
+        "mean": 0.8881,
+        "p10": 0.7525,
+        "min": 0.5542,
+        "fraction_below_0.80": 0.175
+      }
+    },
+    "same_window": {
+      "coverage_over_splits": {
+        "mean": 0.8799,
+        "sd": 0.0647,
+        "ci95": [
+          0.8496,
+          0.9102
+        ],
+        "min": 0.7444,
+        "max": 0.9736,
+        "n": 20
+      },
+      "width_over_splits": {
+        "mean": 19.2861,
+        "sd": 2.4197,
+        "ci95": [
+          18.1537,
+          20.4186
+        ],
+        "min": 15.404,
+        "max": 23.9195,
+        "n": 20
+      },
+      "per_station_coverage": {
+        "mean": 0.8799,
+        "p10": 0.7534,
+        "min": 0.5292,
+        "fraction_below_0.80": 0.2
+      }
+    },
+    "pooled": {
+      "coverage_over_splits": {
+        "mean": 0.8924,
+        "sd": 0.0668,
+        "ci95": [
+          0.8611,
+          0.9236
+        ],
+        "min": 0.7507,
+        "max": 0.9889,
+        "n": 20
+      },
+      "width_over_splits": {
+        "mean": 20.0505,
+        "sd": 2.7645,
+        "ci95": [
+          18.7567,
+          21.3444
+        ],
+        "min": 16.423,
+        "max": 26.0353,
+        "n": 20
+      },
+      "per_station_coverage": {
+        "mean": 0.8924,
+        "p10": 0.7708,
+        "min": 0.5792,
+        "fraction_below_0.80": 0.183
+      }
+    },
+    "test_mae_over_splits": {
+      "mean": 4.7269,
+      "sd": 0.4747,
+      "ci95": [
+        4.5047,
+        4.949
+      ],
+      "min": 3.9518,
+      "max": 5.783,
+      "n": 20
+    }
+  }
+}
