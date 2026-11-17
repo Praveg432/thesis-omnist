@@ -20,7 +20,9 @@ Coordinate frame. Default: the legacy Delhi constants (reproduces the committed 
 builds the frame from the TRAINING stations of each split (src.cc_hash.training_coordinate_frame); see
 FINALIZATION-RECORD.md, Section 12.
 
-Run:  python experiments/C1b_chronological_eval.py <domain|all> [quick] [norm]
+`resid` (implies `norm`) also makes the model forecast the change from the last observed value.
+
+Run:  python experiments/C1b_chronological_eval.py <domain|all> [quick] [norm] [resid]
 Output: results/exp_C1b_<domain>.json, or exp_C1b_norm_<domain>.json with `norm` (quick runs write results/C1b_quick_<domain>.json instead and
 never touch committed result files). Resumable: completed splits are skipped on restart.
 """
@@ -51,7 +53,7 @@ WARMUP_FRACTION = 0.25
 PROTOCOLS = ("chronological", "same_window", "pooled")
 
 
-def run_split(name: str, spec: dict, split: int, n_stations: int, quick: bool, norm: bool = False) -> dict:
+def run_split(name: str, spec: dict, split: int, n_stations: int, quick: bool, norm: bool = False, resid: bool = False) -> dict:
     """Same split, seeds and training as C1.run_split; only the calibration protocol differs."""
     t0 = time.time()
     split_rng = np.random.default_rng(1000 + split)
@@ -69,7 +71,7 @@ def run_split(name: str, spec: dict, split: int, n_stations: int, quick: bool, n
     frame = {}
     if norm:
         center, scale = training_coordinate_frame(np.asarray(meta["coords_all"])[meta["train_stations"]])
-        frame = {"coord_center": center, "coord_scale": scale}
+        frame = {"coord_center": center, "coord_scale": scale, "residual_to_last": resid}
     model = OmniST(ModelConfig(n_features=1, horizon=horizon, d_model=64, k_neighbors=8,
                                knn_mode=spec.get("knn_mode", "exact"), **frame))
     train_model(model, train_ds, val_ds, tcfg, meta)
@@ -105,9 +107,9 @@ def aggregate(splits: list) -> dict:
     return out
 
 
-def run_domain(name: str, quick: bool, norm: bool = False) -> None:
+def run_domain(name: str, quick: bool, norm: bool = False, resid: bool = False) -> None:
     spec = c1.DOMAINS[name]
-    tag = "norm_" if norm else ""
+    tag = "resid_" if resid else ("norm_" if norm else "")
     path = os.path.join(c1.RESULTS, f"C1b_quick_{tag}{name}.json" if quick else f"exp_C1b_{tag}{name}.json")
     n_stations = spec["prepare"](DataConfig(window_size=spec["window"], horizon=spec["horizon"],
                                             n_features=1), hold_out_stations=[])[3]["coords_all"].shape[0]
@@ -115,7 +117,7 @@ def run_domain(name: str, quick: bool, norm: bool = False) -> None:
     state = {"experiment": "C1b chronological (forecast-time-only) calibration, same splits as C1",
              "domain": name, "n_stations": int(n_stations), "target_coverage": c1.TARGET,
              "warmup_fraction": WARMUP_FRACTION,
-             "coordinate_frame": "training_stations" if norm else "legacy_delhi_constants", "splits": []}
+             "coordinate_frame": ("training_stations+residual_to_last" if resid else "training_stations") if norm else "legacy_delhi_constants", "splits": []}
     if os.path.exists(path):
         state = json.load(open(path))
     done = {s["split"] for s in state["splits"]}
@@ -123,7 +125,7 @@ def run_domain(name: str, quick: bool, norm: bool = False) -> None:
     for split in range(n_splits):
         if split in done:
             continue
-        res = run_split(name, spec, split, n_stations, quick, norm)
+        res = run_split(name, spec, split, n_stations, quick, norm, resid)
         state["splits"].append(res)
         print(f"  split {split}: chrono={res['chronological']['coverage']} "
               f"same_window={res['same_window']['coverage']} pooled={res['pooled']['coverage']} "
@@ -134,9 +136,10 @@ def run_domain(name: str, quick: bool, norm: bool = False) -> None:
 
 
 if __name__ == "__main__":
-    args = [a for a in sys.argv[1:] if a not in ("quick", "norm")]
+    args = [a for a in sys.argv[1:] if a not in ("quick", "norm", "resid")]
     quick_mode = "quick" in sys.argv[1:]
-    norm_mode = "norm" in sys.argv[1:]
+    resid_mode = "resid" in sys.argv[1:]
+    norm_mode = "norm" in sys.argv[1:] or resid_mode
     which = list(c1.DOMAINS) if (not args or args[0] == "all") else [args[0]]
     for dom in which:
-        run_domain(dom, quick_mode, norm_mode)
+        run_domain(dom, quick_mode, norm_mode, resid_mode)

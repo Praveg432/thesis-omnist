@@ -44,6 +44,9 @@ initialisation. They are kept as the original record; C1 is the primary evidence
 | 14 | Persistence and seasonal-naive baselines with the same intervals and splits | `phase1-omnist/experiments/C1c_naive_baselines.py` | `phase1-omnist/results/exp_C1c_baselines_<domain>.json` | EXECUTED (interpolators and E-STGCN not re-run under C1b) |
 | 15 | Under-coverage tracks error growth over the test period, not station mismatch | `phase1-omnist/experiments/C1d_undercoverage_diagnosis.py` | `phase1-omnist/results/exp_C1d_diagnosis_<domain>.json` | EXECUTED (Delhi, Beijing, weather; 10 splits; cause of the error growth untested) |
 | 16 | Delhi-specific coordinate constants inflate error and width on four networks | `phase1-omnist/tests/test_coordinate_frame.py`, C1b with `norm` | `phase1-omnist/results/exp_C1b_norm_<domain>.json` | EXECUTED; `FINALIZATION-RECORD.md` Section 12 |
+| 17 | Calibrating on earlier years' errors repairs most of the air-quality shortfall (rule chosen post hoc) | `phase1-omnist/experiments/C1f_multiyear_calibration.py` | `phase1-omnist/results/exp_C1f_<domain>.json` | EXECUTED (Delhi, Beijing; 10 splits); confirmation pending |
+| 18 | Station-level (hierarchical) conformal is valid but conservative with 10 calibration stations | `phase1-omnist/experiments/C1g_hcp_comparison.py` | `phase1-omnist/results/exp_C1g_hcp_<domain>.json` | EXECUTED (Delhi, weather; 10 splits) |
+| 19 | A residual-to-last-value head does not close the gap to persistence | `phase1-omnist/experiments/C1b_chronological_eval.py` (`resid`) | `phase1-omnist/results/exp_C1b_resid_<domain>.json` | EXECUTED (weather, traffic); not adopted |
 Full claim-to-file map for Phase 1: `phase1-omnist/RESULTS-INDEX.md`.
 
 ---

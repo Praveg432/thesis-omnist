@@ -54,6 +54,17 @@ def test_shouldPassFrameFromModelConfigToTokenizer():
     assert torch.allclose(model.tokenizer.spatial_emb.center, torch.tensor(center, dtype=torch.float32))
 
 
+def test_shouldReturnLastObservedValueWhenResidualHeadIsZero():
+    torch.manual_seed(0)
+    model = OmniST(ModelConfig(n_features=1, horizon=3, d_model=16, residual_to_last=True))
+    for p in model.prediction_head.parameters():
+        torch.nn.init.zeros_(p)
+    feats = torch.randn(2, 6, 4, 1)
+    coords = torch.tensor(WEATHER_LIKE, dtype=torch.float32).unsqueeze(0).expand(2, -1, -1)
+    out = model.eval()(feats, coords, torch.rand(2, 6, 4))
+    assert torch.allclose(out, feats[:, -1].unsqueeze(2).expand(-1, -1, 3, -1))
+
+
 def test_shouldRejectFrameFromFewerThanTwoTrainingStations():
     with pytest.raises(ValueError, match="at least two training stations"):
         training_coordinate_frame(np.array([[28.6, 77.1]]))

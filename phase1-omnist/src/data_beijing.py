@@ -99,8 +99,11 @@ def prepare_real_beijing(
     hold_out_stations: Optional[List[int]] = None,
     features_to_use: List[str] = ["pm25"],
     daily_mean: bool = True,
+    test_offset_days: int = 0,
 ) -> Tuple[SpatiotemporalDataset, SpatiotemporalDataset, SpatiotemporalDataset, dict]:
     """Prepare real Beijing data with a temporal split, mirroring prepare_real_delhi.
+
+    test_offset_days > 0 moves the test year back by that many days (rolling-origin evaluation).
 
     daily_mean=True aggregates hourly -> daily to match the Delhi daily granularity and keep the
     sequence length / window semantics consistent across domains (4 years -> ~1460 days).
@@ -138,6 +141,10 @@ def prepare_real_beijing(
             series = pd.Series(data[:, s, f])
             data[:, s, f] = series.ffill().bfill().fillna(series.median()).values
 
+    if test_offset_days:
+        # rolling-origin evaluation: drop the last `test_offset_days` days so that the test year ends earlier
+        data, dates = data[:-test_offset_days], dates[:-test_offset_days]
+        n_days = data.shape[0]
     # temporal split: final 365 days = test; 180 days before that = val; rest = train
     test_len = min(365, n_days // 4)
     val_len = 180

@@ -1,0 +1,393 @@
+{
+  "experiment": "C1g HCP against pooled conformal, forecast-time calibration",
+  "domain": "delhi_air_quality",
+  "n_calibration_stations": 10,
+  "splits": [
+    {
+      "split": 0,
+      "n_train": 19,
+      "n_cal": 10,
+      "rules": {
+        "pooled_expanding": {
+          "coverage": 0.8238,
+          "width": 100.0785,
+          "fraction_finite_windows": 1.0,
+          "per_station_coverage": [
+            0.7905,
+            0.8429,
+            0.8571,
+            0.8286,
+            0.7905,
+            0.8381,
+            0.8238,
+            0.819
+          ]
+        },
+        "hcp_expanding": {
+          "coverage": 0.9298,
+          "width": 175.4158,
+          "fraction_finite_windows": 1.0,
+          "per_station_coverage": [
+            0.9143,
+            0.9286,
+            0.9524,
+            0.9238,
+            0.9095,
+            0.9238,
+            0.9381,
+            0.9476
+          ]
+        }
+      }
+    },
+    {
+      "split": 1,
+      "n_train": 19,
+      "n_cal": 10,
+      "rules": {
+        "pooled_expanding": {
+          "coverage": 0.8054,
+          "width": 101.8924,
+          "fraction_finite_windows": 1.0,
+          "per_station_coverage": [
+            0.7667,
+            0.8048,
+            0.9429,
+            0.7333,
+            0.7714,
+            0.8238,
+            0.7857,
+            0.8143
+          ]
+        },
+        "hcp_expanding": {
+          "coverage": 0.9315,
+          "width": 196.0132,
+          "fraction_finite_windows": 1.0,
+          "per_station_coverage": [
+            0.9238,
+            0.9381,
+            1.0,
+            0.9238,
+            0.8905,
+            0.9429,
+            0.8905,
+            0.9429
+          ]
+        }
+      }
+    },
+    {
+      "split": 2,
+      "n_train": 19,
+      "n_cal": 10,
+      "rules": {
+        "pooled_expanding": {
+          "coverage": 0.8018,
+          "width": 87.7353,
+          "fraction_finite_windows": 1.0,
+          "per_station_coverage": [
+            0.8524,
+            0.8143,
+            0.7333,
+            0.8333,
+            0.8286,
+            0.819,
+            0.7667,
+            0.7667
+          ]
+        },
+        "hcp_expanding": {
+          "coverage": 0.9095,
+          "width": 156.7961,
+          "fraction_finite_windows": 1.0,
+          "per_station_coverage": [
+            0.9286,
+            0.9333,
+            0.881,
+            0.9333,
+            0.919,
+            0.919,
+            0.8905,
+            0.8714
+          ]
+        }
+      }
+    },
+    {
+      "split": 3,
+      "n_train": 19,
+      "n_cal": 10,
+      "rules": {
+        "pooled_expanding": {
+          "coverage": 0.8077,
+          "width": 84.2865,
+          "fraction_finite_windows": 1.0,
+          "per_station_coverage": [
+            0.781,
+            0.8571,
+            0.7952,
+            0.8143,
+            0.8333,
+            0.7952,
+            0.8286,
+            0.7571
+          ]
+        },
+        "hcp_expanding": {
+          "coverage": 0.9125,
+          "width": 144.4256,
+          "fraction_finite_windows": 1.0,
+          "per_station_coverage": [
+            0.9048,
+            0.9571,
+            0.9048,
+            0.9238,
+            0.919,
+            0.8952,
+            0.9143,
+            0.881
+          ]
+        }
+      }
+    },
+    {
+      "split": 4,
+      "n_train": 19,
+      "n_cal": 10,
+      "rules": {
+        "pooled_expanding": {
+          "coverage": 0.8339,
+          "width": 95.5645,
+          "fraction_finite_windows": 1.0,
+          "per_station_coverage": [
+            0.8381,
+            0.8286,
+            0.9,
+            0.8286,
+            0.8095,
+            0.781,
+            0.8476,
+            0.8381
+          ]
+        },
+        "hcp_expanding": {
+          "coverage": 0.9399,
+          "width": 181.3242,
+          "fraction_finite_windows": 1.0,
+          "per_station_coverage": [
+            0.9762,
+            0.9143,
+            0.9571,
+            0.9476,
+            0.9524,
+            0.919,
+            0.9429,
+            0.9095
+          ]
+        }
+      }
+    },
+    {
+      "split": 5,
+      "n_train": 19,
+      "n_cal": 10,
+      "rules": {
+        "pooled_expanding": {
+          "coverage": 0.8042,
+          "width": 92.2894,
+          "fraction_finite_windows": 1.0,
+          "per_station_coverage": [
+            0.7952,
+            0.7952,
+            0.8667,
+            0.8238,
+            0.7571,
+            0.8381,
+            0.7714,
+            0.7857
+          ]
+        },
+        "hcp_expanding": {
+          "coverage": 0.922,
+          "width": 201.0804,
+          "fraction_finite_windows": 1.0,
+          "per_station_coverage": [
+            0.9,
+            0.9048,
+            0.981,
+            0.9429,
+            0.8857,
+            0.9381,
+            0.9286,
+            0.8952
+          ]
+        }
+      }
+    },
+    {
+      "split": 6,
+      "n_train": 19,
+      "n_cal": 10,
+      "rules": {
+        "pooled_expanding": {
+          "coverage": 0.7446,
+          "width": 74.4025,
+          "fraction_finite_windows": 1.0,
+          "per_station_coverage": [
+            0.781,
+            0.8048,
+            0.6952,
+            0.7571,
+            0.7048,
+            0.681,
+            0.8238,
+            0.7095
+          ]
+        },
+        "hcp_expanding": {
+          "coverage": 0.8976,
+          "width": 154.6093,
+          "fraction_finite_windows": 1.0,
+          "per_station_coverage": [
+            0.9,
+            0.919,
+            0.8619,
+            0.9143,
+            0.9143,
+            0.8857,
+            0.9381,
+            0.8476
+          ]
+        }
+      }
+    },
+    {
+      "split": 7,
+      "n_train": 19,
+      "n_cal": 10,
+      "rules": {
+        "pooled_expanding": {
+          "coverage": 0.8381,
+          "width": 111.828,
+          "fraction_finite_windows": 1.0,
+          "per_station_coverage": [
+            0.9286,
+            0.7905,
+            0.7333,
+            0.8762,
+            0.8381,
+            0.8381,
+            0.8238,
+            0.8762
+          ]
+        },
+        "hcp_expanding": {
+          "coverage": 0.9524,
+          "width": 220.2073,
+          "fraction_finite_windows": 1.0,
+          "per_station_coverage": [
+            0.9952,
+            0.919,
+            0.9143,
+            0.9762,
+            0.9619,
+            0.9524,
+            0.919,
+            0.981
+          ]
+        }
+      }
+    },
+    {
+      "split": 8,
+      "n_train": 19,
+      "n_cal": 10,
+      "rules": {
+        "pooled_expanding": {
+          "coverage": 0.8179,
+          "width": 104.4489,
+          "fraction_finite_windows": 1.0,
+          "per_station_coverage": [
+            0.8286,
+            0.8286,
+            0.8,
+            0.8476,
+            0.8762,
+            0.8095,
+            0.7571,
+            0.7952
+          ]
+        },
+        "hcp_expanding": {
+          "coverage": 0.925,
+          "width": 191.0121,
+          "fraction_finite_windows": 1.0,
+          "per_station_coverage": [
+            0.9476,
+            0.9286,
+            0.9238,
+            0.9333,
+            0.9429,
+            0.9048,
+            0.919,
+            0.9
+          ]
+        }
+      }
+    },
+    {
+      "split": 9,
+      "n_train": 19,
+      "n_cal": 10,
+      "rules": {
+        "pooled_expanding": {
+          "coverage": 0.8161,
+          "width": 87.4586,
+          "fraction_finite_windows": 1.0,
+          "per_station_coverage": [
+            0.8476,
+            0.8429,
+            0.881,
+            0.7524,
+            0.8,
+            0.8524,
+            0.7667,
+            0.7857
+          ]
+        },
+        "hcp_expanding": {
+          "coverage": 0.922,
+          "width": 162.4596,
+          "fraction_finite_windows": 1.0,
+          "per_station_coverage": [
+            0.9429,
+            0.9429,
+            0.9476,
+            0.8905,
+            0.919,
+            0.9762,
+            0.8952,
+            0.8619
+          ]
+        }
+      }
+    }
+  ],
+  "aggregate": {
+    "pooled_expanding": {
+      "coverage_mean": 0.8094,
+      "coverage_sd": 0.0259,
+      "width_mean": 93.998,
+      "fraction_finite": 1.0,
+      "fraction_of_stations_below_0.80": 0.4
+    },
+    "hcp_expanding": {
+      "coverage_mean": 0.9242,
+      "coverage_sd": 0.0156,
+      "width_mean": 178.334,
+      "fraction_finite": 1.0,
+      "fraction_of_stations_below_0.80": 0.0
+    }
+  }
+}

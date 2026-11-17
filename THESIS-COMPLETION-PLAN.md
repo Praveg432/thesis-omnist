@@ -53,6 +53,13 @@ E-STGCN, interpolators), C2 and C3 with the corrected frame, and the preprint re
 Per-window scores for rolling-window and adaptive rules are saved in the C1d result files and feed
 contributions A and B.
 
+**Strengthening (17 Nov 2026, `FINALIZATION-RECORD.md` Section 16).** Calibrating on earlier years' errors, scaled
+by forecast magnitude and matched by season, brought Delhi and Beijing to 0.898 and 0.896 (C1f), at 30% and 61%
+more width. Hierarchical conformal with 10 calibration stations was valid but 41% to 90% wider (C1g). A
+residual-to-last-value head did not beat persistence. **Contribution A now starts from these results:** fix the
+scaled seasonal rule in advance, confirm it on held-out years and on weather and traffic with multi-year data,
+compare against the baselines under the same rule, and test HCP with more calibration stations (traffic).
+
 Schedule (for a 22 Nov target, with 30 Nov as the hard limit): 17 to 18 Nov S1, S2; 18 to 20 Nov S3 (start Delhi, Beijing, weather first), S5, S8; 19 to 20 Nov S4; 20 to 21 Nov S7, then S9; 22 Nov buffer and submission. If the date is earlier, S5 and S4 are cut first (both are Semester 4 items anyway); S1 to S3, S9 are not cut.
 
 Exit check for Phase 1: C1b exists for all five datasets; the report's coverage claims state which

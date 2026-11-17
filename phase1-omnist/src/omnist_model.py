@@ -32,6 +32,9 @@ class ModelConfig:
     # set it from the training stations with src.cc_hash.training_coordinate_frame.
     coord_center: tuple = (28.6, 77.1)
     coord_scale: tuple = (0.2, 0.3)
+    # Predict the change from the last observed value instead of the value itself (default off: committed
+    # results were produced without it).
+    residual_to_last: bool = False
 
     # GAT
     n_gat_heads: int = 4
@@ -136,7 +139,11 @@ class OmniST(nn.Module):
         output = self.prediction_head(last_hidden)  # (B, N, H*F)
 
         # Reshape to (B, N, H, F)
-        return output.view(B, N, self.config.horizon, self.config.n_features)
+        output = output.view(B, N, self.config.horizon, self.config.n_features)
+        if self.config.residual_to_last:
+            # Forecast the change from the last observed value, so the model starts from persistence.
+            output = output + features[:, -1].unsqueeze(2)
+        return output
 
     def count_parameters(self) -> int:
         """Count total trainable parameters."""

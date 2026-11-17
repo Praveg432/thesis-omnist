@@ -1,0 +1,1012 @@
+{
+  "experiment": "C1f rolling-origin calibration over several test years",
+  "domain": "delhi_air_quality",
+  "folds": [
+    {
+      "train_end_year": 2020
+    },
+    {
+      "train_end_year": 2021
+    },
+    {
+      "train_end_year": 2022
+    }
+  ],
+  "warmup_fraction": 0.25,
+  "n_calibration_stations": 8,
+  "hcp_finite_in_all_splits": false,
+  "splits": [
+    {
+      "split": 0,
+      "n_windows_per_fold": [
+        10,
+        10,
+        10
+      ],
+      "n_scored": 14,
+      "hcp_threshold_finite": false,
+      "rules": {
+        "expanding_within": {
+          "coverage": 0.8202,
+          "width": 96.947,
+          "per_station_coverage": [
+            0.869,
+            0.819,
+            0.8333,
+            0.8238,
+            0.7643,
+            0.8452,
+            0.819,
+            0.7881
+          ]
+        },
+        "expanding_all": {
+          "coverage": 0.8738,
+          "width": 130.239,
+          "per_station_coverage": [
+            0.919,
+            0.8762,
+            0.881,
+            0.8619,
+            0.8214,
+            0.8952,
+            0.8667,
+            0.869
+          ]
+        },
+        "rolling_4": {
+          "coverage": 0.8092,
+          "width": 97.022,
+          "per_station_coverage": [
+            0.8524,
+            0.7905,
+            0.7952,
+            0.8262,
+            0.7667,
+            0.8357,
+            0.819,
+            0.7881
+          ]
+        },
+        "seasonal": {
+          "coverage": 0.9536,
+          "width": 143.74,
+          "per_station_coverage": [
+            0.9643,
+            0.95,
+            0.9595,
+            0.9738,
+            0.9286,
+            0.9714,
+            0.9643,
+            0.9167
+          ]
+        },
+        "scaled_predmag_all": {
+          "coverage": 0.9289,
+          "width": 128.55,
+          "per_station_coverage": [
+            0.9238,
+            0.95,
+            0.931,
+            0.931,
+            0.9071,
+            0.9476,
+            0.9238,
+            0.9167
+          ]
+        },
+        "scaled_predmag_seasonal": {
+          "coverage": 0.9333,
+          "width": 134.5,
+          "per_station_coverage": [
+            0.9238,
+            0.9476,
+            0.9405,
+            0.9381,
+            0.9238,
+            0.9548,
+            0.9333,
+            0.9048
+          ]
+        }
+      }
+    },
+    {
+      "split": 1,
+      "n_windows_per_fold": [
+        10,
+        10,
+        10
+      ],
+      "n_scored": 14,
+      "hcp_threshold_finite": false,
+      "rules": {
+        "expanding_within": {
+          "coverage": 0.8455,
+          "width": 124.548,
+          "per_station_coverage": [
+            0.7905,
+            0.8619,
+            0.8786,
+            0.8571,
+            0.8048,
+            0.8405,
+            0.8429,
+            0.8881
+          ]
+        },
+        "expanding_all": {
+          "coverage": 0.8866,
+          "width": 153.668,
+          "per_station_coverage": [
+            0.8452,
+            0.8881,
+            0.9167,
+            0.9048,
+            0.8476,
+            0.881,
+            0.8762,
+            0.9333
+          ]
+        },
+        "rolling_4": {
+          "coverage": 0.8015,
+          "width": 123.309,
+          "per_station_coverage": [
+            0.7429,
+            0.8262,
+            0.8333,
+            0.819,
+            0.7548,
+            0.7976,
+            0.7929,
+            0.8452
+          ]
+        },
+        "seasonal": {
+          "coverage": 0.9205,
+          "width": 155.723,
+          "per_station_coverage": [
+            0.8857,
+            0.9476,
+            0.969,
+            0.9167,
+            0.9095,
+            0.8738,
+            0.919,
+            0.9429
+          ]
+        },
+        "scaled_predmag_all": {
+          "coverage": 0.8905,
+          "width": 126.053,
+          "per_station_coverage": [
+            0.8571,
+            0.9119,
+            0.9333,
+            0.8976,
+            0.869,
+            0.8548,
+            0.9048,
+            0.8952
+          ]
+        },
+        "scaled_predmag_seasonal": {
+          "coverage": 0.889,
+          "width": 135.813,
+          "per_station_coverage": [
+            0.8595,
+            0.919,
+            0.9286,
+            0.8762,
+            0.881,
+            0.8405,
+            0.9214,
+            0.8857
+          ]
+        }
+      }
+    },
+    {
+      "split": 2,
+      "n_windows_per_fold": [
+        10,
+        10,
+        10
+      ],
+      "n_scored": 14,
+      "hcp_threshold_finite": false,
+      "rules": {
+        "expanding_within": {
+          "coverage": 0.794,
+          "width": 89.745,
+          "per_station_coverage": [
+            0.819,
+            0.8214,
+            0.7595,
+            0.8071,
+            0.7762,
+            0.7976,
+            0.7833,
+            0.7881
+          ]
+        },
+        "expanding_all": {
+          "coverage": 0.8408,
+          "width": 113.669,
+          "per_station_coverage": [
+            0.8548,
+            0.8619,
+            0.8238,
+            0.8548,
+            0.8262,
+            0.85,
+            0.8357,
+            0.819
+          ]
+        },
+        "rolling_4": {
+          "coverage": 0.7854,
+          "width": 91.064,
+          "per_station_coverage": [
+            0.8119,
+            0.8238,
+            0.7476,
+            0.8071,
+            0.7595,
+            0.7857,
+            0.7667,
+            0.781
+          ]
+        },
+        "seasonal": {
+          "coverage": 0.9018,
+          "width": 123.751,
+          "per_station_coverage": [
+            0.8976,
+            0.9476,
+            0.8976,
+            0.931,
+            0.8952,
+            0.8714,
+            0.8929,
+            0.881
+          ]
+        },
+        "scaled_predmag_all": {
+          "coverage": 0.908,
+          "width": 139.226,
+          "per_station_coverage": [
+            0.9024,
+            0.9024,
+            0.9167,
+            0.8952,
+            0.9167,
+            0.9143,
+            0.9167,
+            0.9
+          ]
+        },
+        "scaled_predmag_seasonal": {
+          "coverage": 0.9009,
+          "width": 131.194,
+          "per_station_coverage": [
+            0.8929,
+            0.9071,
+            0.9119,
+            0.8786,
+            0.9024,
+            0.9071,
+            0.9143,
+            0.8929
+          ]
+        }
+      }
+    },
+    {
+      "split": 3,
+      "n_windows_per_fold": [
+        10,
+        10,
+        10
+      ],
+      "n_scored": 14,
+      "hcp_threshold_finite": false,
+      "rules": {
+        "expanding_within": {
+          "coverage": 0.8336,
+          "width": 106.342,
+          "per_station_coverage": [
+            0.8238,
+            0.85,
+            0.8643,
+            0.819,
+            0.8619,
+            0.8071,
+            0.831,
+            0.8119
+          ]
+        },
+        "expanding_all": {
+          "coverage": 0.881,
+          "width": 133.618,
+          "per_station_coverage": [
+            0.8714,
+            0.8976,
+            0.9024,
+            0.8667,
+            0.9071,
+            0.8571,
+            0.8976,
+            0.8476
+          ]
+        },
+        "rolling_4": {
+          "coverage": 0.8125,
+          "width": 105.383,
+          "per_station_coverage": [
+            0.8119,
+            0.8381,
+            0.8429,
+            0.8024,
+            0.831,
+            0.7786,
+            0.819,
+            0.7762
+          ]
+        },
+        "seasonal": {
+          "coverage": 0.9247,
+          "width": 141.545,
+          "per_station_coverage": [
+            0.9214,
+            0.9405,
+            0.9524,
+            0.9286,
+            0.9429,
+            0.8952,
+            0.9,
+            0.9167
+          ]
+        },
+        "scaled_predmag_all": {
+          "coverage": 0.9152,
+          "width": 135.314,
+          "per_station_coverage": [
+            0.9214,
+            0.9214,
+            0.9214,
+            0.9381,
+            0.9381,
+            0.8762,
+            0.9071,
+            0.8976
+          ]
+        },
+        "scaled_predmag_seasonal": {
+          "coverage": 0.9077,
+          "width": 138.256,
+          "per_station_coverage": [
+            0.9167,
+            0.9143,
+            0.9262,
+            0.9262,
+            0.9262,
+            0.869,
+            0.8881,
+            0.8952
+          ]
+        }
+      }
+    },
+    {
+      "split": 4,
+      "n_windows_per_fold": [
+        10,
+        10,
+        10
+      ],
+      "n_scored": 14,
+      "hcp_threshold_finite": false,
+      "rules": {
+        "expanding_within": {
+          "coverage": 0.8036,
+          "width": 89.281,
+          "per_station_coverage": [
+            0.75,
+            0.8238,
+            0.8238,
+            0.85,
+            0.7714,
+            0.75,
+            0.8286,
+            0.831
+          ]
+        },
+        "expanding_all": {
+          "coverage": 0.8571,
+          "width": 116.003,
+          "per_station_coverage": [
+            0.819,
+            0.881,
+            0.8714,
+            0.8952,
+            0.8262,
+            0.8214,
+            0.869,
+            0.8738
+          ]
+        },
+        "rolling_4": {
+          "coverage": 0.8125,
+          "width": 96.094,
+          "per_station_coverage": [
+            0.7667,
+            0.8262,
+            0.8405,
+            0.8595,
+            0.7833,
+            0.7548,
+            0.8238,
+            0.8452
+          ]
+        },
+        "seasonal": {
+          "coverage": 0.9211,
+          "width": 139.176,
+          "per_station_coverage": [
+            0.8905,
+            0.9357,
+            0.95,
+            0.9381,
+            0.8976,
+            0.8929,
+            0.9286,
+            0.9357
+          ]
+        },
+        "scaled_predmag_all": {
+          "coverage": 0.9009,
+          "width": 127.615,
+          "per_station_coverage": [
+            0.8952,
+            0.9095,
+            0.9357,
+            0.9119,
+            0.9,
+            0.8738,
+            0.9024,
+            0.8786
+          ]
+        },
+        "scaled_predmag_seasonal": {
+          "coverage": 0.9268,
+          "width": 140.525,
+          "per_station_coverage": [
+            0.9333,
+            0.9381,
+            0.9714,
+            0.9238,
+            0.9286,
+            0.9048,
+            0.9214,
+            0.8929
+          ]
+        }
+      }
+    },
+    {
+      "split": 5,
+      "n_windows_per_fold": [
+        10,
+        10,
+        10
+      ],
+      "n_scored": 14,
+      "hcp_threshold_finite": false,
+      "rules": {
+        "expanding_within": {
+          "coverage": 0.8351,
+          "width": 106.919,
+          "per_station_coverage": [
+            0.8405,
+            0.8429,
+            0.8524,
+            0.8571,
+            0.819,
+            0.8405,
+            0.8119,
+            0.8167
+          ]
+        },
+        "expanding_all": {
+          "coverage": 0.886,
+          "width": 142.173,
+          "per_station_coverage": [
+            0.8881,
+            0.8833,
+            0.9143,
+            0.9143,
+            0.8571,
+            0.8952,
+            0.8786,
+            0.8571
+          ]
+        },
+        "rolling_4": {
+          "coverage": 0.8095,
+          "width": 108.592,
+          "per_station_coverage": [
+            0.8286,
+            0.8119,
+            0.8333,
+            0.831,
+            0.7714,
+            0.8071,
+            0.7976,
+            0.7952
+          ]
+        },
+        "seasonal": {
+          "coverage": 0.9435,
+          "width": 144.386,
+          "per_station_coverage": [
+            0.9333,
+            0.9595,
+            0.95,
+            0.9643,
+            0.9357,
+            0.969,
+            0.9214,
+            0.9143
+          ]
+        },
+        "scaled_predmag_all": {
+          "coverage": 0.9217,
+          "width": 137.72,
+          "per_station_coverage": [
+            0.9262,
+            0.9238,
+            0.9405,
+            0.9476,
+            0.8976,
+            0.9643,
+            0.8786,
+            0.8952
+          ]
+        },
+        "scaled_predmag_seasonal": {
+          "coverage": 0.9071,
+          "width": 134.726,
+          "per_station_coverage": [
+            0.9024,
+            0.9095,
+            0.9333,
+            0.919,
+            0.8952,
+            0.95,
+            0.8619,
+            0.8857
+          ]
+        }
+      }
+    },
+    {
+      "split": 6,
+      "n_windows_per_fold": [
+        10,
+        10,
+        10
+      ],
+      "n_scored": 14,
+      "hcp_threshold_finite": false,
+      "rules": {
+        "expanding_within": {
+          "coverage": 0.8339,
+          "width": 115.123,
+          "per_station_coverage": [
+            0.8643,
+            0.8571,
+            0.8429,
+            0.7833,
+            0.8262,
+            0.8214,
+            0.8619,
+            0.8143
+          ]
+        },
+        "expanding_all": {
+          "coverage": 0.878,
+          "width": 136.964,
+          "per_station_coverage": [
+            0.9119,
+            0.8976,
+            0.8762,
+            0.8214,
+            0.8833,
+            0.8762,
+            0.9048,
+            0.8524
+          ]
+        },
+        "rolling_4": {
+          "coverage": 0.8223,
+          "width": 118.654,
+          "per_station_coverage": [
+            0.8429,
+            0.8405,
+            0.8024,
+            0.8,
+            0.8286,
+            0.8143,
+            0.8381,
+            0.8119
+          ]
+        },
+        "seasonal": {
+          "coverage": 0.856,
+          "width": 139.724,
+          "per_station_coverage": [
+            0.8571,
+            0.8548,
+            0.8643,
+            0.7929,
+            0.8667,
+            0.8762,
+            0.8571,
+            0.8786
+          ]
+        },
+        "scaled_predmag_all": {
+          "coverage": 0.8503,
+          "width": 138.358,
+          "per_station_coverage": [
+            0.8786,
+            0.8357,
+            0.8452,
+            0.7857,
+            0.869,
+            0.8571,
+            0.8548,
+            0.8762
+          ]
+        },
+        "scaled_predmag_seasonal": {
+          "coverage": 0.8512,
+          "width": 140.633,
+          "per_station_coverage": [
+            0.8571,
+            0.8452,
+            0.8476,
+            0.7857,
+            0.8595,
+            0.869,
+            0.8571,
+            0.8881
+          ]
+        }
+      }
+    },
+    {
+      "split": 7,
+      "n_windows_per_fold": [
+        10,
+        10,
+        10
+      ],
+      "n_scored": 14,
+      "hcp_threshold_finite": false,
+      "rules": {
+        "expanding_within": {
+          "coverage": 0.8113,
+          "width": 103.786,
+          "per_station_coverage": [
+            0.8119,
+            0.7833,
+            0.7667,
+            0.8214,
+            0.8143,
+            0.8095,
+            0.8071,
+            0.8762
+          ]
+        },
+        "expanding_all": {
+          "coverage": 0.8798,
+          "width": 138.838,
+          "per_station_coverage": [
+            0.8833,
+            0.8405,
+            0.8429,
+            0.9024,
+            0.8714,
+            0.8857,
+            0.8976,
+            0.9143
+          ]
+        },
+        "rolling_4": {
+          "coverage": 0.7926,
+          "width": 104.563,
+          "per_station_coverage": [
+            0.7929,
+            0.7619,
+            0.7357,
+            0.8071,
+            0.8,
+            0.7952,
+            0.8048,
+            0.8429
+          ]
+        },
+        "seasonal": {
+          "coverage": 0.9598,
+          "width": 152.05,
+          "per_station_coverage": [
+            0.9833,
+            0.9405,
+            0.9333,
+            0.969,
+            0.9714,
+            0.9476,
+            0.9524,
+            0.981
+          ]
+        },
+        "scaled_predmag_all": {
+          "coverage": 0.9187,
+          "width": 136.903,
+          "per_station_coverage": [
+            0.9381,
+            0.9143,
+            0.8786,
+            0.919,
+            0.9262,
+            0.9167,
+            0.9286,
+            0.9286
+          ]
+        },
+        "scaled_predmag_seasonal": {
+          "coverage": 0.903,
+          "width": 140.435,
+          "per_station_coverage": [
+            0.9333,
+            0.9119,
+            0.8381,
+            0.9024,
+            0.9167,
+            0.9024,
+            0.9071,
+            0.9119
+          ]
+        }
+      }
+    },
+    {
+      "split": 8,
+      "n_windows_per_fold": [
+        10,
+        10,
+        10
+      ],
+      "n_scored": 14,
+      "hcp_threshold_finite": false,
+      "rules": {
+        "expanding_within": {
+          "coverage": 0.8372,
+          "width": 117.759,
+          "per_station_coverage": [
+            0.85,
+            0.8524,
+            0.8595,
+            0.8476,
+            0.8738,
+            0.8476,
+            0.8143,
+            0.7524
+          ]
+        },
+        "expanding_all": {
+          "coverage": 0.8833,
+          "width": 149.379,
+          "per_station_coverage": [
+            0.8905,
+            0.8786,
+            0.9095,
+            0.8952,
+            0.9214,
+            0.881,
+            0.8714,
+            0.819
+          ]
+        },
+        "rolling_4": {
+          "coverage": 0.8074,
+          "width": 115.423,
+          "per_station_coverage": [
+            0.8214,
+            0.8119,
+            0.8429,
+            0.8048,
+            0.8405,
+            0.8071,
+            0.7881,
+            0.7429
+          ]
+        },
+        "seasonal": {
+          "coverage": 0.9437,
+          "width": 153.733,
+          "per_station_coverage": [
+            0.9548,
+            0.969,
+            0.969,
+            0.9548,
+            0.9762,
+            0.9381,
+            0.9405,
+            0.8476
+          ]
+        },
+        "scaled_predmag_all": {
+          "coverage": 0.8875,
+          "width": 135.139,
+          "per_station_coverage": [
+            0.8762,
+            0.8738,
+            0.9,
+            0.9,
+            0.9095,
+            0.9,
+            0.8857,
+            0.8548
+          ]
+        },
+        "scaled_predmag_seasonal": {
+          "coverage": 0.8943,
+          "width": 141.528,
+          "per_station_coverage": [
+            0.881,
+            0.8929,
+            0.9024,
+            0.9071,
+            0.9119,
+            0.9,
+            0.9048,
+            0.8548
+          ]
+        }
+      }
+    },
+    {
+      "split": 9,
+      "n_windows_per_fold": [
+        10,
+        10,
+        10
+      ],
+      "n_scored": 14,
+      "hcp_threshold_finite": false,
+      "rules": {
+        "expanding_within": {
+          "coverage": 0.8238,
+          "width": 100.423,
+          "per_station_coverage": [
+            0.8595,
+            0.8619,
+            0.881,
+            0.7905,
+            0.8262,
+            0.85,
+            0.7357,
+            0.7857
+          ]
+        },
+        "expanding_all": {
+          "coverage": 0.8655,
+          "width": 125.728,
+          "per_station_coverage": [
+            0.8905,
+            0.8929,
+            0.9167,
+            0.8548,
+            0.8571,
+            0.8929,
+            0.7881,
+            0.831
+          ]
+        },
+        "rolling_4": {
+          "coverage": 0.7896,
+          "width": 97.158,
+          "per_station_coverage": [
+            0.8048,
+            0.8333,
+            0.8333,
+            0.7405,
+            0.7952,
+            0.8143,
+            0.7405,
+            0.7548
+          ]
+        },
+        "seasonal": {
+          "coverage": 0.9318,
+          "width": 136.93,
+          "per_station_coverage": [
+            0.9476,
+            0.9786,
+            0.9857,
+            0.9143,
+            0.9571,
+            0.9452,
+            0.8405,
+            0.8857
+          ]
+        },
+        "scaled_predmag_all": {
+          "coverage": 0.8899,
+          "width": 130.778,
+          "per_station_coverage": [
+            0.8786,
+            0.9262,
+            0.95,
+            0.8738,
+            0.8738,
+            0.8405,
+            0.9024,
+            0.8738
+          ]
+        },
+        "scaled_predmag_seasonal": {
+          "coverage": 0.8702,
+          "width": 129.079,
+          "per_station_coverage": [
+            0.8571,
+            0.919,
+            0.9429,
+            0.8405,
+            0.8548,
+            0.8,
+            0.8714,
+            0.8762
+          ]
+        }
+      }
+    }
+  ],
+  "aggregate": {
+    "expanding_within": {
+      "coverage_mean": 0.8238,
+      "width_mean": 105.087,
+      "fraction_of_stations_below_0.80": 0.225
+    },
+    "expanding_all": {
+      "coverage_mean": 0.8732,
+      "width_mean": 134.028,
+      "fraction_of_stations_below_0.80": 0.013
+    },
+    "rolling_4": {
+      "coverage_mean": 0.8043,
+      "width_mean": 105.726,
+      "fraction_of_stations_below_0.80": 0.388
+    },
+    "seasonal": {
+      "coverage_mean": 0.9256,
+      "width_mean": 143.076,
+      "fraction_of_stations_below_0.80": 0.013
+    },
+    "scaled_predmag_all": {
+      "coverage_mean": 0.9012,
+      "width_mean": 133.566,
+      "fraction_of_stations_below_0.80": 0.013
+    },
+    "scaled_predmag_seasonal": {
+      "coverage_mean": 0.8983,
+      "width_mean": 136.669,
+      "fraction_of_stations_below_0.80": 0.013
+    }
+  }
+}

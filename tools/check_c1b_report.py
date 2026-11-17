@@ -60,7 +60,36 @@ for dom, ratio_keys in {"delhi_air_quality": (1.90, 1.03), "beijing_air_quality"
     thirds = ", ".join(f"{x:.2f}" for x in agg["coverage_by_third_mean"])
     need(thirds, f"{dom} coverage by third")
 
+# ---- Section 4.3b: multi-year rules (C1f), HCP (C1g), residual head --------------------------------------
+sec_b = report_lines[report_lines.index("### 4.3b"):report_lines.index("### 4.4")]
+rows = {"Same test year only": "expanding_within", "All earlier windows, across years": "expanding_all",
+        "Earlier years, same season (within 45 days)": "seasonal",
+        "All earlier windows, errors scaled by forecast magnitude": "scaled_predmag_all",
+        "Earlier years, same season, scaled by forecast magnitude": "scaled_predmag_seasonal"}
+fd = load("exp_C1f_delhi_air_quality.json")["aggregate"]
+fb = load("exp_C1f_beijing_air_quality.json")["aggregate"]
+for label, rule in rows.items():
+    line = next(l for l in sec_b.splitlines() if l.startswith(f"| {label}"))
+    want = [f"{fd[rule]['coverage_mean']:.3f}", f"{fd[rule]['width_mean']:.1f}",
+            f"{fb[rule]['coverage_mean']:.3f}", f"{fb[rule]['width_mean']:.1f}"]
+    for w in want:
+        n_checked += 1
+        if f"| {w} " not in line:
+            failures.append(f"C1f row {label!r} lacks {w}: {line}")
+for dom, before, after in (("delhi_air_quality", "0.809", "0.924"), ("ghcn_weather", "0.873", "0.985")):
+    g = load(f"exp_C1g_hcp_{dom}.json")["aggregate"]
+    got = (f"{g['pooled_expanding']['coverage_mean']:.3f}", f"{g['hcp_expanding']['coverage_mean']:.3f}")
+    n_checked += 1
+    if got != (before, after):
+        failures.append(f"C1g {dom}: report says {before} to {after}, files give {got}")
+for dom, old, new in (("pemsd7_traffic", "3.79", "3.69"), ("ghcn_weather", "4.73", "4.76"), ("pemsbay_traffic", "4.73", "5.04")):
+    got = (f"{load(f'exp_C1b_norm_{dom}.json')['aggregate']['test_mae_over_splits']['mean']:.2f}",
+           f"{load(f'exp_C1b_resid_{dom}.json')['aggregate']['test_mae_over_splits']['mean']:.2f}")
+    n_checked += 1
+    if got != (old, new):
+        failures.append(f"residual head {dom}: report says {old} to {new}, files give {got}")
+
 if failures:
     print("\n".join(failures))
     sys.exit(1)
-print(f"all {n_checked} C1b/C1c/C1d report figures match the committed result files")
+print(f"all {n_checked} C1b to C1g report figures match the committed result files")
