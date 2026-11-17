@@ -1,0 +1,426 @@
+{
+  "experiment": "C1c naive baselines, chronological calibration, same splits as C1",
+  "domain": "ghcn_weather",
+  "seasonal_period": null,
+  "warmup_fraction": 0.25,
+  "splits": [
+    {
+      "split": 0,
+      "persistence": {
+        "coverage": 0.9306,
+        "width": 19.962,
+        "per_station_coverage": [
+          0.9875,
+          0.9958,
+          0.9375,
+          0.9208,
+          0.9292,
+          0.8125
+        ],
+        "mae": 4.559,
+        "n_windows": 22,
+        "first_kept_window_start": 0,
+        "n_scored_windows": 16
+      }
+    },
+    {
+      "split": 1,
+      "persistence": {
+        "coverage": 0.9347,
+        "width": 22.912,
+        "per_station_coverage": [
+          0.9667,
+          0.9833,
+          0.9583,
+          0.9542,
+          0.8667,
+          0.8792
+        ],
+        "mae": 4.9549,
+        "n_windows": 22,
+        "first_kept_window_start": 0,
+        "n_scored_windows": 16
+      }
+    },
+    {
+      "split": 2,
+      "persistence": {
+        "coverage": 0.9313,
+        "width": 21.537,
+        "per_station_coverage": [
+          0.9833,
+          0.9917,
+          0.95,
+          0.9583,
+          0.8375,
+          0.8667
+        ],
+        "mae": 4.5525,
+        "n_windows": 22,
+        "first_kept_window_start": 0,
+        "n_scored_windows": 16
+      }
+    },
+    {
+      "split": 3,
+      "persistence": {
+        "coverage": 0.9417,
+        "width": 23.175,
+        "per_station_coverage": [
+          0.9958,
+          0.9958,
+          0.9708,
+          0.9625,
+          0.8667,
+          0.8583
+        ],
+        "mae": 4.5687,
+        "n_windows": 22,
+        "first_kept_window_start": 0,
+        "n_scored_windows": 16
+      }
+    },
+    {
+      "split": 4,
+      "persistence": {
+        "coverage": 0.9313,
+        "width": 22.337,
+        "per_station_coverage": [
+          0.9958,
+          0.9375,
+          0.9958,
+          0.9625,
+          0.8417,
+          0.8542
+        ],
+        "mae": 4.4597,
+        "n_windows": 22,
+        "first_kept_window_start": 0,
+        "n_scored_windows": 16
+      }
+    },
+    {
+      "split": 5,
+      "persistence": {
+        "coverage": 0.8854,
+        "width": 19.612,
+        "per_station_coverage": [
+          0.9667,
+          0.9625,
+          0.9458,
+          0.8083,
+          0.8083,
+          0.8208
+        ],
+        "mae": 5.1519,
+        "n_windows": 22,
+        "first_kept_window_start": 0,
+        "n_scored_windows": 16
+      }
+    },
+    {
+      "split": 6,
+      "persistence": {
+        "coverage": 0.9375,
+        "width": 20.35,
+        "per_station_coverage": [
+          0.9667,
+          0.9792,
+          0.9875,
+          0.925,
+          0.8542,
+          0.9125
+        ],
+        "mae": 4.348,
+        "n_windows": 22,
+        "first_kept_window_start": 0,
+        "n_scored_windows": 16
+      }
+    },
+    {
+      "split": 7,
+      "persistence": {
+        "coverage": 0.9299,
+        "width": 22.587,
+        "per_station_coverage": [
+          0.9833,
+          0.8917,
+          0.9875,
+          0.9958,
+          0.8667,
+          0.8542
+        ],
+        "mae": 4.6673,
+        "n_windows": 22,
+        "first_kept_window_start": 0,
+        "n_scored_windows": 16
+      }
+    },
+    {
+      "split": 8,
+      "persistence": {
+        "coverage": 0.9451,
+        "width": 21.687,
+        "per_station_coverage": [
+          0.9917,
+          0.9958,
+          0.9458,
+          0.9875,
+          0.8667,
+          0.8833
+        ],
+        "mae": 4.5586,
+        "n_windows": 22,
+        "first_kept_window_start": 0,
+        "n_scored_windows": 16
+      }
+    },
+    {
+      "split": 9,
+      "persistence": {
+        "coverage": 0.941,
+        "width": 20.5,
+        "per_station_coverage": [
+          0.9958,
+          0.9292,
+          0.925,
+          0.9792,
+          0.9833,
+          0.8333
+        ],
+        "mae": 4.36,
+        "n_windows": 22,
+        "first_kept_window_start": 0,
+        "n_scored_windows": 16
+      }
+    },
+    {
+      "split": 10,
+      "persistence": {
+        "coverage": 0.8444,
+        "width": 17.675,
+        "per_station_coverage": [
+          0.95,
+          0.9208,
+          0.8875,
+          0.7708,
+          0.7583,
+          0.7792
+        ],
+        "mae": 5.2071,
+        "n_windows": 22,
+        "first_kept_window_start": 0,
+        "n_scored_windows": 16
+      }
+    },
+    {
+      "split": 11,
+      "persistence": {
+        "coverage": 0.9257,
+        "width": 21.025,
+        "per_station_coverage": [
+          0.9708,
+          0.9917,
+          0.9417,
+          0.9542,
+          0.825,
+          0.8708
+        ],
+        "mae": 4.8814,
+        "n_windows": 22,
+        "first_kept_window_start": 0,
+        "n_scored_windows": 16
+      }
+    },
+    {
+      "split": 12,
+      "persistence": {
+        "coverage": 0.9215,
+        "width": 21.725,
+        "per_station_coverage": [
+          0.9792,
+          0.9917,
+          0.9875,
+          0.8333,
+          0.8625,
+          0.875
+        ],
+        "mae": 4.7542,
+        "n_windows": 22,
+        "first_kept_window_start": 0,
+        "n_scored_windows": 16
+      }
+    },
+    {
+      "split": 13,
+      "persistence": {
+        "coverage": 0.9333,
+        "width": 19.3,
+        "per_station_coverage": [
+          0.9708,
+          0.9125,
+          0.9375,
+          0.9,
+          0.975,
+          0.9042
+        ],
+        "mae": 4.3572,
+        "n_windows": 22,
+        "first_kept_window_start": 0,
+        "n_scored_windows": 16
+      }
+    },
+    {
+      "split": 14,
+      "persistence": {
+        "coverage": 0.9604,
+        "width": 23.662,
+        "per_station_coverage": [
+          0.9875,
+          0.9958,
+          0.95,
+          0.975,
+          0.9708,
+          0.8833
+        ],
+        "mae": 4.6182,
+        "n_windows": 22,
+        "first_kept_window_start": 0,
+        "n_scored_windows": 16
+      }
+    },
+    {
+      "split": 15,
+      "persistence": {
+        "coverage": 0.8389,
+        "width": 18.025,
+        "per_station_coverage": [
+          0.9583,
+          0.9333,
+          0.7875,
+          0.775,
+          0.7792,
+          0.8
+        ],
+        "mae": 5.4258,
+        "n_windows": 22,
+        "first_kept_window_start": 0,
+        "n_scored_windows": 16
+      }
+    },
+    {
+      "split": 16,
+      "persistence": {
+        "coverage": 0.9549,
+        "width": 20.35,
+        "per_station_coverage": [
+          0.9625,
+          0.9333,
+          0.9708,
+          0.9375,
+          0.975,
+          0.95
+        ],
+        "mae": 4.2329,
+        "n_windows": 22,
+        "first_kept_window_start": 0,
+        "n_scored_windows": 16
+      }
+    },
+    {
+      "split": 17,
+      "persistence": {
+        "coverage": 0.9368,
+        "width": 22.35,
+        "per_station_coverage": [
+          0.9833,
+          0.9833,
+          0.975,
+          0.9583,
+          0.8667,
+          0.8542
+        ],
+        "mae": 4.6582,
+        "n_windows": 22,
+        "first_kept_window_start": 0,
+        "n_scored_windows": 16
+      }
+    },
+    {
+      "split": 18,
+      "persistence": {
+        "coverage": 0.9062,
+        "width": 21.4,
+        "per_station_coverage": [
+          0.9875,
+          0.9708,
+          0.9583,
+          0.8542,
+          0.8375,
+          0.8292
+        ],
+        "mae": 5.2448,
+        "n_windows": 22,
+        "first_kept_window_start": 0,
+        "n_scored_windows": 16
+      }
+    },
+    {
+      "split": 19,
+      "persistence": {
+        "coverage": 0.9278,
+        "width": 21.375,
+        "per_station_coverage": [
+          0.95,
+          0.9375,
+          0.9792,
+          0.9875,
+          0.8667,
+          0.8458
+        ],
+        "mae": 4.7477,
+        "n_windows": 22,
+        "first_kept_window_start": 0,
+        "n_scored_windows": 16
+      }
+    }
+  ],
+  "aggregate": {
+    "persistence": {
+      "coverage_over_splits": {
+        "mean": 0.9229,
+        "sd": 0.032,
+        "ci95": [
+          0.9079,
+          0.9379
+        ],
+        "min": 0.8389,
+        "max": 0.9604,
+        "n": 20
+      },
+      "width_over_splits": {
+        "mean": 21.0773,
+        "sd": 1.6216,
+        "ci95": [
+          20.3184,
+          21.8362
+        ],
+        "min": 17.675,
+        "max": 23.662,
+        "n": 20
+      },
+      "mae_over_splits": {
+        "mean": 4.7154,
+        "sd": 0.3328,
+        "ci95": [
+          4.5596,
+          4.8712
+        ],
+        "min": 4.2329,
+        "max": 5.4258,
+        "n": 20
+      },
+      "per_station_fraction_below_0.80": 0.05
+    }
+  }
+}

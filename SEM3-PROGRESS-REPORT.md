@@ -19,6 +19,14 @@
 > holds as networks grow, and whether the intervals are useful. Phase 2 is planned for Semester 4
 > and partly measured (`phase2-omnist-scale/docs/CONSOLIDATED-FINDINGS.md`).
 >
+> **Revision note (17 Nov 2026).** After the abstract was submitted, two checks changed how its coverage
+> figures must be read. (1) The 87.6% to 90.6% range comes from experiment C1, which calibrates on errors
+> from the same period it evaluates. With calibration restricted to errors available at forecast time
+> (Section 4.3a), mean coverage is 77.7% to 89.1% across the two coordinate frames (Delhi constants 77.7% to 88.9%, corrected frame 77.8% to 89.1%). (2) The coordinate embedding used Delhi constants on
+> every network, which inflated error and interval width on four networks (Section 4.6). A revision of
+> the abstract is proposed in `SUBMISSION-TITLE-AND-ABSTRACT.md`, Section 6, and awaits the author's and
+> supervisor's decision. The abstract above is unchanged.
+>
 > **Terminology.** "Calibrated coverage" means marginal coverage from split conformal prediction, with calibration on
 > stations the model never saw. Stations are split at random into train, calibration and test sets, so
 > a test station is exchangeable with the calibration stations. The exchangeable unit is the station,
@@ -64,14 +72,14 @@ networks (thousands of sensors) and to study how its coverage behaves as the net
    **(Phase 1: completed.)**
 2. Equip it with conformal prediction intervals at unseen sensor locations and evaluate the coverage on
    real data from several domains, using random disjoint splits of stations. **(Phase 1: completed.)**
-3. Calibrate prediction intervals at newly placed sensors using the geometry of the site (distance to
-   and density of the training sensors), so that coverage holds where distance matters without harming
-   networks where it does not, and give a per-site coverage-risk estimate. **(Phase 2: planned.)**
-4. Make the engine sub-quadratic in the number of sensors, measure memory and time against network
-   size, and study coverage as the network grows. **(Phase 2: planned.)**
-5. Demonstrate alerts with a controlled miss rate at unseen sites, and deliver a reusable, installable
-   PyTorch package. **(Phase 2: planned.)**
-
+3. Make coverage at a newly placed sensor valid at the station level and usable in its first weeks:
+   hierarchical conformal prediction with the station as the exchangeable unit, and a cold-start to
+   warm-up study as the sensor accumulates its own data. **(Phase 2: planned.)**
+4. Establish where position relative to the network matters (a gated, geometry-aware calibration
+   compared with published spatial conformal methods) and whether the intervals are useful against
+   persistence and seasonal-naive forecasts. **(Phase 2: planned.)**
+5. Measure memory, time and coverage as the network grows, demonstrate alerts with a controlled
+   miss rate at unseen sites, and deliver a reproducible repository. **(Phase 2: planned.)**
 **Out of scope.** The contribution is a calibrated, scalable system and an honest evaluation of its
 coverage, not a point-accuracy record and not a new state-space model.
 
@@ -162,6 +170,58 @@ Reading the table:
 - Test errors (mean absolute error, in each dataset's units) were 27.6 (Delhi), 49.3 (Beijing), 5.8
   (weather), 10.3 (PeMSD7-M) and 5.5 (PeMS-BAY).
 
+All rows of the table above use the Delhi coordinate constants and C1's calibration rule; Sections 4.3a and 4.6 give
+the forecast-time and corrected-frame results.
+
+### 4.3a Calibration at forecast time (experiment C1b), diagnosis, and baselines
+**Why.** C1 computes the conformal quantile from the calibration stations' errors over the same test
+period it then scores, so the interval for a window uses errors from windows after it. That information
+does not exist at forecast time. C1b keeps C1's splits, seeds and models and compares three rules on
+identical scored windows (the first 25% of test windows are warm-up history and are not scored):
+*chronological* (quantile from calibration-station errors of earlier windows only; the only rule usable at
+forecast time), *same-window* (C1's rule) and *pooled* (one quantile over all windows). The decision rules
+were fixed in the script before the run. Window t-1 ends where window t begins, so no future target is used.
+
+| Dataset | Splits | C1, full period | C1b same-window | C1b chronological (Delhi constants) | C1b chronological (training-station frame) |
+|---|:---:|:---:|:---:|:---:|:---:|
+| Delhi PM2.5 | 20 | 0.893 | 0.896 | 0.818 | 0.811 |
+| Beijing PM2.5 | 20 | 0.903 | 0.905 | 0.777 | 0.778 |
+| NOAA weather | 20 | 0.906 | 0.883 | 0.889 | 0.888 |
+| PeMSD7-M traffic | 6 | 0.876 | 0.871 | 0.869 | 0.891 |
+| PeMS-BAY traffic | 6 | 0.892 | 0.893 | 0.869 | 0.881 |
+
+- On Delhi and Beijing, chronological calibration under-covers badly: the 95% intervals over splits (Delhi constants) are
+  [0.810, 0.826] and [0.772, 0.783]. On weather and the two traffic networks it is within 0.02 of 0.90
+  once the coordinate frame is corrected. **The coverage range in the submitted abstract (87.6% to 90.6%)
+  describes the C1 rule, not forecast-time calibration, for which the range is 77.7% to 89.1% across the two coordinate frames.**
+- **Diagnosis (experiment C1d, 10 splits, corrected frame).** Three candidate causes were measured.
+  (H1) Error scale changes over the test period: the late-third mean error divided by the early-third
+  mean error is 1.90 on Delhi and 2.11 on Beijing, and 0.87 on weather. (H2) Calibration stations are not
+  representative: the test-station to calibration-station mean-error ratio is 1.03 (Delhi), 0.99 (Beijing)
+  and 1.08 (weather), close to 1. (H3) Chronological coverage by third of the scored windows is 0.99,
+  0.89, 0.50 on Delhi; 0.88, 0.73, 0.73 on Beijing; 0.84, 0.83, 0.94 on weather. The under-coverage tracks
+  growth in error over time, not a mismatch between stations. That error grows with the pollution level
+  is consistent with this but was not tested. The two air-quality test periods contain only 10 and 22
+  windows, so a rule that estimates the scale from earlier windows has little to work with.
+- **Baselines under the same rule** (experiment C1c; persistence and seasonal-naive forecasts with
+  chronological conformal intervals on the same stations; corrected frame for OmniST). Seasonal period:
+  7 days (air quality), one day (traffic); weather has none. Seasonal-naive is scored on the windows with a
+  full period of history, a later subset of windows.
+
+| Dataset | Method | Chronological coverage | Interval width | MAE |
+|---|---|:---:|:---:|:---:|
+| Delhi | OmniST / persistence / seasonal-naive | 0.811 / 0.772 / 0.788 | 90.0 / 111.9 / 117.7 | 28.5 / 37.7 / 37.9 |
+| Beijing | OmniST / persistence / seasonal-naive | 0.778 / 0.806 / 0.773 | 138.7 / 186.2 / 202.6 | 48.5 / 51.9 / 62.8 |
+| Weather | OmniST / persistence | 0.888 / 0.923 | 19.8 / 21.1 | 4.73 / 4.72 |
+| PeMSD7-M | OmniST / persistence / seasonal-naive | 0.891 / 0.894 / 0.896 | 17.3 / 16.8 / 23.4 | 3.79 / 3.63 / 4.45 |
+| PeMS-BAY | OmniST / persistence / seasonal-naive | 0.881 / 0.879 / 0.889 | 18.8 / 28.6 / 14.1 | 4.73 / 5.35 / 3.47 |
+
+  The simple baselines under-cover in the same two networks, so the forecast-time shortfall belongs to the
+  data and the calibration rule, not to OmniST. Against persistence, OmniST has lower error and narrower intervals on Delhi,
+  Beijing and PeMS-BAY, and against seasonal-naive on the two air-quality networks. It does **not** beat persistence on
+  PeMSD7-M (MAE 3.79 against 3.63) or weather (tie), and on PeMS-BAY its intervals are about 33% wider
+  than seasonal-naive. Usefulness is therefore established against persistence on three networks and not
+  established against seasonal forecasts.
 ### 4.4 Does distance from the training network matter? (experiments C2 and C3)
 
 A new sensor placed far from the existing network may be harder to predict than one placed near it,
@@ -250,12 +310,17 @@ were not repeated under C1 and carry the stated caveats.
   test year aliases to the latest training year. A check that set the feature to 1.0 therefore
   changed nothing, and it was uninformative by construction. No effect on results was found; a better
   year encoding is a Semester-4 cleanup.
-- **Coordinate normalisation.** The coordinate embedding centres and scales its inputs with constants
-  fixed for Delhi (latitude centre 28.6 with scale 0.2, longitude centre 77.1 with scale 0.3). For the
-  other datasets the inputs fall far outside the intended range (for example longitude near -120 in
-  the weather data). Training adapted to this and the attention uses true distances, so the results
-  above stand, but a model trained in one region cannot be expected to transfer to another without a
-  local coordinate frame. Cross-region transfer has not been tested.
+- **Coordinate normalisation (defect found and fixed).** The coordinate embedding centred and scaled its
+  inputs with constants fixed for Delhi. On the other networks its inputs were 132 (Beijing), 656
+  (weather) and 651 (both traffic networks) times the intended range. Coverage is insensitive to this
+  because calibration absorbs the extra error, but accuracy and width are not. Re-running C1b with a
+  frame built from the training stations only: mean absolute error fell from 5.84 to 4.73 (weather),
+  10.33 to 3.79 (PeMSD7-M) and 5.54 to 4.73 (PeMS-BAY), and interval width by 19%, 59% and 8%;
+  Beijing changed little, and Delhi worsened slightly (27.63 to 28.53). Same-window coverage moved by
+  at most 0.011 (PeMSD7-M, 6 splits, 0.871 to 0.882), just outside the 0.01 criterion set in advance.
+  The committed C1 to C3 results used the Delhi constants; the corrected frame is now an option in the
+  code (default unchanged) and the C1b rows above are reported with both. The training-station frame
+  will be used from here on. Cross-region transfer has not been tested.
 - **Baselines.** E-STGCN and IGNNK are the author's re-implementations.
 
 ### 4.7 Dissemination
@@ -265,71 +330,60 @@ any journal or conference. The code, experiment scripts and committed results fo
 the public project repository [7].
 
 ## 5. Phase 2: Status of Existing Components
-
-Phase 2 is planned work for Semester 4. Some components already exist from exploratory work, and the
-review corrected what had been claimed for them.
-
+Phase 2 is part of the final thesis work and is planned for Semester 4. Some components were built and
+measured in exploratory work; the review corrected what had been claimed for them. All Phase 2 numbers
+below used the Delhi coordinate constants and must be re-run with the corrected frame before they are
+used for any claim about accuracy or interval width.
 ### 5.1 Components and what has been measured
-
 | Component | State | Evidence |
 |---|---|---|
-| Neighbour attention (cost proportional to sensors × neighbours) | Implemented | Output cosine similarity to exact attention is at least 0.99987 for N up to 2,000 on random tokens with shared weights. **No memory measurement exists and no speed advantage appeared**: at N=2,000 the two paths took 189 ms and 182 ms, and at small N the neighbour path was slower. |
-| State-space temporal block | Implemented as a **sequential** scan | About 2.0 to 2.2 times slower than the GRU at sequence lengths 60, 240 and 960 (29.0 vs 14.0 ms, 115.7 vs 53.3 ms, 462.3 vs 233.7 ms). No time-parallel advantage exists. Only the step size is input-dependent. |
-| Geometry-aware calibration | **Not implemented** | Planned (work package WP1). |
-| First parity check (V1) | Preliminary | 3 seeds, Delhi: the rebuilt engine had MAE 65.62 against 64.56 and coverage 0.944 against 0.948. The pass criteria were too permissive to be informative (the coverage band was widened to [0.723, 1.028], accuracy tolerance was 10%, calibration used training stations), so this is not evidence of parity. |
-
+| Neighbour attention (cost proportional to sensors × neighbours) | Implemented | Output cosine similarity to exact attention at least 0.99987 for N up to 2,000 (random tokens, shared weights; not affected by the coordinate frame). Inference memory is 2.6 times lower at N = 2,000, 7.2 times at 4,000 and 16.7 times at 8,000; no advantage below about 1,000 sensors |
+| State-space temporal block | Implemented, then dropped | Sequential scan about 2.0 to 2.2 times slower than the GRU at sequence lengths 60, 240 and 960; a chunked scan is 1.7 to 2.0 times slower and not exact |
+| Coverage against network size | Measured, delhi-constants model | Deployable (chronological) calibration; real PeMS-BAY 0.918 and 0.921 (neighbour and exact attention); synthetic networks of 100 to 4,000 sensors 0.880 to 0.914. No real network above 325 sensors |
+| Interval width against baselines | Measured, delhi-constants model | On PeMS-BAY the intervals were narrower than persistence and about 21% wider than seasonal-naive; to be re-measured with the corrected frame (Section 4.3a gives 33% under the C1b protocol) |
+| Corrected parity gate (V1b) | Written, smoke-tested | Not yet run |
 ### 5.2 Defects found and fixed
-
-- A cache of neighbour indices used a key built from the coordinate sum and spread, so two different
-  sensor layouts with equal sum and spread (for example two nodes swapped) could silently share
-  neighbours. The key is now a hash of the exact coordinates, the cache is size-limited, and
-  regression tests cover both. The committed V1 and V2 numbers were not affected.
-- Descriptions of the state-space block as a parallel scan and of the attention equivalence as proven
-  were incorrect and have been corrected throughout.
-- A corrected parity gate (V1b) replaces V1: random calibration stations disjoint from the test
-  stations, an equivalence test on paired per-seed differences with margins fixed in advance (5% of
-  baseline error, 0.03 in coverage), 10 seeds, and interval widths reported. It has been smoke-tested
-  only.
-
+- A neighbour-index cache key could collide for two different sensor layouts; it is now a hash of the exact
+  coordinates, with a size limit and regression tests.
+- Descriptions of the state-space block as parallel and of the attention equivalence as proven were
+  incorrect and were corrected.
+- The first parity check (V1) reported a mean absolute error of 65.62 against 64.56 and coverage of
+  0.944 against 0.948 on three seeds, but its gate could not fail; V1b replaces it (disjoint calibration
+  stations, paired equivalence with margins fixed in advance, 10 seeds).
+- An earlier scale-up result calibrated each window on that window's own errors, which is not available
+  at forecast time. Under the deployable protocol coverage at 4,000 synthetic sensors falls from 0.902 to
+  0.880, and the suggested worst-group gap was not supported.
+- The Delhi-specific coordinate normalisation (Section 4.6), fixed in both phases.
 ## 6. Plan for Semester 4 (proposed, pending supervisor approval)
-
-The plan was revised twice: after the preliminary review, and after assessing five candidate ideas for
-novelty against verified prior work and experiments C2 and C3. All acceptance criteria are fixed
-before the experiments are run, and each work package has a fallback, so that a negative result is
-still a thesis result.
-
-| Package | Work | Acceptance criterion | Fallback |
+The plan was revised after a prior-art scan on 16 Nov 2026 and the forecast-time results of Section 4.3a.
+Acceptance criteria and fallbacks are fixed before the experiments, so a negative result is still a thesis
+result. Duration: 12 weeks, 16 Nov 2026 to 7 Feb 2027, with writing from week 6. The full plan is in
+`THESIS-COMPLETION-PLAN.md`.
+| Contribution | Work | Acceptance criterion | Fallback |
 |---|---|---|---|
-| WP0 | Corrected parity gate V1b (for the attention swap alone and for the full model); a local coordinate frame replacing the Delhi constants; a large sparse network from GHCN-Daily station data; check that LargeST [13] is usable; timing baseline | V1b attention gate recorded; Phase 1 coverage unchanged under the local frame; data decision made | Smaller curated sparse network |
-| WP1 | Geometry-aware calibration at new sites: a calibration pool from spatial-block cross-fitting, kernel localisation in geometry space with randomised localisation [16]; compared with [9], [10], [14], [17], [18] | On sparse networks over at least 20 random region splits: far-tertile coverage within 0.03 of 0.90, mean coverage within 0.02, mean width at most 10% above the global baseline. On dense networks: no worse than the global baseline by more than 0.01 in coverage or 5% in width | Characterisation of when distance matters (C2 extended to the large network) |
-| WP2 | Per-site coverage-risk estimate from geometry using a threshold-specific shift, not total variation, with an explicit assumption (plug-in diagnostics have precedent in [20]) | Spearman correlation of at least 0.5 between predicted and observed region coverage loss over at least 20 regions, and lower error than the constant predictor | Report that coverage loss is not predictable from geometry |
-| WP3 | Peak memory and time against N (325 to 8,600); neighbour-set agreement; coverage against N on PeMS-BAY, the large sparse network and, if usable, a LargeST subset | At least 5 times lower peak memory than exact attention at N ≥ 2,000; agreement ≥ 0.99; mean coverage within 0.02 of 0.90 at every size | Restrict the claim to equivalence; state evidence to 325 sensors |
-| WP4 | Exceedance alerts with a controlled miss rate at unseen sites, using conformal risk control [19] | Mean miss rate at or below the target plus 0.02 over random splits, with the false-alarm rate reported against a naive baseline | Miss rate against the number of calibration exceedances |
-| WP5 | Stronger baselines with equal tuning; leakage-free protocol [11]; reusable PyTorch package | Package installs in a fresh environment and reproduces the Delhi result within the spread over splits | Cut baselines first if time is short |
-| WP6 | Thesis in the IIT Patna format, with at least 30 verified references | Supervisor review | None |
-
-Optional, only if WP0 to WP4 are on schedule at the end of month 4: transfer between cities with few
-target calibration stations; a time-parallel state-space block; sensor placement guided by the
-coverage-risk estimate. The state-space line was demoted because the current block is about twice as
-slow as the GRU.
-
-Timeline: month 1 WP0; month 2 WP1 design; month 3 WP1 evaluation and WP2; month 4 WP3 and WP4;
-month 5 WP5; month 6 WP6 and the final literature re-scan.
-
+| A. Exact station-level coverage | Hierarchical conformal prediction [21] with the station as the group, and a second-moment variant for per-station spread; chronological calibration with a rolling window or adaptive correction for the error growth found in Section 4.3a | Mean coverage within 0.02 of 0.90 on every network; share of stations below 0.80 halved with width at most 15% larger | Width against worst-station coverage curve |
+| B. A new sensor's first weeks | Cold start, then warm-up with Generalized hierarchical conformal [22], own-data split conformal and adaptive conformal inference, for 0 to 60 days of history | Coverage within 0.03 at every history length; at least 5% narrower by the longest history on 4 of 6 networks | Coverage and width against history curves |
+| C. Where position matters (gated) | Geometry-aware calibration [16], [17] against sequential whitening [10] and cluster-aware calibration [18], only if a 300 to 1,500 station GHCN network shows far-tercile coverage at least 0.03 below near-tercile over 20 or more region splits | Far-tercile coverage within 0.03 of 0.90, mean within 0.02, width at most +10%, not worse than whitening | Characterisation of when distance does not matter |
+| D. Useful as well as valid | Diagnose the gap to seasonal-naive; combined forecast, locally scaled scores, quantile head | Width at most conformalised seasonal-naive at coverage within 0.02 of 0.90 on traffic; at most the better of persistence and seasonal-naive on the other networks | State the limitation |
+| Scale and alerts | Memory and time to about 8,600 sensors (LargeST), coverage against N on GHCN, threshold alerts at one air-quality network [19], IGNNK baseline, reproducibility pass | Reproduces one headline table in a fresh environment | Cut alerts, then scale, first |
+| Writing | Chapters 1 to 3 from week 6, 4 to 9 weeks 10 to 11, supervisor review week 11, submission-ready 7 Feb 2027 | Supervisor review | None |
+Phase 1 items still open and scheduled in Semester 4: re-testing the dropout, drift, 7-sensor and E-STGCN
+results under the C1b rules, re-running C2 and C3 with the corrected frame, and full re-runs of V3 and
+V3b. The state-space block, a separate coverage-risk estimate, and sensor placement are dropped.
 ## 7. Summary of Progress
-
-Phase 1 is complete. The forecaster was formulated, validated on four real datasets, released as a
-preprint, and re-evaluated this semester over random disjoint station splits. Mean coverage was close
-to the 0.90 target on all five networks, with considerable variation between splits and between
-stations. Two further experiments showed that coverage falls with distance from the training network
-only in the sparse weather network, and that a coverage bound based on total-variation distance would
-be vacuous at the available sample sizes. Phase 2 is planned: a neighbour attention that matches
-exact attention in output and a sequential state-space block exist, but neither has shown a speed or
-memory advantage, geometry-aware calibration is not implemented, and the first parity check was too
-permissive to count. A preliminary review and a novelty assessment shaped the Semester-4 plan, which
-centres on geometry-aware calibration at new sites, with acceptance criteria and fallbacks for each
-work package, pending supervisor approval.
-
+Phase 1 is complete as a design, an implementation and an evaluation. The forecaster was validated on
+five real networks and released as a preprint. Under the rule used in C1, mean coverage was 87.6% to
+90.6% of a 90% target. Under calibration restricted to forecast-time information (C1b) it is 77.7% to
+89.1%: Delhi and Beijing under-cover because forecast error roughly doubles over the test period, while
+weather and the two traffic networks stay near target. Persistence and seasonal-naive intervals show the same
+shortfall on the air-quality networks. A coordinate-normalisation defect that inflated error and width on
+four networks was found and fixed. Against persistence, OmniST is better on three networks and not on
+PeMSD7-M or weather; against a seasonal forecast it is wider on PeMS-BAY. Distance from the training
+network matters only in the sparse weather network. Phase 2 is part of the final thesis: neighbour attention
+cuts attention memory 7 to 17 times from 4,000 sensors with equal output, the state-space block was dropped,
+and the Semester-4 plan (Section 6) is organised around station-level coverage, a new sensor's first weeks,
+position-dependent calibration and useful intervals, with acceptance criteria and fallbacks, pending
+supervisor approval.
 ---
 
 ## 8. References
@@ -401,6 +455,10 @@ https://arxiv.org/abs/2606.06753
 
 [20] Y. Zhu, J. Yu, L. Li, G. Zhang, et al., "Conformalized Large Language Models under Configuration
 Shift," *arXiv:2608.01460*, 2026. [Online]. Available: https://arxiv.org/abs/2608.01460
+[21] Y. Lee, R. F. Barber, and R. Willett, "Distribution-free inference with hierarchical data,"
+*arXiv:2306.06342*. [Online]. Available: https://arxiv.org/abs/2306.06342
+[22] S. Mallick et al., "Generalized Hierarchical Conformal Prediction," *arXiv:2608.15500* [stat.ME],
+2026. [Online]. Available: https://arxiv.org/abs/2608.15500 (full author list not verified).
 
 ---
 

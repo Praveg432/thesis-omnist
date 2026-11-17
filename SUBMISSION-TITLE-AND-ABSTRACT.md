@@ -103,3 +103,28 @@ figures (memory ratio at 8,000 sensors, no gain below 1,000, traffic width order
 - Consequence of freezing: the abstract quotes the C1 range 87.6% to 90.6%. If the chronological C1
   re-run (plan item P1-1) moves it by more than 0.01, the submitted abstract no longer matches the
   results and a revision request is needed.
+
+---
+
+## 6. Proposed revision after the chronological re-run (not submitted; needs the author's and supervisor's decision)
+
+Reason. The 87.6% to 90.6% range comes from experiment C1, whose calibration quantile uses errors from the
+period being evaluated. With calibration restricted to errors available at forecast time (experiment C1b,
+`FINALIZATION-RECORD.md`, Sections 11 and 12) the means are 77.7% to 89.1% across the two coordinate frames
+tested. The abstract's contributions paragraph already promises an evaluation that uses only forecast-time
+information, so the first-part numbers need to say which rule they come from. Nothing else in the abstract
+changes. All figures below are tied to result files by `tools/check_c1b_report.py`.
+
+One sentence is replaced. Old:
+
+> average coverage at unseen sensors was between 87.6% and 90.6% for a 90% target. The evaluation also showed the limits of an average.
+
+New:
+
+> average coverage at unseen sensors was between 87.6% and 90.6% for a 90% target when each interval was calibrated on the calibration stations' errors over the evaluation period. Calibrating only on errors available at forecast time gave averages between 77.7% and 89.1%, lowest in the two air-quality networks, where forecast error roughly doubled over the test period; persistence and seasonal forecasts fell short in the same way. The evaluation also showed the limits of an average.
+
+Length: abstract 503 words now, 556 after the change (limit 600). `tools/check_submission_text.py`
+checks the 87.6% to 90.6% range against the C1 files and would pass unchanged; it should gain a check of 77.7%
+and 89.1% against the C1b files if the revision is applied. Two options if the revision is not filed: keep the
+abstract and state in the thesis that its coverage figures are C1 figures; or file the revision. The first
+leaves a sentence that a reader will take as forecast-time coverage.

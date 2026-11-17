@@ -280,3 +280,25 @@ included because it shows the largest effect.
 **Decision needed.** Which frame the report and thesis use. Proposed: the training-station frame, with
 every legacy-frame result kept and labelled. Phase 2 results (V3, V3b, V4) were produced with the legacy
 frame; V3 and V3b accuracy and width must be re-run before any statement about usefulness is final.
+
+## 13. Phase 1 closure for the Semester 3 report (17 Nov 2026)
+
+| Step | Outcome |
+|---|---|
+| S1 to S3 | C1b run on five networks, both coordinate frames (Sections 11 and 12) |
+| S4 | C1c: persistence and seasonal-naive with chronological conformal intervals on the same splits (`phase1-omnist/experiments/C1c_naive_baselines.py`, 6 tests of `phase1-omnist/src/naive_baselines.py`). Persistence and seasonal-naive under-cover on Delhi (0.772, 0.788) and Beijing (0.806, 0.773) as the model does. Against persistence the corrected-frame model is better on Delhi, Beijing and PeMS-BAY, ties on weather (MAE 4.73 against 4.72) and is worse on PeMSD7-M (3.79 against 3.63). On PeMS-BAY the model's chronological width is 18.8 against 14.1 for seasonal-naive (33% wider; seasonal-naive is scored on a later subset of windows). Interpolators and E-STGCN were not re-run under these rules |
+| Diagnosis | C1d (10 splits, corrected frame): late-third over early-third error is 1.90 (Delhi), 2.11 (Beijing), 0.87 (weather); test-station over calibration-station error is 1.03, 0.99, 1.08; chronological coverage by third is 0.99/0.89/0.50, 0.88/0.73/0.73, 0.84/0.83/0.94. Under-coverage follows error growth, not station mismatch. Why error grows is untested (the Delhi test period covers the high-pollution season; this is a hypothesis). Delhi has 10 test windows and Beijing 22 |
+| S5 | Done (Section 12). Training-station frame adopted for new work |
+| S6 | Not re-run, stated as such in the report: dropout robustness, drift handling, 7-sensor run, E-STGCN comparison, interpolator comparison; C2 and C3 with the corrected frame |
+| S7 | Preprint: see below |
+| S8 | References: [1] IJCAI 2018 (ijcai.org/proceedings/2018/505), [3] AAAI vol. 35 (paper starts on page 4478), [4] Springer 2005 (link.springer.com/10.1007/b106715) and [5] Foundations and Trends in Machine Learning 16(4) (ACM DOI 10.1561/2200000101) match the cited venue and year. Page ranges of [1] (3634 to 3640) and [5] (494 to 591) were not confirmed from the sources reached. New references [21] (Lee, Barber, Willett; arXiv:2306.06342) and [22] (arXiv:2608.15500; the author list was not shown on the page reached, so it is cited as "S. Mallick et al." with that caveat) |
+| S9 | Report updated (Sections 4.3a, 4.6, 5, 6, 7 and references; abstract unchanged), PDF regenerated, `tools/check_c1b_report.py` added (41 figures) |
+
+**Preprint (S7).** The public abstract (arXiv:2611.04256) says coverage of 90% or above holds under 30 to
+50% dropout and at 325 sensors. C1 gives 87.6% to 90.6% and C1b gives 77.7% to 89.1%. Proposed: post a
+revised version after the Semester 4 station-level results (about week 4 of the plan), stating the
+calibration rule behind each number and removing the dropout and 325-sensor guarantee claims. The
+decision to post, and when, is the author's. Nothing public has been changed.
+
+**Still open for Phase 1.** Abstract revision decision; frame choice applied to C2, C3 and the Phase 2
+results; the S6 re-runs; supervisor approval of the title and Phase 2 scope.

@@ -1,0 +1,397 @@
+{
+  "experiment": "C1d under-coverage diagnosis (training-station frame)",
+  "domain": "delhi_air_quality",
+  "splits": [
+    {
+      "split": 0,
+      "n_windows": 10,
+      "first_scored": 3,
+      "coverage_by_third_of_scored_windows": [
+        0.9917,
+        0.9208,
+        0.5042
+      ],
+      "late_over_early_error_cal": 1.7555,
+      "late_over_early_error_test": 1.8212,
+      "test_over_cal_error_scored": 0.9923,
+      "mean_chronological_quantile_over_late_mean_cal_error": 0.9873,
+      "per_window_cal_mean_error": [
+        27.461,
+        25.026,
+        31.587,
+        17.831,
+        16.886,
+        10.586,
+        13.793,
+        30.357,
+        61.367,
+        55.868
+      ],
+      "per_window_test_mean_error": [
+        28.129,
+        23.745,
+        28.072,
+        17.08,
+        18.056,
+        8.784,
+        15.575,
+        28.783,
+        65.676,
+        51.139
+      ]
+    },
+    {
+      "split": 1,
+      "n_windows": 10,
+      "first_scored": 3,
+      "coverage_by_third_of_scored_windows": [
+        0.9958,
+        0.8903,
+        0.5062
+      ],
+      "late_over_early_error_cal": 2.2449,
+      "late_over_early_error_test": 2.3339,
+      "test_over_cal_error_scored": 0.953,
+      "mean_chronological_quantile_over_late_mean_cal_error": 0.7924,
+      "per_window_cal_mean_error": [
+        24.827,
+        23.899,
+        28.688,
+        15.083,
+        12.755,
+        10.275,
+        12.901,
+        30.293,
+        88.236,
+        55.259
+      ],
+      "per_window_test_mean_error": [
+        21.08,
+        22.387,
+        26.052,
+        13.821,
+        13.703,
+        13.062,
+        11.403,
+        32.406,
+        72.194,
+        57.65
+      ]
+    },
+    {
+      "split": 2,
+      "n_windows": 10,
+      "first_scored": 3,
+      "coverage_by_third_of_scored_windows": [
+        0.9812,
+        0.8528,
+        0.5083
+      ],
+      "late_over_early_error_cal": 1.925,
+      "late_over_early_error_test": 1.6468,
+      "test_over_cal_error_scored": 1.1282,
+      "mean_chronological_quantile_over_late_mean_cal_error": 0.9754,
+      "per_window_cal_mean_error": [
+        22.852,
+        20.993,
+        24.503,
+        16.889,
+        16.309,
+        13.254,
+        14.472,
+        23.407,
+        64.193,
+        43.972
+      ],
+      "per_window_test_mean_error": [
+        28.748,
+        28.342,
+        35.143,
+        19.324,
+        17.148,
+        12.618,
+        16.194,
+        37.526,
+        63.832,
+        50.533
+      ]
+    },
+    {
+      "split": 3,
+      "n_windows": 10,
+      "first_scored": 3,
+      "coverage_by_third_of_scored_windows": [
+        0.9979,
+        0.8972,
+        0.4979
+      ],
+      "late_over_early_error_cal": 1.8804,
+      "late_over_early_error_test": 1.7459,
+      "test_over_cal_error_scored": 1.0158,
+      "mean_chronological_quantile_over_late_mean_cal_error": 0.9719,
+      "per_window_cal_mean_error": [
+        23.313,
+        22.419,
+        27.238,
+        16.396,
+        14.963,
+        12.609,
+        12.892,
+        21.824,
+        62.667,
+        52.722
+      ],
+      "per_window_test_mean_error": [
+        25.858,
+        26.095,
+        31.654,
+        14.623,
+        12.518,
+        10.922,
+        13.111,
+        28.7,
+        69.432,
+        47.839
+      ]
+    },
+    {
+      "split": 4,
+      "n_windows": 10,
+      "first_scored": 3,
+      "coverage_by_third_of_scored_windows": [
+        0.9979,
+        0.9069,
+        0.4625
+      ],
+      "late_over_early_error_cal": 1.958,
+      "late_over_early_error_test": 1.882,
+      "test_over_cal_error_scored": 0.977,
+      "mean_chronological_quantile_over_late_mean_cal_error": 0.9266,
+      "per_window_cal_mean_error": [
+        24.789,
+        18.859,
+        24.215,
+        14.495,
+        15.611,
+        12.773,
+        16.357,
+        20.521,
+        64.276,
+        48.078
+      ],
+      "per_window_test_mean_error": [
+        27.219,
+        20.123,
+        24.813,
+        13.18,
+        15.625,
+        9.475,
+        13.627,
+        26.417,
+        57.27,
+        52.106
+      ]
+    },
+    {
+      "split": 5,
+      "n_windows": 10,
+      "first_scored": 3,
+      "coverage_by_third_of_scored_windows": [
+        0.9917,
+        0.8819,
+        0.4771
+      ],
+      "late_over_early_error_cal": 1.85,
+      "late_over_early_error_test": 2.217,
+      "test_over_cal_error_scored": 1.0445,
+      "mean_chronological_quantile_over_late_mean_cal_error": 0.9909,
+      "per_window_cal_mean_error": [
+        20.715,
+        24.398,
+        28.837,
+        20.829,
+        17.471,
+        15.624,
+        15.502,
+        26.06,
+        60.719,
+        50.026
+      ],
+      "per_window_test_mean_error": [
+        20.076,
+        24.951,
+        27.168,
+        16.297,
+        11.15,
+        12.439,
+        15.466,
+        33.02,
+        76.192,
+        50.842
+      ]
+    },
+    {
+      "split": 6,
+      "n_windows": 10,
+      "first_scored": 3,
+      "coverage_by_third_of_scored_windows": [
+        0.9667,
+        0.825,
+        0.5333
+      ],
+      "late_over_early_error_cal": 1.9379,
+      "late_over_early_error_test": 1.9571,
+      "test_over_cal_error_scored": 1.117,
+      "mean_chronological_quantile_over_late_mean_cal_error": 0.9312,
+      "per_window_cal_mean_error": [
+        22.261,
+        26.046,
+        24.898,
+        18.849,
+        14.051,
+        13.846,
+        15.152,
+        28.101,
+        73.174,
+        40.588
+      ],
+      "per_window_test_mean_error": [
+        24.665,
+        28.509,
+        31.26,
+        20.555,
+        13.035,
+        13.973,
+        14.801,
+        47.241,
+        65.067,
+        52.938
+      ]
+    },
+    {
+      "split": 7,
+      "n_windows": 10,
+      "first_scored": 3,
+      "coverage_by_third_of_scored_windows": [
+        0.9896,
+        0.9014,
+        0.4729
+      ],
+      "late_over_early_error_cal": 1.8389,
+      "late_over_early_error_test": 1.8829,
+      "test_over_cal_error_scored": 1.0262,
+      "mean_chronological_quantile_over_late_mean_cal_error": 0.9765,
+      "per_window_cal_mean_error": [
+        23.746,
+        21.084,
+        30.994,
+        22.115,
+        16.721,
+        12.203,
+        17.068,
+        26.772,
+        61.599,
+        51.059
+      ],
+      "per_window_test_mean_error": [
+        24.131,
+        24.17,
+        32.562,
+        17.72,
+        14.323,
+        11.994,
+        16.668,
+        31.363,
+        65.641,
+        55.256
+      ]
+    },
+    {
+      "split": 8,
+      "n_windows": 10,
+      "first_scored": 3,
+      "coverage_by_third_of_scored_windows": [
+        0.9938,
+        0.9014,
+        0.5667
+      ],
+      "late_over_early_error_cal": 1.6946,
+      "late_over_early_error_test": 1.8801,
+      "test_over_cal_error_scored": 1.051,
+      "mean_chronological_quantile_over_late_mean_cal_error": 1.0728,
+      "per_window_cal_mean_error": [
+        28.845,
+        26.013,
+        29.711,
+        17.596,
+        18.678,
+        11.59,
+        15.045,
+        33.888,
+        59.906,
+        49.521
+      ],
+      "per_window_test_mean_error": [
+        28.172,
+        24.066,
+        30.266,
+        17.916,
+        18.671,
+        11.187,
+        13.857,
+        33.298,
+        65.213,
+        56.601
+      ]
+    },
+    {
+      "split": 9,
+      "n_windows": 10,
+      "first_scored": 3,
+      "coverage_by_third_of_scored_windows": [
+        0.9938,
+        0.9042,
+        0.5146
+      ],
+      "late_over_early_error_cal": 1.9261,
+      "late_over_early_error_test": 2.1375,
+      "test_over_cal_error_scored": 1.0381,
+      "mean_chronological_quantile_over_late_mean_cal_error": 0.9069,
+      "per_window_cal_mean_error": [
+        21.559,
+        22.25,
+        28.869,
+        14.546,
+        10.826,
+        11.257,
+        11.901,
+        24.244,
+        61.715,
+        54.026
+      ],
+      "per_window_test_mean_error": [
+        20.533,
+        20.548,
+        25.983,
+        12.561,
+        13.312,
+        13.123,
+        13.357,
+        25.053,
+        66.579,
+        51.715
+      ]
+    }
+  ],
+  "aggregate": {
+    "coverage_by_third_mean": [
+      0.99,
+      0.8882,
+      0.5044
+    ],
+    "late_over_early_error_cal_mean": 1.9011,
+    "late_over_early_error_test_mean": 1.9504,
+    "test_over_cal_error_mean": 1.0343,
+    "test_over_cal_error_sd": 0.0559
+  }
+}

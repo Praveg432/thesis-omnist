@@ -40,6 +40,10 @@ initialisation. They are kept as the original record; C1 is the primary evidence
 | 11 | Neighbour attention versus exact, and cost scaling | `phase1-omnist/experiments/14_approx_knn_test.py`, `12_scalability_stress.py` | `phase1-omnist/results/exp_approx_knn.json`, `exp_scalability_stress.json` | EXECUTED |
 | 12 | Ablations, calibration diagnostics, multi-seed hardening | `phase1-omnist/experiments/B3_ablations.py`, `B4_calibration.py`, `08_optimizations.py`, `05_final_comparison.py` | `phase1-omnist/results/exp_ablations_v2.json`, `exp_calibration.json`, `exp_optimizations.json`, `exp_final_5seed.json`, `exp_definitive_10seed.json` | EXECUTED |
 
+| 13 | Forecast-time (chronological) calibration at unseen stations, Delhi constants and training-station coordinate frame | `phase1-omnist/experiments/C1b_chronological_eval.py`, `C1b_summarise.py` | `phase1-omnist/results/exp_C1b_<domain>.json`, `exp_C1b_norm_<domain>.json` | EXECUTED (5 networks; 20 splits small, 6 traffic) |
+| 14 | Persistence and seasonal-naive baselines with the same intervals and splits | `phase1-omnist/experiments/C1c_naive_baselines.py` | `phase1-omnist/results/exp_C1c_baselines_<domain>.json` | EXECUTED (interpolators and E-STGCN not re-run under C1b) |
+| 15 | Under-coverage tracks error growth over the test period, not station mismatch | `phase1-omnist/experiments/C1d_undercoverage_diagnosis.py` | `phase1-omnist/results/exp_C1d_diagnosis_<domain>.json` | EXECUTED (Delhi, Beijing, weather; 10 splits; cause of the error growth untested) |
+| 16 | Delhi-specific coordinate constants inflate error and width on four networks | `phase1-omnist/tests/test_coordinate_frame.py`, C1b with `norm` | `phase1-omnist/results/exp_C1b_norm_<domain>.json` | EXECUTED; `FINALIZATION-RECORD.md` Section 12 |
 Full claim-to-file map for Phase 1: `phase1-omnist/RESULTS-INDEX.md`.
 
 ---
