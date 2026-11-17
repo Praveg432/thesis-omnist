@@ -359,3 +359,27 @@ rule awaits confirmation; 573 words in the submission record, 584 with the keywo
 **Not done.** Multi-year runs for weather and traffic (not run; the traffic series cover about two and six
 months, so a multi-year design does not apply to them); baselines under the cross-year rules; HCP with more
 calibration stations.
+
+## 17. Pre-registered confirmation C1h (17 Nov 2026)
+
+Pre-registration committed before any run (`PRE-REGISTRATION-C1H.md`, commit 3c462ee). Script
+`phase1-omnist/experiments/C1h_confirmation.py`; verdicts `phase1-omnist/experiments/C1h_summarise.py` ->
+`phase1-omnist/results/exp_C1h_verdicts.json`. New code: `phase1-omnist/src/interval_metrics.py` (interval score,
+paired differences), forecast helpers in `phase1-omnist/src/naive_baselines.py`, `test_offset_days` in the weather
+loader. Tests: 7 new (Phase 1 suite 91 passed).
+
+| Hypothesis | Delhi (20 fresh splits) | Beijing (20 fresh splits) | Weather (20 splits, not used for selection) |
+|---|---|---|---|
+| H1/H2 coverage within 0.02 of 0.90 | PASS, 0.902 [0.893, 0.911] | PASS, 0.890 [0.883, 0.896] | PASS, 0.908 [0.884, 0.931] |
+| H3 interval score below persistence and seasonal-naive | PASS | PASS | PASS |
+| H4 interval score below the same-year rule | PASS | PASS | **FAIL** (worse by 5.7 [4.0, 7.4]) |
+
+Width under the fixed rule against the same-year rule: Delhi 137.1 against 105.4, Beijing 215.0 against 140.0,
+weather 25.3 against 19.3. Exploratory: hierarchical conformal on PeMSD7-M with 30 calibration stations, 6 splits:
+coverage 0.922 against 0.891 pooled, width +31%, stations below 0.80 from 11.7% to 1.7%
+(`phase1-omnist/results/exp_C1g_hcp_pemsd7_traffic.json`).
+
+**Consequences.** The abstract now quotes the confirmation figures (90.2%, 89.0%, and 90.8% on weather) in place
+of the post-hoc 89.8% and 89.6%; 597 words with the keywords line (limit 600). The rule is a repair for networks
+whose error changes strongly through the year; it is not uniformly better (H4 on weather). Traffic was not
+tested with the rule (its series are too short for earlier years).

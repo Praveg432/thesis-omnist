@@ -56,7 +56,9 @@ contributions A and B.
 **Strengthening (17 Nov 2026, `FINALIZATION-RECORD.md` Section 16).** Calibrating on earlier years' errors, scaled
 by forecast magnitude and matched by season, brought Delhi and Beijing to 0.898 and 0.896 (C1f), at 30% and 61%
 more width. Hierarchical conformal with 10 calibration stations was valid but 41% to 90% wider (C1g). A
-residual-to-last-value head did not beat persistence. **Contribution A now starts from these results:** fix the
+residual-to-last-value head did not beat persistence. **Confirmed (C1h, pre-registered):** coverage 0.902, 0.890 and 0.908 on Delhi, Beijing and weather, and OmniST's
+intervals beat persistence and seasonal-naive on all three; the rule does not beat the same-year rule on weather.
+**Contribution A now starts from these results:** fix the
 scaled seasonal rule in advance, confirm it on held-out years and on weather and traffic with multi-year data,
 compare against the baselines under the same rule, and test HCP with more calibration stations (traffic).
 

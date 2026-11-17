@@ -47,6 +47,27 @@ def seasonal_naive_errors(series: np.ndarray, starts: list, window: int, horizon
     return np.stack(out), kept
 
 
+def persistence_forecasts(series: np.ndarray, starts: list, window: int, horizon: int) -> np.ndarray:
+    """Last observed value repeated over the horizon, shape (windows, stations, horizon)."""
+    _check_series(series)
+    return np.stack([np.repeat(series[s + window - 1][:, None], horizon, axis=1) for s in starts])
+
+
+def seasonal_naive_forecasts(series: np.ndarray, starts: list, window: int, horizon: int, period: int) -> np.ndarray:
+    """Seasonal-naive forecasts for every window; raises if a window lacks a full history (none are dropped)."""
+    _check_series(series)
+    k_max = -(-horizon // period)
+    if min(starts) + window - k_max * period < 0:
+        raise ValueError(f"seasonal-naive needs {k_max * period} steps of history before every origin")
+    return np.stack([np.stack([series[s + window + h - (-(-(h + 1) // period)) * period] for h in range(horizon)],
+                              axis=1) for s in starts])
+
+
+def targets(series: np.ndarray, starts: list, window: int, horizon: int) -> np.ndarray:
+    _check_series(series)
+    return np.stack([series[s + window:s + window + horizon].T for s in starts])
+
+
 def _check_series(series: np.ndarray) -> None:
     if series.ndim != 2:
         raise ValueError(f"series must have shape (steps, stations), got {series.shape}")

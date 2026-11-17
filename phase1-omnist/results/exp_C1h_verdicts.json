@@ -1,0 +1,179 @@
+{
+  "delhi_air_quality": {
+    "n_splits": 20,
+    "coverage_scaled_seasonal": {
+      "mean": 0.9022,
+      "ci95": [
+        0.8935,
+        0.9109
+      ],
+      "n": 20
+    },
+    "coverage_same_year": {
+      "mean": 0.8285,
+      "ci95": [
+        0.818,
+        0.8389
+      ],
+      "n": 20
+    },
+    "width_scaled_seasonal": 137.074,
+    "width_same_year": 105.411,
+    "fraction_stations_below_0.80": 0.006,
+    "baseline_coverage_scaled_seasonal": {
+      "persistence": 0.8805,
+      "seasonal_naive": 0.9333
+    },
+    "interval_score": {
+      "omnist": 169.94,
+      "persistence": 300.237,
+      "seasonal_naive": 388.782,
+      "omnist_same_year": 247.935
+    },
+    "diff_vs_persistence": {
+      "mean": -130.2978,
+      "ci95": [
+        -142.6168,
+        -117.9787
+      ],
+      "n": 20
+    },
+    "diff_vs_seasonal_naive": {
+      "mean": -218.8427,
+      "ci95": [
+        -231.0219,
+        -206.6636
+      ],
+      "n": 20
+    },
+    "diff_vs_same_year_rule": {
+      "mean": -77.9952,
+      "ci95": [
+        -85.8051,
+        -70.1853
+      ],
+      "n": 20
+    },
+    "H1": "PASS",
+    "H3": "PASS",
+    "H4": "PASS"
+  },
+  "beijing_air_quality": {
+    "n_splits": 20,
+    "coverage_scaled_seasonal": {
+      "mean": 0.8896,
+      "ci95": [
+        0.883,
+        0.8961
+      ],
+      "n": 20
+    },
+    "coverage_same_year": {
+      "mean": 0.7799,
+      "ci95": [
+        0.7689,
+        0.7908
+      ],
+      "n": 20
+    },
+    "width_scaled_seasonal": 214.998,
+    "width_same_year": 139.969,
+    "fraction_stations_below_0.80": 0.0,
+    "baseline_coverage_scaled_seasonal": {
+      "persistence": 0.9731,
+      "seasonal_naive": 0.922
+    },
+    "interval_score": {
+      "omnist": 327.14,
+      "persistence": 853.059,
+      "seasonal_naive": 533.578,
+      "omnist_same_year": 383.994
+    },
+    "diff_vs_persistence": {
+      "mean": -525.9191,
+      "ci95": [
+        -541.789,
+        -510.0492
+      ],
+      "n": 20
+    },
+    "diff_vs_seasonal_naive": {
+      "mean": -206.4374,
+      "ci95": [
+        -211.2922,
+        -201.5827
+      ],
+      "n": 20
+    },
+    "diff_vs_same_year_rule": {
+      "mean": -56.8542,
+      "ci95": [
+        -66.8377,
+        -46.8707
+      ],
+      "n": 20
+    },
+    "H1": "PASS",
+    "H3": "PASS",
+    "H4": "PASS"
+  },
+  "ghcn_weather": {
+    "n_splits": 20,
+    "coverage_scaled_seasonal": {
+      "mean": 0.9077,
+      "ci95": [
+        0.8843,
+        0.9311
+      ],
+      "n": 20
+    },
+    "coverage_same_year": {
+      "mean": 0.8837,
+      "ci95": [
+        0.8518,
+        0.9156
+      ],
+      "n": 20
+    },
+    "width_scaled_seasonal": 25.264,
+    "width_same_year": 19.314,
+    "fraction_stations_below_0.80": 0.125,
+    "baseline_coverage_scaled_seasonal": {
+      "persistence": 0.8722,
+      "seasonal_naive": 0.8939
+    },
+    "interval_score": {
+      "omnist": 30.133,
+      "persistence": 34.455,
+      "seasonal_naive": 33.101,
+      "omnist_same_year": 24.414
+    },
+    "diff_vs_persistence": {
+      "mean": -4.3226,
+      "ci95": [
+        -6.6165,
+        -2.0287
+      ],
+      "n": 20
+    },
+    "diff_vs_seasonal_naive": {
+      "mean": -2.968,
+      "ci95": [
+        -4.5751,
+        -1.3609
+      ],
+      "n": 20
+    },
+    "diff_vs_same_year_rule": {
+      "mean": 5.7191,
+      "ci95": [
+        3.9958,
+        7.4423
+      ],
+      "n": 20
+    },
+    "H2": "PASS",
+    "H3": "PASS",
+    "H4": "FAIL"
+  }
+}

@@ -55,12 +55,18 @@ def load_real_weather(data_dir: Optional[Path] = None
 def prepare_real_weather(
     config: DataConfig,
     hold_out_stations: Optional[List[int]] = None,
+    test_offset_days: int = 0,
 ) -> Tuple[SpatiotemporalDataset, SpatiotemporalDataset, SpatiotemporalDataset, dict]:
     """Prepare real weather data with a temporal split, mirroring prepare_real_delhi.
+
+    test_offset_days > 0 moves the test year back by that many days (rolling-origin evaluation).
 
     Daily cadence, 2018-2022 (~1826 days). Temporal split: final 365 days -> test, 180 before -> val.
     """
     data, coords, dates, station_ids = load_real_weather()
+    if test_offset_days:
+        # rolling-origin evaluation: drop the last `test_offset_days` days so that the test year ends earlier
+        data, dates = data[:-test_offset_days], dates[:-test_offset_days]
     n_days, n_stations, n_features = data.shape
 
     # clean: TMAX physical range roughly [-40, 60] degC; treat outside as missing

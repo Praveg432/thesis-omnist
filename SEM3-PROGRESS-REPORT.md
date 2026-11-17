@@ -42,7 +42,7 @@
 
 Sensor networks for air quality, traffic and weather are used to forecast conditions and to act on them. Two features of real deployments make this hard. The networks change: sensors fail, go offline and are installed at new sites, so forecasts are often needed at locations the model has never seen. And a single predicted value is not enough to act on. An operator needs an interval that contains the true value with a stated probability, and needs to know where that statement can be trusted.
 
-This thesis studies uncertainty quantification for forecasting at sensor locations a model was not trained on, in networks whose layout changes. Its first part, now complete and released as a preprint, built and evaluated OmniST. OmniST is a forecaster that does not depend on a fixed network layout, so it can predict at a new sensor without being retrained, and it attaches split conformal prediction intervals to its forecasts at unseen sensors. On five real networks covering air quality, weather and traffic, with stations split at random into training, calibration and test sets many times over, average coverage at unseen sensors was between 87.6% and 90.6% for a 90% target when calibrated on errors from the evaluation period itself. Using only errors available at forecast time, averages were between 77.8% and 89.1%, lowest in the two air-quality networks, where error roughly doubled through the test year and simple baselines fell short alike. Calibrating on earlier years' errors, scaled by the forecast's magnitude, raised these two to 89.8% and 89.6%; that rule was chosen on the same data and awaits confirmation. The evaluation also showed the limits of an average. Coverage varied from split to split, and some individual stations were covered far less often than the target. It fell with distance from the training network in one sparse weather network, by about 1.4 points per typical station spacing, but not in the denser networks. And the cost of the model's attention grows with the square of the number of sensors.
+This thesis studies uncertainty quantification for forecasting at sensor locations a model was not trained on, in networks whose layout changes. Its first part, now complete and released as a preprint, built and evaluated OmniST. OmniST is a forecaster that does not depend on a fixed network layout, so it can predict at a new sensor without being retrained, and it attaches split conformal prediction intervals to its forecasts at unseen sensors. On five real networks covering air quality, weather and traffic, with stations split at random into training, calibration and test sets many times over, average coverage at unseen sensors was between 87.6% and 90.6% for a 90% target when calibrated on errors from the evaluation period itself. Using only errors available at forecast time, averages were between 77.8% and 89.1%, lowest in the two air-quality networks, where error roughly doubled through the test year and simple baselines fell short alike. Calibrating instead on earlier years' errors from the same season, scaled by the forecast's magnitude, gave 90.2% and 89.0% in a pre-registered test on fresh station splits, and 90.8% on the weather network, which played no part in choosing the rule. The evaluation also showed the limits of an average. Coverage varied from split to split, and some individual stations were covered far less often than the target. It fell with distance from the training network in one sparse weather network, by about 1.4 points per typical station spacing, but not in the denser networks. And the cost of the model's attention grows with the square of the number of sensors.
 
 The remaining work asks three open questions. First, where does coverage at a new site fail, and can calibration that accounts for the site's position relative to the existing network repair it without harming sites that are already well covered? Second, does the approach continue to hold, in coverage and in compute, as networks grow from hundreds toward thousands of sensors? Third, are the intervals useful as well as calibrated, judged against simple forecasting baselines and in decision tasks such as threshold alerts with a controlled miss rate? Early measurements bear on the last two. Restricting attention to each sensor's nearest neighbours reduced the attention layer's inference memory about seventeenfold at 8,000 sensors, with no gain below about a thousand. Replacing the recurrent time model with a state-space block brought no speed gain on this hardware. On real traffic data the intervals were narrower than those of a persistence forecast but wider than those of a seasonal one.
 
@@ -225,8 +225,8 @@ were fixed in the script before the run. Window t-1 ends where window t begins, 
   established against seasonal forecasts.
 ### 4.3b Strengthening forecast-time coverage (experiments C1e to C1g)
 Three directions were tried after Section 4.3a. All use the corrected coordinate frame and only information
-available at forecast time. They are reported as found; the rule recommended below was chosen after seeing
-these results, so it is a candidate to be confirmed in Semester 4, not a validated method.
+available at forecast time. The rule recommended below was chosen after seeing these results; Section 4.3c
+confirms it in a pre-registered test.
 
 **More history: several test years (C1f).** Each network was re-evaluated over consecutive test years, with
 the model retrained for each year on earlier years only (Delhi: 2021, 2022 and 2023; Beijing: two test
@@ -263,6 +263,35 @@ weather and from 4.73 to 5.04 on PeMS-BAY. It does not close the gap to persiste
 **What this changes.** The forecast-time shortfall on the air-quality networks is mostly a calibration
 problem with too little history, and it is largely repairable by calibrating on earlier years, at a cost in
 width. The weather and traffic networks were not re-run over several years.
+
+### 4.3c Pre-registered confirmation (experiment C1h)
+The rule of Section 4.3b (earlier years' errors from the same season, scaled by the forecast's magnitude) was
+fixed and four hypotheses with pass rules were committed before any confirmation run
+(`PRE-REGISTRATION-C1H.md`). The test used station splits not used to choose the rule (20 fresh splits on Delhi
+and Beijing) and a network not used at all (weather, three test years, each model trained on earlier years only).
+Interval score is the Winkler score of the 90% interval (width plus 20 times the distance of a miss); lower is
+better. Persistence and seasonal-naive receive the same rule.
+
+| Network | Splits | Coverage, same-year rule | Coverage, fixed rule [95% CI] | Width, same-year / fixed | Stations below 0.80 | Interval score: OmniST / persistence / seasonal-naive / OmniST same-year | Coverage (H1, H2) | Beats baselines (H3) | Beats same-year rule (H4) |
+|---|:---:|:---:|:---:|:---:|:---:|---|:---:|:---:|:---:|
+| Delhi | 20 | 0.829 | 0.902 [0.893, 0.911] | 105.4 / 137.1 | 0.006 | 169.9 / 300.2 / 388.8 / 247.9 | PASS | PASS | PASS |
+| Beijing | 20 | 0.780 | 0.890 [0.883, 0.896] | 140.0 / 215.0 | 0.000 | 327.1 / 853.1 / 533.6 / 384.0 | PASS | PASS | PASS |
+| Weather (not used for selection) | 20 | 0.884 | 0.908 [0.884, 0.931] | 19.3 / 25.3 | 0.125 | 30.1 / 34.5 / 33.1 / 24.4 | PASS | PASS | FAIL |
+
+- **Coverage is confirmed.** The fixed rule gives 0.902 and 0.890 on fresh Delhi and Beijing splits and 0.908 on
+  weather, all within the pre-registered 0.02 of 0.90; the post-hoc figures of Section 4.3b (0.898 and 0.896) are
+  replaced by these.
+- **OmniST's intervals beat both simple forecasts** given the same rule on all three networks (paired 95% intervals
+  of the interval-score difference below zero).
+- **The rule is not uniformly better.** On weather, where the same-year rule already reaches 0.884, the fixed rule
+  widens the intervals and its interval score is worse by 5.7 [4.0, 7.4]
+  (H4 fails). It helps where error changes strongly through the year (air quality) and costs width where it does
+  not. 12.5% of weather stations remain below 0.80.
+- **Station-level conformal with more stations (exploratory).** On PeMSD7-M with 30 calibration stations,
+  hierarchical conformal gave coverage 0.922 against 0.891 for pooled
+  conformal, with 31% more width, and cut the share of stations below 0.80 from
+  11.7% to 1.7%. Its width cost falls as the number of calibration
+  stations grows (90% at 10 stations on Delhi, 31% at 30 here).
 
 ### 4.4 Does distance from the training network matter? (experiments C2 and C3)
 
@@ -419,8 +448,10 @@ five real networks and released as a preprint. Under the rule used in C1, mean c
 89.1%: Delhi and Beijing under-cover because forecast error roughly doubles over the test period, while
 weather and the two traffic networks stay near target. Persistence and seasonal-naive intervals show the same
 shortfall on the air-quality networks. Calibrating on earlier years' errors, scaled by the forecast's magnitude,
-brought Delhi and Beijing to 0.898 and 0.896 at 30% and 61% more width (a rule chosen on these data,
-to be confirmed); station-level conformal was valid but much wider with 10 calibration stations. A coordinate-normalisation defect that inflated error and width on
+gave 0.902 and 0.890 on Delhi and Beijing and 0.908 on weather in a pre-registered test on
+data not used to choose the rule, and OmniST's intervals then scored better than persistence and
+seasonal-naive on all three; on weather the rule costs width without a coverage gain. Station-level
+conformal was valid, and its width cost fell from 90% to 31% as calibration stations rose from 10 to 30. A coordinate-normalisation defect that inflated error and width on
 four networks was found and fixed. Against persistence, OmniST is better on three networks and not on
 PeMSD7-M or weather; against a seasonal forecast it is wider on PeMS-BAY. Distance from the training
 network matters only in the sparse weather network. Phase 2 is part of the final thesis: neighbour attention

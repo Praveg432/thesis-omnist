@@ -89,7 +89,22 @@ for dom, old, new in (("pemsd7_traffic", "3.79", "3.69"), ("ghcn_weather", "4.73
     if got != (old, new):
         failures.append(f"residual head {dom}: report says {old} to {new}, files give {got}")
 
+# ---- Section 4.3c: pre-registered confirmation (C1h) -----------------------------------------------------
+sec_c = report_lines[report_lines.index("### 4.3c"):report_lines.index("### 4.4")]
+verd = load("exp_C1h_verdicts.json")
+for dom, label in (("delhi_air_quality", "Delhi"), ("beijing_air_quality", "Beijing"), ("ghcn_weather", "Weather")):
+    x = verd[dom]
+    line = next(l for l in sec_c.splitlines() if l.startswith(f"| {label}"))
+    want = [f"{x['coverage_same_year']['mean']:.3f}", f"{x['coverage_scaled_seasonal']['mean']:.3f}",
+            f"{x['width_same_year']:.1f} / {x['width_scaled_seasonal']:.1f}",
+            f"{x['interval_score']['omnist']:.1f} / {x['interval_score']['persistence']:.1f}",
+            x["H2" if dom == "ghcn_weather" else "H1"], x["H3"], x["H4"]]
+    for w in want:
+        n_checked += 1
+        if w not in line:
+            failures.append(f"C1h row {label} lacks {w}: {line}")
+
 if failures:
     print("\n".join(failures))
     sys.exit(1)
-print(f"all {n_checked} C1b to C1g report figures match the committed result files")
+print(f"all {n_checked} C1b to C1h report figures match the committed result files")

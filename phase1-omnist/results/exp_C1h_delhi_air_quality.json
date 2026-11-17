@@ -1,0 +1,2101 @@
+{
+  "experiment": "C1h pre-registered confirmation (PRE-REGISTRATION-C1H.md)",
+  "domain": "delhi_air_quality",
+  "folds": [
+    {
+      "train_end_year": 2020
+    },
+    {
+      "train_end_year": 2021
+    },
+    {
+      "train_end_year": 2022
+    }
+  ],
+  "splits_planned": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29
+  ],
+  "half_width_days": 45,
+  "seasonal_period": 7,
+  "splits": [
+    {
+      "split": 10,
+      "omnist": {
+        "same_year": {
+          "coverage": 0.8051,
+          "width": 104.58,
+          "interval_score": 263.52,
+          "per_station_coverage": [
+            0.7476,
+            0.8357,
+            0.7095,
+            0.7952,
+            0.8333,
+            0.8452,
+            0.8214,
+            0.8524
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.8863,
+          "width": 131.52,
+          "interval_score": 169.412,
+          "per_station_coverage": [
+            0.869,
+            0.9024,
+            0.8857,
+            0.869,
+            0.9048,
+            0.8667,
+            0.8952,
+            0.8976
+          ]
+        },
+        "mae": 32.2329
+      },
+      "persistence": {
+        "same_year": {
+          "coverage": 0.8473,
+          "width": 133.288,
+          "interval_score": 275.631,
+          "per_station_coverage": [
+            0.7952,
+            0.8405,
+            0.8786,
+            0.8643,
+            0.8738,
+            0.8571,
+            0.7952,
+            0.8738
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.8789,
+          "width": 201.238,
+          "interval_score": 259.398,
+          "per_station_coverage": [
+            0.8833,
+            0.8905,
+            0.9476,
+            0.8738,
+            0.8976,
+            0.8548,
+            0.8476,
+            0.8357
+          ]
+        },
+        "mae": 34.2814
+      },
+      "seasonal_naive": {
+        "same_year": {
+          "coverage": 0.8494,
+          "width": 142.301,
+          "interval_score": 291.063,
+          "per_station_coverage": [
+            0.7786,
+            0.869,
+            0.8929,
+            0.8667,
+            0.8571,
+            0.869,
+            0.8,
+            0.8619
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.9333,
+          "width": 309.469,
+          "interval_score": 334.311,
+          "per_station_coverage": [
+            0.9095,
+            0.95,
+            0.9595,
+            0.931,
+            0.931,
+            0.8929,
+            0.9476,
+            0.9452
+          ]
+        },
+        "mae": 37.6629
+      },
+      "n_scored_windows": 14
+    },
+    {
+      "split": 11,
+      "omnist": {
+        "same_year": {
+          "coverage": 0.8557,
+          "width": 114.332,
+          "interval_score": 218.649,
+          "per_station_coverage": [
+            0.8643,
+            0.8738,
+            0.8643,
+            0.8405,
+            0.8905,
+            0.8548,
+            0.819,
+            0.8381
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.9098,
+          "width": 148.385,
+          "interval_score": 184.33,
+          "per_station_coverage": [
+            0.8881,
+            0.9143,
+            0.9333,
+            0.9095,
+            0.9095,
+            0.95,
+            0.8738,
+            0.9
+          ]
+        },
+        "mae": 29.0262
+      },
+      "persistence": {
+        "same_year": {
+          "coverage": 0.8333,
+          "width": 132.807,
+          "interval_score": 306.884,
+          "per_station_coverage": [
+            0.8381,
+            0.7905,
+            0.7952,
+            0.8667,
+            0.8643,
+            0.9262,
+            0.7667,
+            0.819
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.872,
+          "width": 236.965,
+          "interval_score": 289.999,
+          "per_station_coverage": [
+            0.8405,
+            0.8595,
+            0.8452,
+            0.9,
+            0.85,
+            0.9619,
+            0.8405,
+            0.8786
+          ]
+        },
+        "mae": 36.716
+      },
+      "seasonal_naive": {
+        "same_year": {
+          "coverage": 0.8375,
+          "width": 142.8,
+          "interval_score": 318.326,
+          "per_station_coverage": [
+            0.8048,
+            0.8214,
+            0.8357,
+            0.8762,
+            0.8524,
+            0.9024,
+            0.8024,
+            0.8048
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.933,
+          "width": 369.752,
+          "interval_score": 387.884,
+          "per_station_coverage": [
+            0.9,
+            0.9119,
+            0.9238,
+            0.95,
+            0.9548,
+            0.9786,
+            0.8976,
+            0.9476
+          ]
+        },
+        "mae": 38.7386
+      },
+      "n_scored_windows": 14
+    },
+    {
+      "split": 12,
+      "omnist": {
+        "same_year": {
+          "coverage": 0.8342,
+          "width": 106.066,
+          "interval_score": 249.659,
+          "per_station_coverage": [
+            0.8143,
+            0.8643,
+            0.7762,
+            0.8786,
+            0.8262,
+            0.8143,
+            0.8214,
+            0.8786
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.9054,
+          "width": 143.791,
+          "interval_score": 186.018,
+          "per_station_coverage": [
+            0.8714,
+            0.9405,
+            0.9071,
+            0.9095,
+            0.8929,
+            0.8929,
+            0.9071,
+            0.9214
+          ]
+        },
+        "mae": 31.6926
+      },
+      "persistence": {
+        "same_year": {
+          "coverage": 0.8321,
+          "width": 128.957,
+          "interval_score": 305.5,
+          "per_station_coverage": [
+            0.8167,
+            0.869,
+            0.7905,
+            0.8714,
+            0.7881,
+            0.8095,
+            0.8571,
+            0.8548
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.8857,
+          "width": 272.374,
+          "interval_score": 311.879,
+          "per_station_coverage": [
+            0.8357,
+            0.8881,
+            0.9143,
+            0.9071,
+            0.8738,
+            0.8857,
+            0.9286,
+            0.8524
+          ]
+        },
+        "mae": 36.0968
+      },
+      "seasonal_naive": {
+        "same_year": {
+          "coverage": 0.8149,
+          "width": 131.66,
+          "interval_score": 348.972,
+          "per_station_coverage": [
+            0.7976,
+            0.85,
+            0.7714,
+            0.8452,
+            0.781,
+            0.7881,
+            0.8405,
+            0.8452
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.9327,
+          "width": 382.971,
+          "interval_score": 400.926,
+          "per_station_coverage": [
+            0.8929,
+            0.9262,
+            0.95,
+            0.931,
+            0.9405,
+            0.9429,
+            0.9476,
+            0.931
+          ]
+        },
+        "mae": 40.6877
+      },
+      "n_scored_windows": 14
+    },
+    {
+      "split": 13,
+      "omnist": {
+        "same_year": {
+          "coverage": 0.8592,
+          "width": 118.409,
+          "interval_score": 233.959,
+          "per_station_coverage": [
+            0.8476,
+            0.8762,
+            0.8571,
+            0.8524,
+            0.8095,
+            0.9048,
+            0.8476,
+            0.8786
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.8792,
+          "width": 131.528,
+          "interval_score": 172.873,
+          "per_station_coverage": [
+            0.8738,
+            0.869,
+            0.8667,
+            0.919,
+            0.8857,
+            0.8667,
+            0.881,
+            0.8714
+          ]
+        },
+        "mae": 32.1336
+      },
+      "persistence": {
+        "same_year": {
+          "coverage": 0.7991,
+          "width": 110.753,
+          "interval_score": 310.129,
+          "per_station_coverage": [
+            0.7786,
+            0.8214,
+            0.831,
+            0.7833,
+            0.7667,
+            0.8286,
+            0.7571,
+            0.8262
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.869,
+          "width": 216.174,
+          "interval_score": 267.723,
+          "per_station_coverage": [
+            0.8833,
+            0.8405,
+            0.8595,
+            0.8786,
+            0.9024,
+            0.8833,
+            0.8738,
+            0.831
+          ]
+        },
+        "mae": 36.62
+      },
+      "seasonal_naive": {
+        "same_year": {
+          "coverage": 0.7979,
+          "width": 121.342,
+          "interval_score": 331.461,
+          "per_station_coverage": [
+            0.8238,
+            0.8214,
+            0.7857,
+            0.8119,
+            0.75,
+            0.8333,
+            0.731,
+            0.8262
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.933,
+          "width": 350.685,
+          "interval_score": 371.828,
+          "per_station_coverage": [
+            0.9476,
+            0.95,
+            0.9333,
+            0.9762,
+            0.9452,
+            0.9071,
+            0.8762,
+            0.9286
+          ]
+        },
+        "mae": 39.3106
+      },
+      "n_scored_windows": 14
+    },
+    {
+      "split": 14,
+      "omnist": {
+        "same_year": {
+          "coverage": 0.8193,
+          "width": 92.034,
+          "interval_score": 257.194,
+          "per_station_coverage": [
+            0.7929,
+            0.7976,
+            0.8405,
+            0.8476,
+            0.869,
+            0.85,
+            0.8,
+            0.7571
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.9143,
+          "width": 131.038,
+          "interval_score": 160.271,
+          "per_station_coverage": [
+            0.9095,
+            0.9024,
+            0.9095,
+            0.9476,
+            0.9095,
+            0.9238,
+            0.9048,
+            0.9071
+          ]
+        },
+        "mae": 29.3836
+      },
+      "persistence": {
+        "same_year": {
+          "coverage": 0.8226,
+          "width": 124.392,
+          "interval_score": 335.845,
+          "per_station_coverage": [
+            0.769,
+            0.8405,
+            0.8643,
+            0.85,
+            0.8405,
+            0.8619,
+            0.8071,
+            0.7476
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.8693,
+          "width": 220.183,
+          "interval_score": 272.012,
+          "per_station_coverage": [
+            0.8381,
+            0.8619,
+            0.8833,
+            0.8429,
+            0.881,
+            0.8952,
+            0.8714,
+            0.881
+          ]
+        },
+        "mae": 37.4381
+      },
+      "seasonal_naive": {
+        "same_year": {
+          "coverage": 0.8244,
+          "width": 138.526,
+          "interval_score": 354.771,
+          "per_station_coverage": [
+            0.7714,
+            0.8214,
+            0.8524,
+            0.85,
+            0.8548,
+            0.8548,
+            0.7976,
+            0.7929
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.9268,
+          "width": 347.782,
+          "interval_score": 363.711,
+          "per_station_coverage": [
+            0.9214,
+            0.9333,
+            0.919,
+            0.9381,
+            0.9095,
+            0.9214,
+            0.9214,
+            0.95
+          ]
+        },
+        "mae": 40.7475
+      },
+      "n_scored_windows": 14
+    },
+    {
+      "split": 15,
+      "omnist": {
+        "same_year": {
+          "coverage": 0.8295,
+          "width": 99.02,
+          "interval_score": 240.6,
+          "per_station_coverage": [
+            0.8524,
+            0.8238,
+            0.7976,
+            0.8619,
+            0.7976,
+            0.8286,
+            0.869,
+            0.8048
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.8554,
+          "width": 121.131,
+          "interval_score": 169.886,
+          "per_station_coverage": [
+            0.8667,
+            0.8524,
+            0.8857,
+            0.869,
+            0.8214,
+            0.8429,
+            0.8643,
+            0.8405
+          ]
+        },
+        "mae": 29.3695
+      },
+      "persistence": {
+        "same_year": {
+          "coverage": 0.8345,
+          "width": 123.614,
+          "interval_score": 295.86,
+          "per_station_coverage": [
+            0.8071,
+            0.8405,
+            0.919,
+            0.8452,
+            0.7905,
+            0.8024,
+            0.8667,
+            0.8048
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.881,
+          "width": 253.664,
+          "interval_score": 294.971,
+          "per_station_coverage": [
+            0.9024,
+            0.8714,
+            0.9048,
+            0.8571,
+            0.8619,
+            0.8571,
+            0.9048,
+            0.8881
+          ]
+        },
+        "mae": 34.4462
+      },
+      "seasonal_naive": {
+        "same_year": {
+          "coverage": 0.8265,
+          "width": 130.582,
+          "interval_score": 323.487,
+          "per_station_coverage": [
+            0.85,
+            0.8024,
+            0.9143,
+            0.8405,
+            0.7738,
+            0.8048,
+            0.8429,
+            0.7833
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.9345,
+          "width": 368.006,
+          "interval_score": 384.758,
+          "per_station_coverage": [
+            0.9357,
+            0.9357,
+            0.9452,
+            0.95,
+            0.9143,
+            0.9357,
+            0.9214,
+            0.9381
+          ]
+        },
+        "mae": 38.0441
+      },
+      "n_scored_windows": 14
+    },
+    {
+      "split": 16,
+      "omnist": {
+        "same_year": {
+          "coverage": 0.7949,
+          "width": 93.476,
+          "interval_score": 259.881,
+          "per_station_coverage": [
+            0.7857,
+            0.819,
+            0.8143,
+            0.7738,
+            0.8,
+            0.8048,
+            0.8429,
+            0.719
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.9137,
+          "width": 140.023,
+          "interval_score": 169.277,
+          "per_station_coverage": [
+            0.9286,
+            0.9595,
+            0.9262,
+            0.8643,
+            0.9571,
+            0.9119,
+            0.9119,
+            0.85
+          ]
+        },
+        "mae": 31.6442
+      },
+      "persistence": {
+        "same_year": {
+          "coverage": 0.8003,
+          "width": 125.575,
+          "interval_score": 342.577,
+          "per_station_coverage": [
+            0.769,
+            0.7929,
+            0.8381,
+            0.7976,
+            0.8024,
+            0.8071,
+            0.8619,
+            0.7333
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.8696,
+          "width": 269.934,
+          "interval_score": 320.242,
+          "per_station_coverage": [
+            0.85,
+            0.85,
+            0.8595,
+            0.8929,
+            0.9214,
+            0.8857,
+            0.8452,
+            0.8524
+          ]
+        },
+        "mae": 40.2854
+      },
+      "seasonal_naive": {
+        "same_year": {
+          "coverage": 0.7979,
+          "width": 132.742,
+          "interval_score": 395.833,
+          "per_station_coverage": [
+            0.7619,
+            0.8286,
+            0.8333,
+            0.7667,
+            0.8119,
+            0.7833,
+            0.85,
+            0.7476
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.9369,
+          "width": 410.524,
+          "interval_score": 436.855,
+          "per_station_coverage": [
+            0.9524,
+            0.9214,
+            0.9619,
+            0.8929,
+            0.9857,
+            0.9429,
+            0.9357,
+            0.9024
+          ]
+        },
+        "mae": 44.2618
+      },
+      "n_scored_windows": 14
+    },
+    {
+      "split": 17,
+      "omnist": {
+        "same_year": {
+          "coverage": 0.8381,
+          "width": 105.36,
+          "interval_score": 241.83,
+          "per_station_coverage": [
+            0.8476,
+            0.8381,
+            0.819,
+            0.8833,
+            0.8214,
+            0.8119,
+            0.819,
+            0.8643
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.8967,
+          "width": 133.24,
+          "interval_score": 162.152,
+          "per_station_coverage": [
+            0.8881,
+            0.9214,
+            0.9357,
+            0.9048,
+            0.8952,
+            0.8571,
+            0.8762,
+            0.8952
+          ]
+        },
+        "mae": 29.2877
+      },
+      "persistence": {
+        "same_year": {
+          "coverage": 0.8182,
+          "width": 127.253,
+          "interval_score": 320.492,
+          "per_station_coverage": [
+            0.7786,
+            0.8357,
+            0.8214,
+            0.8381,
+            0.8524,
+            0.7881,
+            0.7857,
+            0.8452
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.8679,
+          "width": 246.068,
+          "interval_score": 295.924,
+          "per_station_coverage": [
+            0.8548,
+            0.8476,
+            0.8857,
+            0.9048,
+            0.8667,
+            0.8738,
+            0.8667,
+            0.8429
+          ]
+        },
+        "mae": 37.7304
+      },
+      "seasonal_naive": {
+        "same_year": {
+          "coverage": 0.8185,
+          "width": 136.866,
+          "interval_score": 325.339,
+          "per_station_coverage": [
+            0.8071,
+            0.8333,
+            0.8405,
+            0.8476,
+            0.8452,
+            0.7595,
+            0.7762,
+            0.8381
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.9211,
+          "width": 339.415,
+          "interval_score": 361.841,
+          "per_station_coverage": [
+            0.9024,
+            0.9548,
+            0.9738,
+            0.9024,
+            0.9,
+            0.881,
+            0.931,
+            0.9238
+          ]
+        },
+        "mae": 39.5775
+      },
+      "n_scored_windows": 14
+    },
+    {
+      "split": 18,
+      "omnist": {
+        "same_year": {
+          "coverage": 0.7833,
+          "width": 94.138,
+          "interval_score": 273.075,
+          "per_station_coverage": [
+            0.769,
+            0.8095,
+            0.8357,
+            0.7119,
+            0.7357,
+            0.8214,
+            0.7762,
+            0.8071
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.9179,
+          "width": 143.546,
+          "interval_score": 161.807,
+          "per_station_coverage": [
+            0.9286,
+            0.9048,
+            0.9595,
+            0.9262,
+            0.9262,
+            0.9595,
+            0.8357,
+            0.9024
+          ]
+        },
+        "mae": 33.681
+      },
+      "persistence": {
+        "same_year": {
+          "coverage": 0.8208,
+          "width": 114.685,
+          "interval_score": 298.369,
+          "per_station_coverage": [
+            0.7524,
+            0.75,
+            0.7571,
+            0.8619,
+            0.9143,
+            0.8952,
+            0.8429,
+            0.7929
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.892,
+          "width": 219.036,
+          "interval_score": 273.994,
+          "per_station_coverage": [
+            0.881,
+            0.8548,
+            0.8476,
+            0.9476,
+            0.9048,
+            0.9571,
+            0.8762,
+            0.8667
+          ]
+        },
+        "mae": 34.5818
+      },
+      "seasonal_naive": {
+        "same_year": {
+          "coverage": 0.8226,
+          "width": 122.598,
+          "interval_score": 302.148,
+          "per_station_coverage": [
+            0.7405,
+            0.781,
+            0.8167,
+            0.8476,
+            0.9048,
+            0.8738,
+            0.831,
+            0.7857
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.9292,
+          "width": 349.809,
+          "interval_score": 371.653,
+          "per_station_coverage": [
+            0.8952,
+            0.9143,
+            0.919,
+            0.9429,
+            0.9381,
+            0.9738,
+            0.919,
+            0.931
+          ]
+        },
+        "mae": 36.5844
+      },
+      "n_scored_windows": 14
+    },
+    {
+      "split": 19,
+      "omnist": {
+        "same_year": {
+          "coverage": 0.8467,
+          "width": 117.097,
+          "interval_score": 246.339,
+          "per_station_coverage": [
+            0.8738,
+            0.7786,
+            0.8762,
+            0.85,
+            0.8738,
+            0.8333,
+            0.8071,
+            0.881
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.8961,
+          "width": 141.421,
+          "interval_score": 168.587,
+          "per_station_coverage": [
+            0.8857,
+            0.9071,
+            0.931,
+            0.931,
+            0.9143,
+            0.8714,
+            0.8619,
+            0.8667
+          ]
+        },
+        "mae": 30.9913
+      },
+      "persistence": {
+        "same_year": {
+          "coverage": 0.85,
+          "width": 140.563,
+          "interval_score": 295.783,
+          "per_station_coverage": [
+            0.8405,
+            0.8833,
+            0.8738,
+            0.8357,
+            0.8619,
+            0.8048,
+            0.8333,
+            0.8667
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.8869,
+          "width": 295.28,
+          "interval_score": 334.429,
+          "per_station_coverage": [
+            0.85,
+            0.9524,
+            0.9048,
+            0.8976,
+            0.8762,
+            0.8738,
+            0.869,
+            0.8714
+          ]
+        },
+        "mae": 35.8918
+      },
+      "seasonal_naive": {
+        "same_year": {
+          "coverage": 0.853,
+          "width": 153.454,
+          "interval_score": 311.397,
+          "per_station_coverage": [
+            0.8238,
+            0.9024,
+            0.8738,
+            0.8595,
+            0.8524,
+            0.8024,
+            0.831,
+            0.8786
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.9363,
+          "width": 356.373,
+          "interval_score": 376.752,
+          "per_station_coverage": [
+            0.9,
+            0.9595,
+            0.9333,
+            0.9786,
+            0.9571,
+            0.9238,
+            0.9429,
+            0.8952
+          ]
+        },
+        "mae": 39.0436
+      },
+      "n_scored_windows": 14
+    },
+    {
+      "split": 20,
+      "omnist": {
+        "same_year": {
+          "coverage": 0.8557,
+          "width": 125.89,
+          "interval_score": 251.362,
+          "per_station_coverage": [
+            0.8643,
+            0.8643,
+            0.869,
+            0.8476,
+            0.8238,
+            0.9024,
+            0.8452,
+            0.8286
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.9086,
+          "width": 145.297,
+          "interval_score": 175.21,
+          "per_station_coverage": [
+            0.9381,
+            0.9095,
+            0.8881,
+            0.8976,
+            0.9,
+            0.9,
+            0.9381,
+            0.8976
+          ]
+        },
+        "mae": 31.2941
+      },
+      "persistence": {
+        "same_year": {
+          "coverage": 0.8235,
+          "width": 128.222,
+          "interval_score": 322.042,
+          "per_station_coverage": [
+            0.7929,
+            0.8548,
+            0.8405,
+            0.9286,
+            0.7857,
+            0.8429,
+            0.7976,
+            0.7452
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.9095,
+          "width": 287.75,
+          "interval_score": 321.506,
+          "per_station_coverage": [
+            0.8548,
+            0.919,
+            0.8857,
+            0.9143,
+            0.9286,
+            0.9214,
+            0.9429,
+            0.9095
+          ]
+        },
+        "mae": 37.1458
+      },
+      "seasonal_naive": {
+        "same_year": {
+          "coverage": 0.8277,
+          "width": 131.112,
+          "interval_score": 328.015,
+          "per_station_coverage": [
+            0.8262,
+            0.8595,
+            0.8048,
+            0.9143,
+            0.7714,
+            0.8476,
+            0.8095,
+            0.7881
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.9524,
+          "width": 421.158,
+          "interval_score": 432.506,
+          "per_station_coverage": [
+            0.9214,
+            0.9571,
+            0.9429,
+            0.9548,
+            0.9548,
+            0.9262,
+            0.9905,
+            0.9714
+          ]
+        },
+        "mae": 38.6016
+      },
+      "n_scored_windows": 14
+    },
+    {
+      "split": 21,
+      "omnist": {
+        "same_year": {
+          "coverage": 0.7958,
+          "width": 91.574,
+          "interval_score": 256.034,
+          "per_station_coverage": [
+            0.8524,
+            0.8405,
+            0.7714,
+            0.7881,
+            0.8095,
+            0.8,
+            0.7952,
+            0.7095
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.8946,
+          "width": 131.043,
+          "interval_score": 162.757,
+          "per_station_coverage": [
+            0.9143,
+            0.931,
+            0.9048,
+            0.8667,
+            0.9,
+            0.9429,
+            0.9024,
+            0.7952
+          ]
+        },
+        "mae": 30.7322
+      },
+      "persistence": {
+        "same_year": {
+          "coverage": 0.7857,
+          "width": 106.445,
+          "interval_score": 327.325,
+          "per_station_coverage": [
+            0.7786,
+            0.8357,
+            0.9024,
+            0.7357,
+            0.7857,
+            0.7595,
+            0.781,
+            0.7071
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.872,
+          "width": 217.425,
+          "interval_score": 272.173,
+          "per_station_coverage": [
+            0.8786,
+            0.8786,
+            0.9,
+            0.8714,
+            0.8381,
+            0.9048,
+            0.869,
+            0.8357
+          ]
+        },
+        "mae": 37.1716
+      },
+      "seasonal_naive": {
+        "same_year": {
+          "coverage": 0.7964,
+          "width": 121.09,
+          "interval_score": 371.842,
+          "per_station_coverage": [
+            0.8238,
+            0.831,
+            0.8976,
+            0.7381,
+            0.7952,
+            0.7976,
+            0.7643,
+            0.7238
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.925,
+          "width": 344.522,
+          "interval_score": 378.31,
+          "per_station_coverage": [
+            0.9429,
+            0.919,
+            0.9405,
+            0.8786,
+            0.9333,
+            0.9786,
+            0.9167,
+            0.8905
+          ]
+        },
+        "mae": 41.1544
+      },
+      "n_scored_windows": 14
+    },
+    {
+      "split": 22,
+      "omnist": {
+        "same_year": {
+          "coverage": 0.8006,
+          "width": 96.613,
+          "interval_score": 255.451,
+          "per_station_coverage": [
+            0.8119,
+            0.8357,
+            0.8333,
+            0.8286,
+            0.8214,
+            0.7762,
+            0.7857,
+            0.7119
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.906,
+          "width": 135.988,
+          "interval_score": 174.667,
+          "per_station_coverage": [
+            0.9071,
+            0.9405,
+            0.9333,
+            0.9238,
+            0.9238,
+            0.8738,
+            0.9071,
+            0.8381
+          ]
+        },
+        "mae": 31.4776
+      },
+      "persistence": {
+        "same_year": {
+          "coverage": 0.8006,
+          "width": 125.022,
+          "interval_score": 321.456,
+          "per_station_coverage": [
+            0.8548,
+            0.8595,
+            0.8024,
+            0.8381,
+            0.8,
+            0.75,
+            0.7762,
+            0.7238
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.8702,
+          "width": 248.526,
+          "interval_score": 297.384,
+          "per_station_coverage": [
+            0.9095,
+            0.8929,
+            0.8857,
+            0.8619,
+            0.8476,
+            0.8381,
+            0.8667,
+            0.8595
+          ]
+        },
+        "mae": 38.7236
+      },
+      "seasonal_naive": {
+        "same_year": {
+          "coverage": 0.8063,
+          "width": 130.662,
+          "interval_score": 361.571,
+          "per_station_coverage": [
+            0.8619,
+            0.8452,
+            0.8214,
+            0.8286,
+            0.7857,
+            0.7786,
+            0.7881,
+            0.7405
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.9414,
+          "width": 369.375,
+          "interval_score": 391.709,
+          "per_station_coverage": [
+            0.9548,
+            0.931,
+            0.9833,
+            0.9619,
+            0.9476,
+            0.9,
+            0.9476,
+            0.9048
+          ]
+        },
+        "mae": 42.1707
+      },
+      "n_scored_windows": 14
+    },
+    {
+      "split": 23,
+      "omnist": {
+        "same_year": {
+          "coverage": 0.833,
+          "width": 103.732,
+          "interval_score": 244.391,
+          "per_station_coverage": [
+            0.7667,
+            0.8762,
+            0.8024,
+            0.8762,
+            0.8,
+            0.8071,
+            0.8738,
+            0.8619
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.8818,
+          "width": 125.213,
+          "interval_score": 171.157,
+          "per_station_coverage": [
+            0.8429,
+            0.9048,
+            0.8786,
+            0.919,
+            0.8595,
+            0.8619,
+            0.9095,
+            0.8786
+          ]
+        },
+        "mae": 30.1198
+      },
+      "persistence": {
+        "same_year": {
+          "coverage": 0.8003,
+          "width": 116.494,
+          "interval_score": 327.431,
+          "per_station_coverage": [
+            0.7595,
+            0.8286,
+            0.7762,
+            0.8381,
+            0.7714,
+            0.7381,
+            0.8548,
+            0.8357
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.8592,
+          "width": 239.729,
+          "interval_score": 296.46,
+          "per_station_coverage": [
+            0.869,
+            0.8429,
+            0.9095,
+            0.8452,
+            0.8357,
+            0.8262,
+            0.8881,
+            0.8571
+          ]
+        },
+        "mae": 37.658
+      },
+      "seasonal_naive": {
+        "same_year": {
+          "coverage": 0.8033,
+          "width": 129.325,
+          "interval_score": 352.289,
+          "per_station_coverage": [
+            0.7524,
+            0.8262,
+            0.7643,
+            0.8405,
+            0.7714,
+            0.781,
+            0.8429,
+            0.8476
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.9098,
+          "width": 396.773,
+          "interval_score": 422.962,
+          "per_station_coverage": [
+            0.8929,
+            0.9357,
+            0.9452,
+            0.9286,
+            0.9071,
+            0.8762,
+            0.9238,
+            0.869
+          ]
+        },
+        "mae": 41.4503
+      },
+      "n_scored_windows": 14
+    },
+    {
+      "split": 24,
+      "omnist": {
+        "same_year": {
+          "coverage": 0.8244,
+          "width": 105.665,
+          "interval_score": 243.198,
+          "per_station_coverage": [
+            0.8619,
+            0.8333,
+            0.8262,
+            0.8357,
+            0.8119,
+            0.8143,
+            0.8333,
+            0.7786
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.9208,
+          "width": 133.365,
+          "interval_score": 162.333,
+          "per_station_coverage": [
+            0.9071,
+            0.931,
+            0.9357,
+            0.9476,
+            0.9357,
+            0.8667,
+            0.919,
+            0.9238
+          ]
+        },
+        "mae": 31.0485
+      },
+      "persistence": {
+        "same_year": {
+          "coverage": 0.7958,
+          "width": 116.753,
+          "interval_score": 329.227,
+          "per_station_coverage": [
+            0.7881,
+            0.769,
+            0.8381,
+            0.7952,
+            0.7762,
+            0.7619,
+            0.7952,
+            0.8429
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.8961,
+          "width": 253.189,
+          "interval_score": 297.677,
+          "per_station_coverage": [
+            0.9048,
+            0.8619,
+            0.8833,
+            0.8952,
+            0.931,
+            0.8952,
+            0.8643,
+            0.9333
+          ]
+        },
+        "mae": 38.7129
+      },
+      "seasonal_naive": {
+        "same_year": {
+          "coverage": 0.7929,
+          "width": 126.868,
+          "interval_score": 349.737,
+          "per_station_coverage": [
+            0.8381,
+            0.75,
+            0.7952,
+            0.8214,
+            0.7595,
+            0.7452,
+            0.8,
+            0.8333
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.9387,
+          "width": 354.864,
+          "interval_score": 376.616,
+          "per_station_coverage": [
+            0.9476,
+            0.9405,
+            0.9381,
+            0.9786,
+            0.9429,
+            0.8833,
+            0.9381,
+            0.9405
+          ]
+        },
+        "mae": 41.4563
+      },
+      "n_scored_windows": 14
+    },
+    {
+      "split": 25,
+      "omnist": {
+        "same_year": {
+          "coverage": 0.8485,
+          "width": 107.975,
+          "interval_score": 249.854,
+          "per_station_coverage": [
+            0.8571,
+            0.8595,
+            0.8119,
+            0.8667,
+            0.8929,
+            0.8571,
+            0.8381,
+            0.8048
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.9107,
+          "width": 139.501,
+          "interval_score": 161.815,
+          "per_station_coverage": [
+            0.9024,
+            0.9214,
+            0.931,
+            0.9214,
+            0.8952,
+            0.9024,
+            0.9024,
+            0.9095
+          ]
+        },
+        "mae": 29.4122
+      },
+      "persistence": {
+        "same_year": {
+          "coverage": 0.8292,
+          "width": 138.366,
+          "interval_score": 345.052,
+          "per_station_coverage": [
+            0.8048,
+            0.8786,
+            0.7976,
+            0.8833,
+            0.85,
+            0.869,
+            0.7905,
+            0.7595
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.8955,
+          "width": 247.659,
+          "interval_score": 294.478,
+          "per_station_coverage": [
+            0.8643,
+            0.9548,
+            0.9214,
+            0.8571,
+            0.9024,
+            0.8714,
+            0.9,
+            0.8929
+          ]
+        },
+        "mae": 39.1067
+      },
+      "seasonal_naive": {
+        "same_year": {
+          "coverage": 0.8363,
+          "width": 144.001,
+          "interval_score": 332.059,
+          "per_station_coverage": [
+            0.8214,
+            0.8905,
+            0.7929,
+            0.8595,
+            0.8595,
+            0.8667,
+            0.8048,
+            0.7952
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.9372,
+          "width": 360.654,
+          "interval_score": 382.476,
+          "per_station_coverage": [
+            0.9167,
+            0.9476,
+            0.9524,
+            0.9548,
+            0.9238,
+            0.8929,
+            0.9429,
+            0.9667
+          ]
+        },
+        "mae": 39.9593
+      },
+      "n_scored_windows": 14
+    },
+    {
+      "split": 26,
+      "omnist": {
+        "same_year": {
+          "coverage": 0.8262,
+          "width": 112.698,
+          "interval_score": 252.643,
+          "per_station_coverage": [
+            0.8571,
+            0.831,
+            0.8286,
+            0.831,
+            0.8286,
+            0.8619,
+            0.7667,
+            0.8048
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.8985,
+          "width": 139.378,
+          "interval_score": 173.842,
+          "per_station_coverage": [
+            0.931,
+            0.9024,
+            0.931,
+            0.8857,
+            0.8929,
+            0.919,
+            0.8143,
+            0.9119
+          ]
+        },
+        "mae": 32.0255
+      },
+      "persistence": {
+        "same_year": {
+          "coverage": 0.7812,
+          "width": 130.388,
+          "interval_score": 390.371,
+          "per_station_coverage": [
+            0.7929,
+            0.7881,
+            0.7857,
+            0.7619,
+            0.781,
+            0.8548,
+            0.7381,
+            0.7476
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.8771,
+          "width": 333.456,
+          "interval_score": 380.351,
+          "per_station_coverage": [
+            0.8548,
+            0.8738,
+            0.9357,
+            0.8548,
+            0.8762,
+            0.8571,
+            0.8619,
+            0.9024
+          ]
+        },
+        "mae": 42.9135
+      },
+      "seasonal_naive": {
+        "same_year": {
+          "coverage": 0.7967,
+          "width": 136.781,
+          "interval_score": 404.639,
+          "per_station_coverage": [
+            0.8286,
+            0.7881,
+            0.819,
+            0.7976,
+            0.769,
+            0.8357,
+            0.7452,
+            0.7905
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.9301,
+          "width": 413.269,
+          "interval_score": 438.752,
+          "per_station_coverage": [
+            0.9214,
+            0.9238,
+            0.9476,
+            0.8976,
+            0.9381,
+            0.9429,
+            0.9048,
+            0.9643
+          ]
+        },
+        "mae": 44.552
+      },
+      "n_scored_windows": 14
+    },
+    {
+      "split": 27,
+      "omnist": {
+        "same_year": {
+          "coverage": 0.8315,
+          "width": 107.039,
+          "interval_score": 273.6,
+          "per_station_coverage": [
+            0.8214,
+            0.8429,
+            0.7833,
+            0.8857,
+            0.8238,
+            0.8571,
+            0.819,
+            0.819
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.8961,
+          "width": 143.502,
+          "interval_score": 188.797,
+          "per_station_coverage": [
+            0.9,
+            0.9238,
+            0.8905,
+            0.8571,
+            0.9071,
+            0.9286,
+            0.881,
+            0.881
+          ]
+        },
+        "mae": 32.1015
+      },
+      "persistence": {
+        "same_year": {
+          "coverage": 0.8366,
+          "width": 141.72,
+          "interval_score": 322.952,
+          "per_station_coverage": [
+            0.8262,
+            0.8714,
+            0.8071,
+            0.8738,
+            0.8143,
+            0.8881,
+            0.819,
+            0.7929
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.8702,
+          "width": 259.706,
+          "interval_score": 308.497,
+          "per_station_coverage": [
+            0.85,
+            0.8595,
+            0.8548,
+            0.869,
+            0.8429,
+            0.9071,
+            0.8786,
+            0.9
+          ]
+        },
+        "mae": 38.1754
+      },
+      "seasonal_naive": {
+        "same_year": {
+          "coverage": 0.8351,
+          "width": 150.49,
+          "interval_score": 344.335,
+          "per_station_coverage": [
+            0.8452,
+            0.85,
+            0.8024,
+            0.869,
+            0.8143,
+            0.8714,
+            0.8143,
+            0.8143
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.9324,
+          "width": 375.196,
+          "interval_score": 390.159,
+          "per_station_coverage": [
+            0.9262,
+            0.9524,
+            0.9214,
+            0.9238,
+            0.9286,
+            0.9333,
+            0.9333,
+            0.9405
+          ]
+        },
+        "mae": 41.5161
+      },
+      "n_scored_windows": 14
+    },
+    {
+      "split": 28,
+      "omnist": {
+        "same_year": {
+          "coverage": 0.8387,
+          "width": 104.1,
+          "interval_score": 226.38,
+          "per_station_coverage": [
+            0.8286,
+            0.8452,
+            0.8738,
+            0.8405,
+            0.8167,
+            0.869,
+            0.8143,
+            0.8214
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.9464,
+          "width": 146.309,
+          "interval_score": 162.038,
+          "per_station_coverage": [
+            0.9548,
+            0.9405,
+            0.9667,
+            0.9381,
+            0.9762,
+            0.9357,
+            0.9167,
+            0.9429
+          ]
+        },
+        "mae": 28.7776
+      },
+      "persistence": {
+        "same_year": {
+          "coverage": 0.8134,
+          "width": 117.236,
+          "interval_score": 337.49,
+          "per_station_coverage": [
+            0.7595,
+            0.8286,
+            0.8952,
+            0.7952,
+            0.7857,
+            0.8476,
+            0.8381,
+            0.7571
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.8991,
+          "width": 266.756,
+          "interval_score": 303.965,
+          "per_station_coverage": [
+            0.8429,
+            0.8667,
+            0.969,
+            0.8571,
+            0.9214,
+            0.9095,
+            0.9286,
+            0.8976
+          ]
+        },
+        "mae": 37.2543
+      },
+      "seasonal_naive": {
+        "same_year": {
+          "coverage": 0.8146,
+          "width": 130.019,
+          "interval_score": 347.946,
+          "per_station_coverage": [
+            0.7524,
+            0.8,
+            0.8857,
+            0.8095,
+            0.8119,
+            0.8381,
+            0.8381,
+            0.781
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.9521,
+          "width": 350.348,
+          "interval_score": 363.281,
+          "per_station_coverage": [
+            0.9452,
+            0.9429,
+            0.9786,
+            0.9452,
+            0.9881,
+            0.931,
+            0.9452,
+            0.9405
+          ]
+        },
+        "mae": 39.6797
+      },
+      "n_scored_windows": 14
+    },
+    {
+      "split": 29,
+      "omnist": {
+        "same_year": {
+          "coverage": 0.8491,
+          "width": 108.417,
+          "interval_score": 221.078,
+          "per_station_coverage": [
+            0.8333,
+            0.8571,
+            0.869,
+            0.8786,
+            0.8167,
+            0.831,
+            0.869,
+            0.8381
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.9062,
+          "width": 136.27,
+          "interval_score": 161.564,
+          "per_station_coverage": [
+            0.9262,
+            0.9071,
+            0.931,
+            0.8738,
+            0.8952,
+            0.9071,
+            0.9048,
+            0.9048
+          ]
+        },
+        "mae": 28.8061
+      },
+      "persistence": {
+        "same_year": {
+          "coverage": 0.8265,
+          "width": 134.244,
+          "interval_score": 333.133,
+          "per_station_coverage": [
+            0.7762,
+            0.869,
+            0.8595,
+            0.8452,
+            0.7857,
+            0.8143,
+            0.8786,
+            0.7833
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.8887,
+          "width": 275.596,
+          "interval_score": 311.686,
+          "per_station_coverage": [
+            0.8429,
+            0.9071,
+            0.8524,
+            0.9071,
+            0.9381,
+            0.8571,
+            0.9,
+            0.9048
+          ]
+        },
+        "mae": 37.8499
+      },
+      "seasonal_naive": {
+        "same_year": {
+          "coverage": 0.8449,
+          "width": 150.37,
+          "interval_score": 328.221,
+          "per_station_coverage": [
+            0.7905,
+            0.8881,
+            0.8667,
+            0.8667,
+            0.8333,
+            0.8405,
+            0.8667,
+            0.8071
+          ]
+        },
+        "scaled_seasonal": {
+          "coverage": 0.9295,
+          "width": 395.248,
+          "interval_score": 408.358,
+          "per_station_coverage": [
+            0.9333,
+            0.931,
+            0.9357,
+            0.9024,
+            0.9452,
+            0.9357,
+            0.9238,
+            0.9286
+          ]
+        },
+        "mae": 39.1101
+      },
+      "n_scored_windows": 14
+    }
+  ]
+}

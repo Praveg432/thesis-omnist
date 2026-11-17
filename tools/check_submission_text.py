@@ -69,10 +69,11 @@ chrono = [json.load(open(os.path.join(RESULTS, f"exp_C1b_norm_{d}.json")))["aggr
 clow, chigh = f"{100 * min(chrono):.1f}%", f"{100 * max(chrono):.1f}%"
 check(f"between {clow} and {chigh}" in readme_abs,
       f"abstract forecast-time coverage range should read 'between {clow} and {chigh}' (C1b, training-station frame)")
-repaired = [json.load(open(os.path.join(RESULTS, f"exp_C1f_{d}.json")))["aggregate"]["scaled_predmag_seasonal"][
-    "coverage_mean"] for d in ("delhi_air_quality", "beijing_air_quality")]
-check(f"{100 * repaired[0]:.1f}% and {100 * repaired[1]:.1f}%" in readme_abs,
-      f"abstract repaired air-quality coverage should read '{100 * repaired[0]:.1f}% and {100 * repaired[1]:.1f}%' (C1f)")
+confirmed = json.load(open(os.path.join(RESULTS, "exp_C1h_verdicts.json")))
+conf = [f"{100 * confirmed[d]['coverage_scaled_seasonal']['mean']:.1f}%" for d in
+        ("delhi_air_quality", "beijing_air_quality", "ghcn_weather")]
+check(f"gave {conf[0]} and {conf[1]}" in readme_abs and f"and {conf[2]} on the weather network" in readme_abs,
+      f"abstract confirmed coverage should read {conf} (C1h, PRE-REGISTRATION-C1H.md)")
 slope = json.load(open(os.path.join(RESULTS, "exp_C2_analysis.json")))["ghcn_weather"]["within_station"]["slope_per_spacing"]
 check(f"about {abs(100 * slope):.1f} points" in readme_abs, f"abstract slope should read 'about {abs(100 * slope):.1f} points'")
 check(len(domains) == 5 and "five real networks" in readme_abs, "abstract should say 'five real networks'")
