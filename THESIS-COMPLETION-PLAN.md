@@ -21,6 +21,30 @@ now). Section 0 lists what is left; Sections 1 to 9 give the reasoning and accep
 | P1-4 | Decide on a revised preprint (arXiv:2611.04256 overstates relative to C1) | Public claim exceeds evidence | decide wk 1, post after wk 4 | Decision recorded in `FINALIZATION-RECORD.md` |
 | P1-5 | Verify references [1], [3], [4], [5] venue details; check the two traffic datasets' raw files can be recovered | Open items in the finalization record, Section 4 | 9 to 11 | Reference list verified |
 
+### Phase 1 closure plan (before the Semester 3 progress report is submitted)
+
+Goal: the report states every Phase 1 number under a protocol it can defend, and lists what is still
+untested. Phase 1 numbers are produced with the legacy coordinate frame, so they stay comparable with
+the submitted abstract. Report submission date: **not yet given; the schedule below assumes 22 Nov 2026.**
+
+| Step | Work | Output | Effort |
+|---|---|---|---|
+| S1 | **Write `C1b_chronological_eval.py`** (new script; leaves committed C1 files untouched). Same splits, seeds and models as C1. For each test window t, the quantile uses calibration-station scores from windows before t only (expanding window), and only windows after a warm-up of the first 25% are scored. Same-window and pooled-over-time coverage are recomputed on exactly those windows for a like-for-like comparison. Per-station, per-window scores are saved. Targets of window t-1 end at the origin of window t (stride equals horizon), so no future target is used. Add tests: planted-shift check (the chronological quantile under-covers when scale grows, same-window does not) and a no-leak check | script, 3 to 5 tests, quick-mode run | 0.5 day |
+| S2 | **Pre-registered decision rules, written before the full run.** (a) Chronological mean coverage within 0.02 of 0.90 per dataset: claim stays "consistent with nominal". (b) If any dataset's mean moves by more than 0.01 from the C1 value, or the range 87.6% to 90.6% changes, file an abstract revision request. (c) If a dataset falls below 0.85, report it as under-coverage in the report and thesis | rules in this file | 0.1 day |
+| S3 | **Full C1b runs.** Delhi, Beijing, weather (20 splits each, about 15 to 25 minutes per dataset), then PeMSD7-M and PeMS-BAY (6 splits each, run overnight). Resumable | `exp_C1b_<domain>.json` x5 | 1 day, mostly unattended |
+| S4 | **Cheap baselines under C1 splits.** Re-run nearest-neighbour and inverse-distance interpolation, persistence and seasonal-naive on the C1 test stations with disjoint calibration, same splits. No training needed. IGNNK on Delhi only if time allows | table: OmniST vs baselines under C1 | 0.5 day |
+| S5 | **Local coordinate frame (P1-3).** Add as an option, default off, in `src/cc_hash.py` (centre and scale from training-station coordinates). Tests: identical output when the frame equals the legacy constants; invariance to shifting all coordinates. Run Delhi and weather C1 (5 splits each) as a sanity check only; full re-runs go to Semester 4 | option, tests, 2 small runs | 0.5 day |
+| S6 | **Items not re-run before the report, stated as such:** dropout robustness, drift handling, the 7-sensor large-network run, E-STGCN comparison. They stay labelled original-protocol and are scheduled in plan weeks 2 to 3 (P1-2) | report limitation text | 0 |
+| S7 | **Preprint decision (P1-4).** After S3, compare the preprint abstract's claims (90% or above under 30 to 50% dropout and at 325 sensors) with C1 and C1b. Draft a correction paragraph; the decision to post v2 is yours and is recorded in `FINALIZATION-RECORD.md` | decision note | 0.2 day |
+| S8 | **References (P1-5).** Verify venue, year and pages of [1], [3], [4], [5] against the publisher or DBLP | verified list | 0.2 day |
+| S9 | **Update the report.** Add the C1b table to Section 4; replace the Section 6 plan (WP0 to WP6) with the contributions A to D and the 12-week schedule; update Phase 1 status and limitations; regenerate the PDF with `tools/md_to_pdf.py`; run all checkers. The abstract is not touched unless S2(b) triggers | report .md and .pdf | 0.5 day |
+
+Schedule (assuming 22 Nov): 17 to 18 Nov S1, S2; 18 to 20 Nov S3 (start Delhi, Beijing, weather first), S5, S8; 19 to 20 Nov S4; 20 to 21 Nov S7, then S9; 22 Nov buffer and submission. If the date is earlier, S5 and S4 are cut first (both are Semester 4 items anyway); S1 to S3, S9 are not cut.
+
+Exit check for Phase 1: C1b exists for all five datasets; the report's coverage claims state which
+protocol they come from; `check_report_numbers.py` is extended to cover the C1b figures and passes;
+open Phase 1 items are listed in the report as limitations.
+
 ### Phase 2 (OmniST-Scale): done so far
 
 V2 attention equivalence, V3 coverage against N, V3b training budget, V4 memory and time, T1 state-space
