@@ -5,7 +5,7 @@
 > issue in C1, and new prior art (sequential whitening). Options A and B below are folded into it.
 
 One page to decide what Phase 2 does next. Evidence: `phase2-omnist-scale/docs/CONSOLIDATED-FINDINGS.md`
-(new), `FINALIZATION-RECORD.md` (Phase 1 and earlier Phase 2), `LEARNINGS-AND-RETIRED-DIRECTIONS.md`.
+(new), `FINALIZATION-RECORD.md` (Phase 1 and earlier Phase 2), `LEARNINGS.md`.
 
 ## Where things stand
 
@@ -32,7 +32,6 @@ One page to decide what Phase 2 does next. Evidence: `phase2-omnist-scale/docs/C
 | **A. Follow the plan, gate first** (recommended) | WP0: build the GHCN sparse network (300 to 1,500 stations), run V1b, add the local coordinate frame. Then run C2 on the sparse network. Add a seasonal-naive baseline to C1. | Medium. WP1 may lose its premise if the distance effect does not replicate | Geometry-aware calibration where distance matters, scale evidence to about 1,000 real stations, honest usefulness comparison |
 | B. Re-centre Phase 2 on usefulness | Diagnose why intervals lose to seasonal-naive (error tail by station, horizon, time of day); try a seasonal-residual model or conformalised quantile regression | Medium | Calibrated intervals that beat strong simple baselines at unseen sensors |
 | C. Scale-only thesis | WP3 to completion: published efficient-model comparison, OOM point, LargeST compute scaling | Low | Engineering study; low novelty |
-| D. Switch to SafeTTA | See `../thesis/`; independent G6 check found label-free adaptation helps only below about 100 labels | Medium | Different thesis; Phase 1 becomes background |
 
 A and B can run together: the GHCN data work and the seasonal-naive diagnosis do not compete for
 the same compute.
@@ -51,4 +50,3 @@ the same compute.
 - Whether to post a revised preprint to match C1.
 - Whether the scope in `phase2-omnist-scale/docs/RESEARCH-PLAN.md` is approved, and whether Option B
   is added to it.
-- OmniST-Scale versus SafeTTA (scored a statistical tie in `../mtech-thesis-vetting/`).

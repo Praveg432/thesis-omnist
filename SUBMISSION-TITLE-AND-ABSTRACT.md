@@ -1,7 +1,11 @@
-# Title and Abstract for Initial Submission (draft, 15 Nov 2026)
+# Title and Abstract for Initial Submission (SUBMITTED, finalised 17 Nov 2026)
 
-Title and abstract for initial submission. **Applied on 15 Nov 2026** to `README.md`,
-`MTECH-THESIS-PROPOSAL.md` and `SEM3-PROGRESS-REPORT.md` (and the report PDF). Subject to supervisor approval.
+> **Status: submitted and finalised on 17 Nov 2026.** The title and abstract below are the recorded
+> topic of the thesis. The text is frozen: change it only through a formal revision request, and
+> re-run `tools/check_submission_text.py` afterwards.
+
+Title and abstract for initial submission. Applied on 15 Nov 2026 to `README.md`,
+`MTECH-THESIS-PROPOSAL.md` and `SEM3-PROGRESS-REPORT.md` (and the report PDF); submitted 17 Nov 2026.
 
 ## Title
 
@@ -67,11 +71,10 @@ Rules applied:
 | Scaling work dropped | Yes | Yes (one completed measurement) | Remove or shorten |
 | Alerts or sensor placement added | Yes ("unseen sensor locations") | Yes | Add results |
 | Phase 1 numbers revised by a new evaluation | Yes | Numbers must be updated | Re-run `tools/check_submission_text.py` |
-| **Switch to SafeTTA or another unrelated topic** | **No** | **No** | **New title and abstract needed** |
+| **Switch to an unrelated topic** | **No** | **No** | **New title and abstract needed** |
 
-The last row is deliberate. A title broad enough to also cover image test-time adaptation (for example
-"Reliable Machine Learning under Distribution Shift") would be vague enough to invite rejection, and
-would hide the completed Phase 1 work. If a switch is possible, decide it before submission.
+The last row is deliberate. A title broad enough to cover an unrelated topic would be vague enough to
+invite rejection, and would hide the completed Phase 1 work.
 
 ## 3. Alternatives considered
 
@@ -94,4 +97,9 @@ figures (memory ratio at 8,000 sensors, no gain below 1,000, traffic width order
   `SEM3-PROGRESS-REPORT.md`; report PDF regenerated; `tools/check_submission_text.py` and
   `tools/check_draft_abstract.py` pass. Abstract expanded from 415 to 503 words (the keywords line adds
   11 more in the README and report).
-- Outstanding: supervisor approval of the title and of the Phase 2 scope.
+- Done (17 Nov 2026): title and abstract submitted and recorded as the finalised thesis topic.
+- Outstanding: supervisor approval of the Phase 2 scope (`THESIS-COMPLETION-PLAN.md`). Approval of the
+  title is not recorded in this repository.
+- Consequence of freezing: the abstract quotes the C1 range 87.6% to 90.6%. If the chronological C1
+  re-run (plan item P1-1) moves it by more than 0.01, the submitted abstract no longer matches the
+  results and a revision request is needed.

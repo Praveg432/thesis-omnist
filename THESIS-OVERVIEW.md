@@ -1,5 +1,9 @@
 # Thesis Overview: Narrative, Status, and Timeline
 
+> **Status (17 Nov 2026):** title and abstract submitted and finalised. The six-month timeline in
+> Section 5 and the WP0 to WP6 list in Section 4 are superseded by
+> [`THESIS-COMPLETION-PLAN.md`](THESIS-COMPLETION-PLAN.md) (12 weeks, to 7 Feb 2027).
+
 A single read-through of the whole thesis: what it argues, what is done, what is planned, and how the
 two phases fit the thesis timeline. The formal proposal is
 [`MTECH-THESIS-PROPOSAL.md`](MTECH-THESIS-PROPOSAL.md). The claim-to-evidence map is
@@ -89,7 +93,7 @@ coverage.
   with C2. WP1 has little to repair in dense networks; its case still rests on sparse networks.
 - **Data.** `pems_bay_coords.csv` is the real sensor coordinates in adjacency order (verified),
   which removes the reconstructed-coordinate caveat for PeMS-BAY.
-- Retired explorations and transferable lessons: `LEARNINGS-AND-RETIRED-DIRECTIONS.md`.
+- Dropped directions and lessons: `LEARNINGS.md`.
   Decision options: `PROGRESSION-DECISION-BRIEF.md`.
 
 ### Planned (Semester 4; scope proposed, pending supervisor approval)

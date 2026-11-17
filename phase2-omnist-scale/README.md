@@ -82,9 +82,7 @@ phase2-omnist-scale/
 
 ## Honest scope
 A systems and calibration contribution, not an accuracy record and not a new state-space model. A
-large real network may not be usable; the plan has a stated fallback. Supersedes an earlier, retired
-fusion idea (adaptive spatio-temporal conformal) that was a no-go on real data; it is not part of
-this thesis.
+large real network may not be usable; the plan has a stated fallback.
 
 ## License
 MIT. External-source content in docs rephrased for licensing compliance.

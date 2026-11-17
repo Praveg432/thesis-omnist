@@ -6,6 +6,50 @@ months, and revises its work packages in light of the 15 Nov measurements
 Acceptance thresholds are fixed now. They may be tightened, never loosened, after seeing results.
 Scope is subject to supervisor approval.
 
+## 0. Status and action register (17 Nov 2026)
+
+The title and abstract were submitted and finalised on 17 Nov 2026. Nothing in Sections 3 to 4 has been started yet (week 1 begins
+now). Section 0 lists what is left; Sections 1 to 9 give the reasoning and acceptance criteria.
+
+### Phase 1 (OmniST): complete, with these items left
+
+| ID | Item | Why | Week | Done when |
+|---|---|---|---|---|
+| P1-1 | Re-run C1 with chronological calibration; save per-station scores | C1 calibrates on errors from the test period (2.2). The submitted abstract quotes 87.6% to 90.6% | 1 | Both protocols tabulated. If the range moves by more than 0.01, file an abstract revision request |
+| P1-2 | Re-test the baseline comparison, dropout robustness, drift handling and the 7-sensor run under C1 | Still on the original protocol (1 to 2.5 points optimistic) | 1 to 3 | Each claim restated or withdrawn in the thesis chapter |
+| P1-3 | Local coordinate frame replacing the Delhi constants | Needed for GHCN and real PeMS-BAY coordinates | 1 | Tests pass; Phase 1 numbers unchanged within noise |
+| P1-4 | Decide on a revised preprint (arXiv:2611.04256 overstates relative to C1) | Public claim exceeds evidence | decide wk 1, post after wk 4 | Decision recorded in `FINALIZATION-RECORD.md` |
+| P1-5 | Verify references [1], [3], [4], [5] venue details; check the two traffic datasets' raw files can be recovered | Open items in the finalization record, Section 4 | 9 to 11 | Reference list verified |
+
+### Phase 2 (OmniST-Scale): done so far
+
+V2 attention equivalence, V3 coverage against N, V3b training budget, V4 memory and time, T1 state-space
+timing. State-space block and X2 dropped. WP2 as a separate contribution dropped.
+
+### Phase 2: remaining action plan
+
+| ID | Work | Weeks | Gate and accept rule | Fallback |
+|---|---|---|---|---|
+| P2-0 | V1b parity gate (10 seeds, `gru+fast` vs `gru+exact`) | 1 | Paired equivalence within the margins in `phase2-omnist-scale/docs/RESEARCH-PLAN.md` | If it fails, report neighbour attention as a different model, not a drop-in |
+| P2-1 | GHCN sparse network: download, quality filter, G0 replication test | 2 | G0: far tercile at least 0.03 below near tercile over 20 or more region splits | C becomes characterisation only |
+| P2-2 | G2: diagnose the 21% width gap to seasonal-naive on PeMS-BAY | 2 | Cause identified by horizon, time of day and station | Limitation stated |
+| P2-3 | Contribution A: hierarchical conformal (HCP and second-moment variant) on six networks | 3 to 5 | Mean coverage within 0.02 of 0.90 on every network; share of stations below 0.80 halved at most 15% wider | Trade-off curve |
+| P2-4 | Contribution B: new-sensor cold start to warm (HCP, Generalized HCP, own-data split conformal, ACI), k = 0 to 60 days | 3 to 7 | Coverage within 0.03 at every k; at least 5% narrower at the largest k on 4 of 6 networks | Coverage and width against k curves |
+| P2-5 | Contribution D: combined forecast, locally scaled scores, quantile head | 4 to 7 | Width at most conformalised seasonal-naive at deployable coverage within 0.02 | Limitation stated |
+| P2-6 | Contribution C, only if G0 passes: geometry-aware calibration against whitening and local spatial conformal | 6 to 7 | Far tercile within 0.03; mean within 0.02; width at most +10%; not worse than whitening | Characterisation |
+| P2-7 | Alerts demonstration (one air-quality network), IGNNK official-code baseline, LargeST compute scaling, coverage against N on GHCN | 8 to 9 | Tables final | Cut in this order after C: alerts, scale |
+| P2-8 | Reproducibility pass in a fresh environment, one headline table | 9 | Table reproduces | n/a |
+| T-1 | Thesis writing: chapters 1 to 3 from week 6, chapters 4 to 9 weeks 10 to 11, supervisor review week 11, final formatting and slides week 12 | 6 to 12 | Submission-ready 7 Feb 2027 | n/a |
+
+Cut order if time runs short: C, then alerts, then scale. A, B, D diagnosis and the writing are protected.
+
+### Open decisions (author or supervisor)
+
+1. Supervisor approval of this scope and of the title.
+2. Whether to post a revised preprint, and when (proposed: after week 4).
+3. Whether to keep C if G0 fails (proposed: no).
+4. Abstract revision request if P1-1 moves the quoted coverage range.
+
 ## 1. Bottom line
 
 - **Done:** Phase 1 (OmniST, five real networks, C1 to C3, preprint, 50 tests); Phase 2 measurements
@@ -159,8 +203,7 @@ then the scale work. **A, B and the writing are protected.**
 5. Exact station-level coverage (A).
 6. A new sensor's first weeks (B).
 7. Where position matters (C) and useful intervals (D), with the alerts demonstration.
-8. Scale: equivalence, memory and time, coverage against N; negative results (state-space block,
-   retired fusion).
+8. Scale: equivalence, memory and time, coverage against N; negative results (state-space block).
 9. Conclusion, limitations, future work.
 
 ## 6. Questions an examiner will ask, and where the answer comes from
@@ -174,7 +217,7 @@ then the scale work. **A, B and the writing are protected.**
 | "What is new over hierarchical conformal or sequential whitening?" | Their use for deep forecasting at unseen sensors with time-dependent scores, the cold-to-warm analysis (B), and a six-network forecast-time-only evaluation. The statistics are cited, not claimed |
 | "What happens when a sensor has been running for a month?" | B |
 | "Does it scale?" | Memory and time to 8,600 sensors (LargeST); coverage to about 1,000 real stations (GHCN); limits stated |
-| "Why are there negative results?" | Pre-registered criteria; negative results are findings (state-space block, fusion, WP2, and any failed gate) |
+| "Why are there negative results?" | Pre-registered criteria; negative results are findings (state-space block, WP2, and any failed gate) |
 
 ## 7. Fit with the submitted title and abstract
 

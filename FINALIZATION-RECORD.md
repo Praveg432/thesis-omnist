@@ -126,8 +126,8 @@ cd .. && python3 tools/audit_links.py && python3 tools/check_report_numbers.py &
 
 ## 8. Consolidation of 15 Nov 2026
 
-Work done in sibling repositories (`../omnist-scale/`, `../adaptive-st-conformal/`, `../safe-tta/`) was
-brought into this repository and re-run on the corrected Phase 2 code (hash-keyed neighbour cache).
+Earlier Phase 2 scaffold work was brought into this repository and re-run on the corrected Phase 2 code
+(hash-keyed neighbour cache).
 
 | Check | Result |
 |---|---|
@@ -140,7 +140,7 @@ brought into this repository and re-run on the corrected Phase 2 code (hash-keye
 | New number check (`tools/check_phase2_findings.py`) | 28 Phase 2 figures in the findings document, overview, brief and index match the result files; corrupting one figure made it exit 1. It caught two rounding errors (17.6% and 20.7% written; 17.5% and 20.8% correct), now fixed |
 | Earlier checks | `check_report_numbers.py` 25 of 25; `check_submission_text.py` OK; `audit_links.py` 0 broken links, 0 missing paths |
 
-**Corrections made to results produced in `../omnist-scale/` before this consolidation.** The earlier
+**Corrections made to results produced in the earlier Phase 2 scaffold before this consolidation.** The earlier
 V3 calibrated each window on the calibration stations' residuals at that same window, which needs
 targets unknown at forecast time. Under the deployable protocol: coverage at synthetic N=4,000 falls
 from 0.902 to 0.880; the model's interval on real traffic is 22% wider than seasonal-naive at 3,000
@@ -162,7 +162,7 @@ Semester-3 report were not changed.
 
 Reason: the title and abstract should stay accurate if Phase 2 methods change, give negative results,
 or are re-scoped. The scenario check is in `SUBMISSION-TITLE-AND-ABSTRACT.md`, Section 2. A switch to an
-unrelated topic (for example SafeTTA) would still need a new title.
+unrelated topic would still need a new title.
 
 Applied to `README.md`, `MTECH-THESIS-PROPOSAL.md` (title, one-sentence thesis, Phase 2 scope note),
 `SEM3-PROGRESS-REPORT.md` (title, scope note, abstract) and `SEM3-PROGRESS-REPORT.pdf` (regenerated with
@@ -178,3 +178,9 @@ the Phase 2 memory, state-space and traffic-width statements, tied to the result
 `tools/check_report_numbers.py`, `tools/check_phase2_findings.py`, `tools/audit_links.py`.
 
 Still pending: supervisor approval of the title and the Phase 2 scope. The public preprint is unchanged.
+
+## 10. Submission recorded (17 Nov 2026)
+
+The title and abstract of Section 9 were submitted on 17 Nov 2026 and are the finalised thesis topic.
+The status and remaining action plan are in `THESIS-COMPLETION-PLAN.md`, Section 0.
+Not verified: supervisor approval of the title.

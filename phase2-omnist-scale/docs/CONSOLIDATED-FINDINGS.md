@@ -173,8 +173,7 @@ such file.
 
 ## 6. Corrections to earlier statements
 
-These replace statements in `../../omnist-scale/docs/VALIDATION-REPORT.md` and in the conversation
-that produced it.
+These replace statements made in the earlier Phase 2 scaffold's validation report.
 1. "Coverage in-band at every N" held only for the same-window protocol, which is not deployable.
 2. "The model ends up about 9% tighter than seasonal-naive at 3000 steps" came from the same-window
    protocol. Under the deployable protocol the model is 22% wider.

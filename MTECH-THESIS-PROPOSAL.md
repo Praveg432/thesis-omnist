@@ -7,6 +7,7 @@
 **Supervisor:** Pankaj Chaswal
 **Program:** M.Tech, Computer Science and Engineering, IIT Patna
 **Hardware envelope:** Apple M4 Pro (MPS, ~24 GB unified memory), single machine, no cluster
+**Status:** title and abstract submitted and finalised 17 Nov 2026; this is the thesis of record.
 
 > **One-sentence thesis.** Build and evaluate uncertainty quantification for forecasting at sensor
 > locations a model was not trained on, in networks whose layout changes (Phase 1, complete), then

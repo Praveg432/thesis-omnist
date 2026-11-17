@@ -3,6 +3,7 @@
 **M.Tech Thesis — Department of Computer Science and Engineering, IIT Patna**
 **Candidate:** Praveg Vashishtha
 **Hardware envelope:** Apple M4 Pro (MPS, ~24 GB unified memory), single machine — no cluster
+**Status:** title and abstract submitted and finalised 17 Nov 2026. Remaining work: [`THESIS-COMPLETION-PLAN.md`](THESIS-COMPLETION-PLAN.md), Section 0.
 
 ---
 
@@ -46,7 +47,7 @@ prior art. Phase 2 builds directly on it.
   [`phase2-omnist-scale/docs/CONSOLIDATED-FINDINGS.md`](phase2-omnist-scale/docs/CONSOLIDATED-FINDINGS.md).
 - **Plan to completion (12 weeks, from 16 Nov 2026):** [`THESIS-COMPLETION-PLAN.md`](THESIS-COMPLETION-PLAN.md).
 - **What to decide next:** [`PROGRESSION-DECISION-BRIEF.md`](PROGRESSION-DECISION-BRIEF.md); background in
-  [`LEARNINGS-AND-RETIRED-DIRECTIONS.md`](LEARNINGS-AND-RETIRED-DIRECTIONS.md).
+  [`LEARNINGS.md`](LEARNINGS.md).
 - **Claim → evidence:** [`EXPERIMENTS-INDEX.md`](EXPERIMENTS-INDEX.md) — every claim in the abstract
   traced to the script that produces it and the committed result file, marked executed or pending.
 - **Phase 1 details:** [`phase1-omnist/README.md`](phase1-omnist/README.md) and
