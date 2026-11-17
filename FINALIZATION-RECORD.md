@@ -184,3 +184,34 @@ Still pending: supervisor approval of the title and the Phase 2 scope. The publi
 The title and abstract of Section 9 were submitted on 17 Nov 2026 and are the finalised thesis topic.
 The status and remaining action plan are in `THESIS-COMPLETION-PLAN.md`, Section 0.
 Not verified: supervisor approval of the title.
+
+## 11. C1b: chronological calibration (17 Nov 2026)
+
+C1b re-runs C1 (same splits, seeds, models) and calibrates each window only on calibration-station
+errors from earlier windows, scoring the last 75% of the test period. Rules were fixed in the script
+header before the run (`phase1-omnist/experiments/C1b_chronological_eval.py`). New code:
+`phase1-omnist/src/chronological_conformal.py`, 8 tests (Phase 1 suite: 58 passed). Results:
+`phase1-omnist/results/exp_C1b_<domain>.json`; table from `phase1-omnist/experiments/C1b_summarise.py`.
+
+| Dataset | Splits | Chronological | Same window (C1 protocol) | Pooled over time | C1 full-period mean |
+|---|:---:|---|---|---|:---:|
+| Delhi | 20 | 0.818 | 0.896 | 0.870 | 0.893 |
+| Beijing | 20 | 0.777 | 0.905 | 0.875 | 0.903 |
+| Weather | 20 | 0.889 | 0.883 | 0.900 | 0.906 |
+| PeMSD7-M | 6 | 0.869 | 0.871 | 0.874 | 0.876 |
+| PeMS-BAY | 6 | 0.869 | 0.893 | 0.883 | 0.892 |
+
+Rule outcomes: (c) under-coverage below 0.85 on Delhi and Beijing; (b) chronological mean differs from
+C1 by more than 0.01 on Delhi, Beijing, weather and PeMS-BAY. Only weather meets (a). The 95% intervals
+over splits for Delhi and Beijing exclude 0.90 by a wide margin.
+
+**Consequence.** The submitted abstract quotes 87.6% to 90.6%, which are C1 figures. Those hold for the
+C1 protocol but not for forecast-time calibration, where the means span 77.7% to 88.9%. A revision
+request for the abstract (and the report) is needed, or the abstract's wording must be read as C1-only.
+The decision is the author's and the supervisor's.
+
+**Not established.** The cause. Under-coverage is largest where the pooled-over-time quantile also falls
+below target (Delhi, Beijing), which is consistent with errors growing over the test period, but per-window
+scores were not saved, so this is untested. The expanding-window quantile is one choice; a rolling window
+or adaptive conformal inference may do better (plan item B). Two seeds' timings were taken with jobs in
+parallel. PeMS datasets have 6 splits.

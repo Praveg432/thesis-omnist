@@ -25,7 +25,7 @@ now). Section 0 lists what is left; Sections 1 to 9 give the reasoning and accep
 
 Goal: the report states every Phase 1 number under a protocol it can defend, and lists what is still
 untested. Phase 1 numbers are produced with the legacy coordinate frame, so they stay comparable with
-the submitted abstract. Report submission date: **not yet given; the schedule below assumes 22 Nov 2026.**
+the submitted abstract. Report submission window: **20 to 30 Nov 2026**. The earliest date is 20 Nov, so S1 to S3 and S9 come first and S4, S5 only if time allows.
 
 | Step | Work | Output | Effort |
 |---|---|---|---|
@@ -39,7 +39,15 @@ the submitted abstract. Report submission date: **not yet given; the schedule be
 | S8 | **References (P1-5).** Verify venue, year and pages of [1], [3], [4], [5] against the publisher or DBLP | verified list | 0.2 day |
 | S9 | **Update the report.** Add the C1b table to Section 4; replace the Section 6 plan (WP0 to WP6) with the contributions A to D and the 12-week schedule; update Phase 1 status and limitations; regenerate the PDF with `tools/md_to_pdf.py`; run all checkers. The abstract is not touched unless S2(b) triggers | report .md and .pdf | 0.5 day |
 
-Schedule (assuming 22 Nov): 17 to 18 Nov S1, S2; 18 to 20 Nov S3 (start Delhi, Beijing, weather first), S5, S8; 19 to 20 Nov S4; 20 to 21 Nov S7, then S9; 22 Nov buffer and submission. If the date is earlier, S5 and S4 are cut first (both are Semester 4 items anyway); S1 to S3, S9 are not cut.
+**Progress (17 Nov 2026):** S1 and S2 done (chronological module, 8 passing tests, C1b script, quick run
+OK; decision rules are in the script header). S3 done for all five datasets (`FINALIZATION-RECORD.md`, Section 11).
+Result: chronological coverage is 0.777 (Beijing), 0.818 (Delhi), 0.869 (PeMSD7-M), 0.869 (PeMS-BAY),
+0.889 (weather). Rule (c) fired on Delhi and Beijing and rule (b) on four datasets, so the **abstract
+revision request (S2 rule b) is triggered**. Next: S9 (report), S7 (preprint note), then a diagnosis of
+the cause (save per-window scores; test rolling-window and adaptive calibration), which feeds
+contribution B.
+
+Schedule (for a 22 Nov target, with 30 Nov as the hard limit): 17 to 18 Nov S1, S2; 18 to 20 Nov S3 (start Delhi, Beijing, weather first), S5, S8; 19 to 20 Nov S4; 20 to 21 Nov S7, then S9; 22 Nov buffer and submission. If the date is earlier, S5 and S4 are cut first (both are Semester 4 items anyway); S1 to S3, S9 are not cut.
 
 Exit check for Phase 1: C1b exists for all five datasets; the report's coverage claims state which
 protocol they come from; `check_report_numbers.py` is extended to cover the C1b figures and passes;
