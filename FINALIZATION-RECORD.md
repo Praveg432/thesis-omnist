@@ -338,15 +338,15 @@ on splits 0 to 4 and confirmed on splits 5 to 9. Mean over splits; width in the 
 ## 16. Strengthening forecast-time coverage (17 Nov 2026)
 
 New code: `phase1-omnist/src/multiyear_calibration.py` (calibration rules over several test years, hierarchical
-conformal threshold), `chronological_conformal.py` (rolling and scaled rules), `residual_to_last` option in
+conformal threshold), `phase1-omnist/src/chronological_conformal.py` (rolling and scaled rules), `residual_to_last` option in
 `ModelConfig` (default off), `test_offset_days` option in the Beijing loader (default 0). Tests: 13 new (Phase 1
 suite 84 passed). Experiments, all with the training-station coordinate frame and forecast-time history only:
 
 | Experiment | Script | Result | Outcome |
 |---|---|---|---|
-| C1f, several test years | `C1f_multiyear_calibration.py` | `exp_C1f_<domain>.json` | Earlier-year errors, scaled by forecast magnitude, same season: Delhi 0.898, Beijing 0.896 (split halves 0.912/0.885 and 0.899/0.892); width +30% and +61% against the same-year rule. Stations below 0.80: 23% to 1% (Delhi), 77% to 0% (Beijing) |
-| C1g, hierarchical conformal | `C1g_hcp_comparison.py` | `exp_C1g_hcp_<domain>.json` | 10 calibration stations: Delhi 0.809 to 0.924, weather 0.873 to 0.985, width +90% and +41%. Valid but conservative |
-| Residual head | `C1b_chronological_eval.py ... resid` | `exp_C1b_resid_<domain>.json` | MAE PeMSD7-M 3.79 to 3.69, weather 4.73 to 4.76, PeMS-BAY 4.73 to 5.04. Not adopted |
+| C1f, several test years | `phase1-omnist/experiments/C1f_multiyear_calibration.py` | exp_C1f_<domain>.json | Earlier-year errors, scaled by forecast magnitude, same season: Delhi 0.898, Beijing 0.896 (split halves 0.912/0.885 and 0.899/0.892); width +30% and +61% against the same-year rule. Stations below 0.80: 23% to 1% (Delhi), 77% to 0% (Beijing) |
+| C1g, hierarchical conformal | `phase1-omnist/experiments/C1g_hcp_comparison.py` | exp_C1g_hcp_<domain>.json | 10 calibration stations: Delhi 0.809 to 0.924, weather 0.873 to 0.985, width +90% and +41%. Valid but conservative |
+| Residual head | `phase1-omnist/experiments/C1b_chronological_eval.py` with `resid` | exp_C1b_resid_<domain>.json | MAE PeMSD7-M 3.79 to 3.69, weather 4.73 to 4.76, PeMS-BAY 4.73 to 5.04. Not adopted |
 
 **Selection caveat.** The scaled seasonal rule was chosen after seeing C1f. It is the only rule within 0.01 of
 0.90 on both air-quality networks and holds on both split halves, but it was not pre-registered. It must be
