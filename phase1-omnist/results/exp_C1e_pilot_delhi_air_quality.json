@@ -1,0 +1,1150 @@
+{
+  "experiment": "C1e exploratory pilot of forecast-time calibration rules",
+  "domain": "delhi_air_quality",
+  "warmup_fraction": 0.25,
+  "splits": [
+    {
+      "split": 0,
+      "rules": {
+        "expanding": {
+          "coverage": 0.822,
+          "width": 97.142,
+          "per_station_coverage": [
+            0.8571,
+            0.7905,
+            0.8476,
+            0.8238,
+            0.8048,
+            0.8381,
+            0.8238,
+            0.7905
+          ]
+        },
+        "rolling_2": {
+          "coverage": 0.8167,
+          "width": 95.493,
+          "per_station_coverage": [
+            0.819,
+            0.7905,
+            0.8048,
+            0.8381,
+            0.8095,
+            0.8333,
+            0.8095,
+            0.8286
+          ]
+        },
+        "rolling_4": {
+          "coverage": 0.8161,
+          "width": 92.702,
+          "per_station_coverage": [
+            0.8286,
+            0.7905,
+            0.8143,
+            0.8429,
+            0.8048,
+            0.8429,
+            0.8095,
+            0.7952
+          ]
+        },
+        "scaled_level": {
+          "coverage": 0.7399,
+          "width": 86.541,
+          "per_station_coverage": [
+            0.7524,
+            0.7857,
+            0.7333,
+            0.7381,
+            0.7048,
+            0.7619,
+            0.719,
+            0.7238
+          ]
+        },
+        "scaled_vol": {
+          "coverage": 0.7798,
+          "width": 117.808,
+          "per_station_coverage": [
+            0.8619,
+            0.7667,
+            0.7857,
+            0.7619,
+            0.7,
+            0.7762,
+            0.7667,
+            0.819
+          ]
+        },
+        "scaled_predmag": {
+          "coverage": 0.8893,
+          "width": 116.611,
+          "per_station_coverage": [
+            0.881,
+            0.9143,
+            0.8905,
+            0.881,
+            0.8762,
+            0.9143,
+            0.8905,
+            0.8667
+          ]
+        },
+        "scaled_level_rolling4": {
+          "coverage": 0.7661,
+          "width": 113.687,
+          "per_station_coverage": [
+            0.7667,
+            0.8143,
+            0.7571,
+            0.7762,
+            0.7286,
+            0.8,
+            0.7381,
+            0.7476
+          ]
+        }
+      }
+    },
+    {
+      "split": 1,
+      "rules": {
+        "expanding": {
+          "coverage": 0.8107,
+          "width": 91.802,
+          "per_station_coverage": [
+            0.7381,
+            0.819,
+            0.9333,
+            0.7905,
+            0.7667,
+            0.8,
+            0.7714,
+            0.8667
+          ]
+        },
+        "rolling_2": {
+          "coverage": 0.7988,
+          "width": 103.496,
+          "per_station_coverage": [
+            0.7476,
+            0.7857,
+            0.8762,
+            0.8048,
+            0.7476,
+            0.8048,
+            0.7714,
+            0.8524
+          ]
+        },
+        "rolling_4": {
+          "coverage": 0.797,
+          "width": 95.779,
+          "per_station_coverage": [
+            0.7381,
+            0.8048,
+            0.881,
+            0.7857,
+            0.7476,
+            0.8048,
+            0.7571,
+            0.8571
+          ]
+        },
+        "scaled_level": {
+          "coverage": 0.7631,
+          "width": 102.548,
+          "per_station_coverage": [
+            0.7762,
+            0.7381,
+            0.8238,
+            0.7381,
+            0.7667,
+            0.7619,
+            0.781,
+            0.719
+          ]
+        },
+        "scaled_vol": {
+          "coverage": 0.7869,
+          "width": 131.871,
+          "per_station_coverage": [
+            0.8381,
+            0.8238,
+            0.8143,
+            0.7571,
+            0.7143,
+            0.8048,
+            0.719,
+            0.8238
+          ]
+        },
+        "scaled_predmag": {
+          "coverage": 0.8827,
+          "width": 115.639,
+          "per_station_coverage": [
+            0.8524,
+            0.8905,
+            0.9667,
+            0.919,
+            0.819,
+            0.8952,
+            0.8619,
+            0.8571
+          ]
+        },
+        "scaled_level_rolling4": {
+          "coverage": 0.7893,
+          "width": 142.459,
+          "per_station_coverage": [
+            0.7905,
+            0.7762,
+            0.8524,
+            0.7667,
+            0.7952,
+            0.781,
+            0.7952,
+            0.7571
+          ]
+        }
+      }
+    },
+    {
+      "split": 2,
+      "rules": {
+        "expanding": {
+          "coverage": 0.7911,
+          "width": 85.562,
+          "per_station_coverage": [
+            0.8476,
+            0.8,
+            0.7333,
+            0.8143,
+            0.8095,
+            0.8048,
+            0.7619,
+            0.7571
+          ]
+        },
+        "rolling_2": {
+          "coverage": 0.8024,
+          "width": 89.81,
+          "per_station_coverage": [
+            0.8571,
+            0.819,
+            0.7476,
+            0.8238,
+            0.8048,
+            0.8286,
+            0.7667,
+            0.7714
+          ]
+        },
+        "rolling_4": {
+          "coverage": 0.7952,
+          "width": 86.407,
+          "per_station_coverage": [
+            0.8476,
+            0.8143,
+            0.7238,
+            0.8238,
+            0.8095,
+            0.8238,
+            0.7619,
+            0.7571
+          ]
+        },
+        "scaled_level": {
+          "coverage": 0.7661,
+          "width": 97.877,
+          "per_station_coverage": [
+            0.6524,
+            0.7857,
+            0.7905,
+            0.7476,
+            0.7524,
+            0.8238,
+            0.7619,
+            0.8143
+          ]
+        },
+        "scaled_vol": {
+          "coverage": 0.794,
+          "width": 127.775,
+          "per_station_coverage": [
+            0.7857,
+            0.8571,
+            0.7619,
+            0.7143,
+            0.7333,
+            0.8429,
+            0.7952,
+            0.8619
+          ]
+        },
+        "scaled_predmag": {
+          "coverage": 0.881,
+          "width": 133.39,
+          "per_station_coverage": [
+            0.8619,
+            0.8381,
+            0.9,
+            0.8476,
+            0.9048,
+            0.9143,
+            0.919,
+            0.8619
+          ]
+        },
+        "scaled_level_rolling4": {
+          "coverage": 0.8006,
+          "width": 122.494,
+          "per_station_coverage": [
+            0.6857,
+            0.8143,
+            0.8286,
+            0.7857,
+            0.781,
+            0.8571,
+            0.8,
+            0.8524
+          ]
+        }
+      }
+    },
+    {
+      "split": 3,
+      "rules": {
+        "expanding": {
+          "coverage": 0.8119,
+          "width": 88.909,
+          "per_station_coverage": [
+            0.7905,
+            0.8286,
+            0.8429,
+            0.7952,
+            0.8381,
+            0.7714,
+            0.8286,
+            0.8
+          ]
+        },
+        "rolling_2": {
+          "coverage": 0.8083,
+          "width": 90.109,
+          "per_station_coverage": [
+            0.8095,
+            0.8333,
+            0.8476,
+            0.7571,
+            0.8429,
+            0.7476,
+            0.8429,
+            0.7857
+          ]
+        },
+        "rolling_4": {
+          "coverage": 0.803,
+          "width": 87.557,
+          "per_station_coverage": [
+            0.7952,
+            0.8429,
+            0.8333,
+            0.7714,
+            0.8381,
+            0.7429,
+            0.8333,
+            0.7667
+          ]
+        },
+        "scaled_level": {
+          "coverage": 0.7887,
+          "width": 92.624,
+          "per_station_coverage": [
+            0.819,
+            0.7619,
+            0.7857,
+            0.7333,
+            0.8286,
+            0.7905,
+            0.781,
+            0.8095
+          ]
+        },
+        "scaled_vol": {
+          "coverage": 0.7929,
+          "width": 119.442,
+          "per_station_coverage": [
+            0.8095,
+            0.7619,
+            0.8048,
+            0.7714,
+            0.7952,
+            0.8048,
+            0.8095,
+            0.7857
+          ]
+        },
+        "scaled_predmag": {
+          "coverage": 0.9048,
+          "width": 120.313,
+          "per_station_coverage": [
+            0.9619,
+            0.9,
+            0.9,
+            0.8619,
+            0.9238,
+            0.8952,
+            0.9,
+            0.8952
+          ]
+        },
+        "scaled_level_rolling4": {
+          "coverage": 0.8077,
+          "width": 119.469,
+          "per_station_coverage": [
+            0.8333,
+            0.7905,
+            0.7952,
+            0.7476,
+            0.8476,
+            0.8095,
+            0.8048,
+            0.8333
+          ]
+        }
+      }
+    },
+    {
+      "split": 4,
+      "rules": {
+        "expanding": {
+          "coverage": 0.806,
+          "width": 82.079,
+          "per_station_coverage": [
+            0.7762,
+            0.819,
+            0.8286,
+            0.8095,
+            0.7714,
+            0.7667,
+            0.8524,
+            0.8238
+          ]
+        },
+        "rolling_2": {
+          "coverage": 0.844,
+          "width": 89.074,
+          "per_station_coverage": [
+            0.8286,
+            0.8238,
+            0.881,
+            0.8667,
+            0.8048,
+            0.819,
+            0.881,
+            0.8476
+          ]
+        },
+        "rolling_4": {
+          "coverage": 0.8161,
+          "width": 83.87,
+          "per_station_coverage": [
+            0.8,
+            0.8143,
+            0.8524,
+            0.8333,
+            0.7762,
+            0.7667,
+            0.8429,
+            0.8429
+          ]
+        },
+        "scaled_level": {
+          "coverage": 0.7774,
+          "width": 86.703,
+          "per_station_coverage": [
+            0.7619,
+            0.8,
+            0.8286,
+            0.7429,
+            0.8143,
+            0.7476,
+            0.8143,
+            0.7095
+          ]
+        },
+        "scaled_vol": {
+          "coverage": 0.8131,
+          "width": 115.601,
+          "per_station_coverage": [
+            0.7667,
+            0.8048,
+            0.8095,
+            0.8429,
+            0.8429,
+            0.8286,
+            0.8095,
+            0.8
+          ]
+        },
+        "scaled_predmag": {
+          "coverage": 0.9107,
+          "width": 118.98,
+          "per_station_coverage": [
+            0.9095,
+            0.9333,
+            0.9524,
+            0.9,
+            0.9429,
+            0.8905,
+            0.9381,
+            0.819
+          ]
+        },
+        "scaled_level_rolling4": {
+          "coverage": 0.8065,
+          "width": 114.706,
+          "per_station_coverage": [
+            0.8048,
+            0.8429,
+            0.8619,
+            0.781,
+            0.8333,
+            0.781,
+            0.8286,
+            0.719
+          ]
+        }
+      }
+    },
+    {
+      "split": 5,
+      "rules": {
+        "expanding": {
+          "coverage": 0.7976,
+          "width": 90.374,
+          "per_station_coverage": [
+            0.7905,
+            0.7857,
+            0.8381,
+            0.819,
+            0.7762,
+            0.819,
+            0.7667,
+            0.7857
+          ]
+        },
+        "rolling_2": {
+          "coverage": 0.7869,
+          "width": 97.189,
+          "per_station_coverage": [
+            0.8143,
+            0.7905,
+            0.8,
+            0.8095,
+            0.7286,
+            0.8286,
+            0.7619,
+            0.7619
+          ]
+        },
+        "rolling_4": {
+          "coverage": 0.7893,
+          "width": 92.99,
+          "per_station_coverage": [
+            0.8095,
+            0.7762,
+            0.8238,
+            0.8143,
+            0.7381,
+            0.8143,
+            0.7524,
+            0.7857
+          ]
+        },
+        "scaled_level": {
+          "coverage": 0.7869,
+          "width": 107.715,
+          "per_station_coverage": [
+            0.8048,
+            0.7524,
+            0.7619,
+            0.8048,
+            0.7286,
+            0.8286,
+            0.8048,
+            0.8095
+          ]
+        },
+        "scaled_vol": {
+          "coverage": 0.7768,
+          "width": 128.917,
+          "per_station_coverage": [
+            0.7619,
+            0.7429,
+            0.8048,
+            0.8095,
+            0.7714,
+            0.7714,
+            0.7714,
+            0.781
+          ]
+        },
+        "scaled_predmag": {
+          "coverage": 0.906,
+          "width": 129.789,
+          "per_station_coverage": [
+            0.9571,
+            0.8857,
+            0.9,
+            0.9381,
+            0.8905,
+            0.9476,
+            0.8381,
+            0.8905
+          ]
+        },
+        "scaled_level_rolling4": {
+          "coverage": 0.8226,
+          "width": 143.948,
+          "per_station_coverage": [
+            0.8524,
+            0.781,
+            0.8,
+            0.8429,
+            0.7524,
+            0.8667,
+            0.8381,
+            0.8476
+          ]
+        }
+      }
+    },
+    {
+      "split": 6,
+      "rules": {
+        "expanding": {
+          "coverage": 0.7821,
+          "width": 88.065,
+          "per_station_coverage": [
+            0.8238,
+            0.8048,
+            0.7952,
+            0.7,
+            0.7667,
+            0.7714,
+            0.819,
+            0.7762
+          ]
+        },
+        "rolling_2": {
+          "coverage": 0.7899,
+          "width": 96.099,
+          "per_station_coverage": [
+            0.8619,
+            0.819,
+            0.7952,
+            0.781,
+            0.7238,
+            0.7476,
+            0.819,
+            0.7714
+          ]
+        },
+        "rolling_4": {
+          "coverage": 0.7845,
+          "width": 91.753,
+          "per_station_coverage": [
+            0.8333,
+            0.8095,
+            0.7619,
+            0.7476,
+            0.7524,
+            0.7762,
+            0.8048,
+            0.7905
+          ]
+        },
+        "scaled_level": {
+          "coverage": 0.7649,
+          "width": 106.995,
+          "per_station_coverage": [
+            0.8143,
+            0.7524,
+            0.8,
+            0.6381,
+            0.8143,
+            0.7905,
+            0.7143,
+            0.7952
+          ]
+        },
+        "scaled_vol": {
+          "coverage": 0.7857,
+          "width": 143.685,
+          "per_station_coverage": [
+            0.8619,
+            0.7762,
+            0.7905,
+            0.719,
+            0.8,
+            0.8,
+            0.7571,
+            0.781
+          ]
+        },
+        "scaled_predmag": {
+          "coverage": 0.8429,
+          "width": 135.49,
+          "per_station_coverage": [
+            0.9048,
+            0.8571,
+            0.8571,
+            0.7905,
+            0.8143,
+            0.819,
+            0.8524,
+            0.8476
+          ]
+        },
+        "scaled_level_rolling4": {
+          "coverage": 0.7964,
+          "width": 143.584,
+          "per_station_coverage": [
+            0.8619,
+            0.7762,
+            0.8286,
+            0.6619,
+            0.8381,
+            0.819,
+            0.7667,
+            0.819
+          ]
+        }
+      }
+    },
+    {
+      "split": 7,
+      "rules": {
+        "expanding": {
+          "coverage": 0.8042,
+          "width": 90.766,
+          "per_station_coverage": [
+            0.8381,
+            0.7952,
+            0.6952,
+            0.8333,
+            0.8095,
+            0.7952,
+            0.7905,
+            0.8762
+          ]
+        },
+        "rolling_2": {
+          "coverage": 0.8131,
+          "width": 98.452,
+          "per_station_coverage": [
+            0.8571,
+            0.7952,
+            0.7286,
+            0.8571,
+            0.8286,
+            0.7857,
+            0.8143,
+            0.8381
+          ]
+        },
+        "rolling_4": {
+          "coverage": 0.806,
+          "width": 92.61,
+          "per_station_coverage": [
+            0.8667,
+            0.7714,
+            0.6857,
+            0.8429,
+            0.819,
+            0.7905,
+            0.819,
+            0.8524
+          ]
+        },
+        "scaled_level": {
+          "coverage": 0.7827,
+          "width": 99.467,
+          "per_station_coverage": [
+            0.8095,
+            0.8238,
+            0.5429,
+            0.8381,
+            0.8571,
+            0.8333,
+            0.8,
+            0.7571
+          ]
+        },
+        "scaled_vol": {
+          "coverage": 0.7768,
+          "width": 124.708,
+          "per_station_coverage": [
+            0.7952,
+            0.781,
+            0.6,
+            0.8286,
+            0.7857,
+            0.8238,
+            0.8143,
+            0.7857
+          ]
+        },
+        "scaled_predmag": {
+          "coverage": 0.9054,
+          "width": 125.776,
+          "per_station_coverage": [
+            0.9286,
+            0.9048,
+            0.8238,
+            0.9286,
+            0.9476,
+            0.8714,
+            0.919,
+            0.919
+          ]
+        },
+        "scaled_level_rolling4": {
+          "coverage": 0.8083,
+          "width": 131.883,
+          "per_station_coverage": [
+            0.8333,
+            0.8571,
+            0.5619,
+            0.8667,
+            0.8905,
+            0.8571,
+            0.8143,
+            0.7857
+          ]
+        }
+      }
+    },
+    {
+      "split": 8,
+      "rules": {
+        "expanding": {
+          "coverage": 0.8321,
+          "width": 102.499,
+          "per_station_coverage": [
+            0.8571,
+            0.8524,
+            0.8381,
+            0.8381,
+            0.8762,
+            0.819,
+            0.7714,
+            0.8048
+          ]
+        },
+        "rolling_2": {
+          "coverage": 0.8327,
+          "width": 103.944,
+          "per_station_coverage": [
+            0.8571,
+            0.819,
+            0.8571,
+            0.8381,
+            0.881,
+            0.8381,
+            0.7619,
+            0.8095
+          ]
+        },
+        "rolling_4": {
+          "coverage": 0.819,
+          "width": 98.254,
+          "per_station_coverage": [
+            0.8571,
+            0.8286,
+            0.8429,
+            0.8095,
+            0.8571,
+            0.8048,
+            0.7714,
+            0.781
+          ]
+        },
+        "scaled_level": {
+          "coverage": 0.725,
+          "width": 86.745,
+          "per_station_coverage": [
+            0.6238,
+            0.7381,
+            0.7762,
+            0.781,
+            0.7857,
+            0.7667,
+            0.7429,
+            0.5857
+          ]
+        },
+        "scaled_vol": {
+          "coverage": 0.8006,
+          "width": 125.865,
+          "per_station_coverage": [
+            0.7619,
+            0.7762,
+            0.8286,
+            0.8238,
+            0.819,
+            0.7952,
+            0.8095,
+            0.7905
+          ]
+        },
+        "scaled_predmag": {
+          "coverage": 0.8673,
+          "width": 120.699,
+          "per_station_coverage": [
+            0.8333,
+            0.8667,
+            0.8905,
+            0.9,
+            0.9143,
+            0.9095,
+            0.8571,
+            0.7667
+          ]
+        },
+        "scaled_level_rolling4": {
+          "coverage": 0.7696,
+          "width": 119.202,
+          "per_station_coverage": [
+            0.6524,
+            0.7667,
+            0.8,
+            0.8476,
+            0.8238,
+            0.819,
+            0.781,
+            0.6667
+          ]
+        }
+      }
+    },
+    {
+      "split": 9,
+      "rules": {
+        "expanding": {
+          "coverage": 0.8185,
+          "width": 84.638,
+          "per_station_coverage": [
+            0.8476,
+            0.8571,
+            0.881,
+            0.7524,
+            0.8143,
+            0.8429,
+            0.7762,
+            0.7762
+          ]
+        },
+        "rolling_2": {
+          "coverage": 0.7851,
+          "width": 88.046,
+          "per_station_coverage": [
+            0.7905,
+            0.8286,
+            0.8524,
+            0.7095,
+            0.8048,
+            0.819,
+            0.7476,
+            0.7286
+          ]
+        },
+        "rolling_4": {
+          "coverage": 0.7863,
+          "width": 82.586,
+          "per_station_coverage": [
+            0.8048,
+            0.8333,
+            0.8429,
+            0.6952,
+            0.8,
+            0.819,
+            0.7429,
+            0.7524
+          ]
+        },
+        "scaled_level": {
+          "coverage": 0.7304,
+          "width": 82.371,
+          "per_station_coverage": [
+            0.7476,
+            0.7667,
+            0.7905,
+            0.7333,
+            0.7238,
+            0.6619,
+            0.6429,
+            0.7762
+          ]
+        },
+        "scaled_vol": {
+          "coverage": 0.7982,
+          "width": 122.429,
+          "per_station_coverage": [
+            0.8619,
+            0.7857,
+            0.8048,
+            0.7905,
+            0.7905,
+            0.8095,
+            0.781,
+            0.7619
+          ]
+        },
+        "scaled_predmag": {
+          "coverage": 0.8571,
+          "width": 108.906,
+          "per_station_coverage": [
+            0.8476,
+            0.919,
+            0.9286,
+            0.8524,
+            0.8905,
+            0.7571,
+            0.8238,
+            0.8381
+          ]
+        },
+        "scaled_level_rolling4": {
+          "coverage": 0.7619,
+          "width": 111.656,
+          "per_station_coverage": [
+            0.7571,
+            0.7762,
+            0.8381,
+            0.7857,
+            0.7619,
+            0.6905,
+            0.681,
+            0.8048
+          ]
+        }
+      }
+    }
+  ],
+  "aggregate": {
+    "all_splits": {
+      "expanding": {
+        "coverage_mean": 0.8076,
+        "width_mean": 90.184,
+        "fraction_of_stations_below_0.80": 0.412
+      },
+      "rolling_2": {
+        "coverage_mean": 0.8078,
+        "width_mean": 95.171,
+        "fraction_of_stations_below_0.80": 0.35
+      },
+      "rolling_4": {
+        "coverage_mean": 0.8013,
+        "width_mean": 90.451,
+        "fraction_of_stations_below_0.80": 0.4
+      },
+      "scaled_level": {
+        "coverage_mean": 0.7625,
+        "width_mean": 94.959,
+        "fraction_of_stations_below_0.80": 0.7
+      },
+      "scaled_vol": {
+        "coverage_mean": 0.7905,
+        "width_mean": 125.81,
+        "fraction_of_stations_below_0.80": 0.55
+      },
+      "scaled_predmag": {
+        "coverage_mean": 0.8847,
+        "width_mean": 122.559,
+        "fraction_of_stations_below_0.80": 0.037
+      },
+      "scaled_level_rolling4": {
+        "coverage_mean": 0.7929,
+        "width_mean": 126.309,
+        "fraction_of_stations_below_0.80": 0.487
+      }
+    },
+    "selection_half_splits_0_4": {
+      "expanding": {
+        "coverage_mean": 0.8083,
+        "width_mean": 89.099,
+        "fraction_of_stations_below_0.80": 0.375
+      },
+      "rolling_2": {
+        "coverage_mean": 0.814,
+        "width_mean": 93.596,
+        "fraction_of_stations_below_0.80": 0.275
+      },
+      "rolling_4": {
+        "coverage_mean": 0.8055,
+        "width_mean": 89.263,
+        "fraction_of_stations_below_0.80": 0.375
+      },
+      "scaled_level": {
+        "coverage_mean": 0.767,
+        "width_mean": 93.259,
+        "fraction_of_stations_below_0.80": 0.75
+      },
+      "scaled_vol": {
+        "coverage_mean": 0.7933,
+        "width_mean": 122.499,
+        "fraction_of_stations_below_0.80": 0.475
+      },
+      "scaled_predmag": {
+        "coverage_mean": 0.8937,
+        "width_mean": 120.987,
+        "fraction_of_stations_below_0.80": 0.0
+      },
+      "scaled_level_rolling4": {
+        "coverage_mean": 0.794,
+        "width_mean": 122.563,
+        "fraction_of_stations_below_0.80": 0.55
+      }
+    },
+    "confirmation_half_splits_5_9": {
+      "expanding": {
+        "coverage_mean": 0.8069,
+        "width_mean": 91.268,
+        "fraction_of_stations_below_0.80": 0.45
+      },
+      "rolling_2": {
+        "coverage_mean": 0.8015,
+        "width_mean": 96.746,
+        "fraction_of_stations_below_0.80": 0.425
+      },
+      "rolling_4": {
+        "coverage_mean": 0.797,
+        "width_mean": 91.639,
+        "fraction_of_stations_below_0.80": 0.425
+      },
+      "scaled_level": {
+        "coverage_mean": 0.758,
+        "width_mean": 96.659,
+        "fraction_of_stations_below_0.80": 0.65
+      },
+      "scaled_vol": {
+        "coverage_mean": 0.7876,
+        "width_mean": 129.121,
+        "fraction_of_stations_below_0.80": 0.625
+      },
+      "scaled_predmag": {
+        "coverage_mean": 0.8757,
+        "width_mean": 124.132,
+        "fraction_of_stations_below_0.80": 0.075
+      },
+      "scaled_level_rolling4": {
+        "coverage_mean": 0.7918,
+        "width_mean": 130.055,
+        "fraction_of_stations_below_0.80": 0.425
+      }
+    }
+  }
+}

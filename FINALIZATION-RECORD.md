@@ -312,3 +312,25 @@ over the air-quality test periods, with persistence and seasonal forecasts falli
 revised text is in `README.md`, `SEM3-PROGRESS-REPORT.md` and `SUBMISSION-TITLE-AND-ABSTRACT.md`; 560 words (limit
 600). `tools/check_submission_text.py` now ties the forecast-time range to the C1b result files.
 Still open: supervisor approval of the title and the Phase 2 scope; the preprint revision.
+
+## 15. Pilot: can forecast-time calibration be repaired? (17 Nov 2026, exploratory)
+
+C1e (`phase1-omnist/experiments/C1e_scaled_calibration_pilot.py`, 10 splits, corrected frame, same trained
+model for every rule) compares calibration rules that use only forecast-time information. Rules were compared
+on splits 0 to 4 and confirmed on splits 5 to 9. Mean over splits; width in the dataset's units.
+
+| Dataset | Expanding quantile (C1b rule): coverage, width | Best repair found: rule, coverage, width | Stations below 0.80 coverage: expanding to repair |
+|---|---|---|---|
+| Delhi | 0.808, 90.2 | scaled by mean forecast magnitude: 0.885, 122.6 (confirmation half 0.876, 124.1) | 41% to 4% |
+| Beijing | 0.774, 137.3 | rolling quantile of last 2 windows: 0.860, 221.4 (confirmation half 0.865) | 77% to 0% |
+| Weather | 0.865, 19.2 | none needed beyond expanding; level scaling is unsuitable for temperature (0.958, width 51.6) | 27% to 28% |
+
+- **What it shows.** Part of the shortfall can be repaired with forecast-time information, at a cost in width
+  (about +36% on Delhi, +60% on Beijing). No rule reached 0.90 on either air-quality network, and the best rule
+  differs by dataset, so a rule cannot be chosen without a validation scheme that these 10 and 22 test windows
+  cannot support alone.
+- **What it does not show.** That scaling by forecast magnitude is the right feature (it won on one dataset);
+  that the repair holds on the traffic networks (not run); or that the widths are acceptable to users.
+- **Consequence.** The wide range in the abstract has three sources: the calibration rule, a test period with
+  very few windows (10 on Delhi, 22 on Beijing), and strongly growing error. Contributions A and D of the plan
+  now start from this evidence.

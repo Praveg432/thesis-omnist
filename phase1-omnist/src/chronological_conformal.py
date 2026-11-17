@@ -50,6 +50,36 @@ def same_window_quantiles(cal_scores: np.ndarray, first_scored: int, alpha: floa
                      for t in range(first_scored, cal_scores.shape[0])])
 
 
+def rolling_quantiles(cal_scores: np.ndarray, first_scored: int, alpha: float, n_recent: int) -> np.ndarray:
+    """q_t from calibration errors of the n_recent windows before t only (t = first_scored .. W-1)."""
+    _check_scores(cal_scores)
+    if n_recent < 1 or first_scored < 1:
+        raise ValueError("n_recent and first_scored must be at least 1")
+    return np.array([conformal_quantile(cal_scores[max(0, t - n_recent):t].reshape(-1), alpha)
+                     for t in range(first_scored, cal_scores.shape[0])])
+
+
+def scaled_coverage(cal_scores: np.ndarray, cal_scale: np.ndarray, test_scores: np.ndarray,
+                    test_scale: np.ndarray, first_scored: int, alpha: float, n_recent: int | None = None) -> dict:
+    """Chronological conformal on errors divided by a scale known at forecast time.
+
+    cal_scale and test_scale have shape (windows, stations, 1) and must be positive. The interval half-width
+    at window t and station i is q_t * test_scale[t, i], where q_t is the conformal quantile of the
+    calibration stations' scaled errors from earlier windows (all of them, or the last n_recent).
+    """
+    _check_scores(cal_scores)
+    _check_scores(test_scores)
+    if (cal_scale <= 0).any() or (test_scale <= 0).any():
+        raise ValueError("scales must be positive")
+    normalised = cal_scores / cal_scale
+    q = (chronological_quantiles(normalised, first_scored, alpha) if n_recent is None
+         else rolling_quantiles(normalised, first_scored, alpha, n_recent))
+    half_width = q[:, None, None] * test_scale[first_scored:]
+    covered = test_scores[first_scored:] <= half_width
+    return {"coverage": float(covered.mean()), "width": float(2.0 * half_width.mean()),
+            "per_station_coverage": [float(c) for c in covered.mean(axis=(0, 2))]}
+
+
 def pooled_quantile(cal_scores: np.ndarray, alpha: float) -> float:
     _check_scores(cal_scores)
     return conformal_quantile(cal_scores.reshape(-1), alpha)
