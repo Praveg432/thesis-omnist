@@ -19,13 +19,12 @@
 > holds as networks grow, and whether the intervals are useful. Phase 2 is planned for Semester 4
 > and partly measured (`phase2-omnist-scale/docs/CONSOLIDATED-FINDINGS.md`).
 >
-> **Revision note (17 Nov 2026).** After the abstract was submitted, two checks changed how its coverage
-> figures must be read. (1) The 87.6% to 90.6% range comes from experiment C1, which calibrates on errors
-> from the same period it evaluates. With calibration restricted to errors available at forecast time
-> (Section 4.3a), mean coverage is 77.7% to 89.1% across the two coordinate frames (Delhi constants 77.7% to 88.9%, corrected frame 77.8% to 89.1%). (2) The coordinate embedding used Delhi constants on
-> every network, which inflated error and interval width on four networks (Section 4.6). A revision of
-> the abstract is proposed in `SUBMISSION-TITLE-AND-ABSTRACT.md`, Section 6, and awaits the author's and
-> supervisor's decision. The abstract above is unchanged.
+> **Revision note (17 Nov 2026).** The abstract was submitted earlier on 17 Nov 2026 and is revised here in
+> one sentence. The original 87.6% to 90.6% coverage range comes from experiment C1, which calibrates on
+> errors from the same period it evaluates; the revised sentence adds the forecast-time range (Section
+> 4.3a), 77.8% to 89.1%. The original wording is recorded in `SUBMISSION-TITLE-AND-ABSTRACT.md`, Section 6.
+> The coordinate embedding also used Delhi constants on every network, which inflated error and interval
+> width on four networks (Section 4.6); coverage was affected by at most 0.011 in the same-window protocol.
 >
 > **Terminology.** "Calibrated coverage" means marginal coverage from split conformal prediction, with calibration on
 > stations the model never saw. Stations are split at random into train, calibration and test sets, so
@@ -36,13 +35,14 @@
 > random splits. It is not a guarantee for every station and not a guarantee against arbitrary spatial
 > dependence.
 
+
 ---
 
 ## Abstract
 
 Sensor networks for air quality, traffic and weather are used to forecast conditions and to act on them. Two features of real deployments make this hard. The networks change: sensors fail, go offline and are installed at new sites, so forecasts are often needed at locations the model has never seen. And a single predicted value is not enough to act on. An operator needs an interval that contains the true value with a stated probability, and needs to know where that statement can be trusted.
 
-This thesis studies uncertainty quantification for forecasting at sensor locations a model was not trained on, in networks whose layout changes. Its first part, now complete and released as a preprint, built and evaluated OmniST. OmniST is a forecaster that does not depend on a fixed network layout, so it can predict at a new sensor without being retrained, and it attaches split conformal prediction intervals to its forecasts at unseen sensors. On five real networks covering air quality, weather and traffic, with stations split at random into training, calibration and test sets many times over, average coverage at unseen sensors was between 87.6% and 90.6% for a 90% target. The evaluation also showed the limits of an average. Coverage varied from split to split, and some individual stations were covered far less often than the target. It fell with distance from the training network in one sparse weather network, by about 1.4 points per typical station spacing, but not in the denser networks. And the cost of the model's attention grows with the square of the number of sensors.
+This thesis studies uncertainty quantification for forecasting at sensor locations a model was not trained on, in networks whose layout changes. Its first part, now complete and released as a preprint, built and evaluated OmniST. OmniST is a forecaster that does not depend on a fixed network layout, so it can predict at a new sensor without being retrained, and it attaches split conformal prediction intervals to its forecasts at unseen sensors. On five real networks covering air quality, weather and traffic, with stations split at random into training, calibration and test sets many times over, average coverage at unseen sensors was between 87.6% and 90.6% for a 90% target when each interval was calibrated on the calibration stations' errors over the evaluation period. Calibrating only on errors available at forecast time gave averages between 77.8% and 89.1%, lowest in the two air-quality networks, where forecast error roughly doubled over the test period; in those two networks persistence and seasonal forecasts fell short in the same way. The evaluation also showed the limits of an average. Coverage varied from split to split, and some individual stations were covered far less often than the target. It fell with distance from the training network in one sparse weather network, by about 1.4 points per typical station spacing, but not in the denser networks. And the cost of the model's attention grows with the square of the number of sensors.
 
 The remaining work asks three open questions. First, where does coverage at a new site fail, and can calibration that accounts for the site's position relative to the existing network repair it without harming sites that are already well covered? Second, does the approach continue to hold, in coverage and in compute, as networks grow from hundreds toward thousands of sensors? Third, are the intervals useful as well as calibrated, judged against simple forecasting baselines and in decision tasks such as threshold alerts with a controlled miss rate? Early measurements bear on the last two. Restricting attention to each sensor's nearest neighbours reduced the attention layer's inference memory about seventeenfold at 8,000 sensors, with no gain below about a thousand. Replacing the recurrent time model with a state-space block brought no speed gain on this hardware. On real traffic data the intervals were narrower than those of a persistence forecast but wider than those of a seasonal one.
 
@@ -192,8 +192,9 @@ were fixed in the script before the run. Window t-1 ends where window t begins, 
 
 - On Delhi and Beijing, chronological calibration under-covers badly: the 95% intervals over splits (Delhi constants) are
   [0.810, 0.826] and [0.772, 0.783]. On weather and the two traffic networks it is within 0.02 of 0.90
-  once the coordinate frame is corrected. **The coverage range in the submitted abstract (87.6% to 90.6%)
-  describes the C1 rule, not forecast-time calibration, for which the range is 77.7% to 89.1% across the two coordinate frames.**
+  once the coordinate frame is corrected. **The 87.6% to 90.6% range in the abstract as first submitted
+  describes the C1 rule, not forecast-time calibration, for which the range is 77.8% to 89.1% with the corrected
+  coordinate frame (77.7% to 88.9% with the Delhi constants). The abstract has been revised to say so.**
 - **Diagnosis (experiment C1d, 10 splits, corrected frame).** Three candidate causes were measured.
   (H1) Error scale changes over the test period: the late-third mean error divided by the early-third
   mean error is 1.90 on Delhi and 2.11 on Beijing, and 0.87 on weather. (H2) Calibration stations are not

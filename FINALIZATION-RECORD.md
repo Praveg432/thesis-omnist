@@ -206,9 +206,8 @@ C1 by more than 0.01 on Delhi, Beijing, weather and PeMS-BAY. Only weather meets
 over splits for Delhi and Beijing exclude 0.90 by a wide margin.
 
 **Consequence.** The submitted abstract quotes 87.6% to 90.6%, which are C1 figures. Those hold for the
-C1 protocol but not for forecast-time calibration, where the means span 77.7% to 88.9%. A revision
-request for the abstract (and the report) is needed, or the abstract's wording must be read as C1-only.
-The decision is the author's and the supervisor's.
+C1 protocol but not for forecast-time calibration, where the means span 77.7% to 88.9%. The abstract was revised on 17 Nov 2026 (Section 14); the submitted wording is kept in
+`SUBMISSION-TITLE-AND-ABSTRACT.md`, Section 6.
 
 **Not established.** The cause. Under-coverage is largest where the pooled-over-time quantile also falls
 below target (Delhi, Beijing), which is consistent with errors growing over the test period, but per-window
@@ -302,3 +301,14 @@ decision to post, and when, is the author's. Nothing public has been changed.
 
 **Still open for Phase 1.** Abstract revision decision; frame choice applied to C2, C3 and the Phase 2
 results; the S6 re-runs; supervisor approval of the title and Phase 2 scope.
+
+## 14. Abstract revised (17 Nov 2026)
+
+The abstract was submitted earlier on 17 Nov 2026 and is revised in the Semester 3 progress report and will be
+revised again in the final thesis. One sentence changed: the first-part coverage figures now state the
+calibration rule behind each range (87.6% to 90.6% with C1's rule; 77.8% to 89.1% with forecast-time
+calibration and the training-station coordinate frame), and name the cause (forecast error roughly doubling
+over the air-quality test periods, with persistence and seasonal forecasts falling short in the same way). The
+revised text is in `README.md`, `SEM3-PROGRESS-REPORT.md` and `SUBMISSION-TITLE-AND-ABSTRACT.md`; 560 words (limit
+600). `tools/check_submission_text.py` now ties the forecast-time range to the C1b result files.
+Still open: supervisor approval of the title and the Phase 2 scope; the preprint revision.

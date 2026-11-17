@@ -64,6 +64,11 @@ means = [json.load(open(os.path.join(RESULTS, f"exp_C1_{d}.json")))["aggregate"]
     "coverage_over_splits"]["mean"] for d in domains]
 low, high = f"{100 * min(means):.1f}%", f"{100 * max(means):.1f}%"
 check(f"between {low} and {high}" in readme_abs, f"abstract coverage range should read 'between {low} and {high}'")
+chrono = [json.load(open(os.path.join(RESULTS, f"exp_C1b_norm_{d}.json")))["aggregate"]["chronological"][
+    "coverage_over_splits"]["mean"] for d in domains]
+clow, chigh = f"{100 * min(chrono):.1f}%", f"{100 * max(chrono):.1f}%"
+check(f"between {clow} and {chigh}" in readme_abs,
+      f"abstract forecast-time coverage range should read 'between {clow} and {chigh}' (C1b, training-station frame)")
 slope = json.load(open(os.path.join(RESULTS, "exp_C2_analysis.json")))["ghcn_weather"]["within_station"]["slope_per_spacing"]
 check(f"about {abs(100 * slope):.1f} points" in readme_abs, f"abstract slope should read 'about {abs(100 * slope):.1f} points'")
 check(len(domains) == 5 and "five real networks" in readme_abs, "abstract should say 'five real networks'")

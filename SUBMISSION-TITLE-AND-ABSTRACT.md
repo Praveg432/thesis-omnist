@@ -1,11 +1,11 @@
-# Title and Abstract for Initial Submission (SUBMITTED, finalised 17 Nov 2026)
+# Title and Abstract (initial submission 17 Nov 2026; abstract revised 17 Nov 2026 for the progress report)
 
-> **Status: submitted and finalised on 17 Nov 2026.** The title and abstract below are the recorded
-> topic of the thesis. The text is frozen: change it only through a formal revision request, and
-> re-run `tools/check_submission_text.py` afterwards.
-
-Title and abstract for initial submission. Applied on 15 Nov 2026 to `README.md`,
-`MTECH-THESIS-PROPOSAL.md` and `SEM3-PROGRESS-REPORT.md` (and the report PDF); submitted 17 Nov 2026.
+> **Status.** The title and abstract were submitted on 17 Nov 2026 as the initial submission. The abstract is
+> revised in the Semester 3 progress report and will be revised again in the final thesis as results
+> arrive. The text below is the **revised abstract** (one sentence changed, Section 6); the originally
+> submitted sentence is kept in Section 6 for the record. `README.md` and `SEM3-PROGRESS-REPORT.md` carry the
+> same text, and `tools/check_submission_text.py` checks that they agree and that every figure ties to a
+> result file.
 
 ## Title
 
@@ -15,7 +15,7 @@ Title and abstract for initial submission. Applied on 15 Nov 2026 to `README.md`
 
 Sensor networks for air quality, traffic and weather are used to forecast conditions and to act on them. Two features of real deployments make this hard. The networks change: sensors fail, go offline and are installed at new sites, so forecasts are often needed at locations the model has never seen. And a single predicted value is not enough to act on. An operator needs an interval that contains the true value with a stated probability, and needs to know where that statement can be trusted.
 
-This thesis studies uncertainty quantification for forecasting at sensor locations a model was not trained on, in networks whose layout changes. Its first part, now complete and released as a preprint, built and evaluated OmniST. OmniST is a forecaster that does not depend on a fixed network layout, so it can predict at a new sensor without being retrained, and it attaches split conformal prediction intervals to its forecasts at unseen sensors. On five real networks covering air quality, weather and traffic, with stations split at random into training, calibration and test sets many times over, average coverage at unseen sensors was between 87.6% and 90.6% for a 90% target. The evaluation also showed the limits of an average. Coverage varied from split to split, and some individual stations were covered far less often than the target. It fell with distance from the training network in one sparse weather network, by about 1.4 points per typical station spacing, but not in the denser networks. And the cost of the model's attention grows with the square of the number of sensors.
+This thesis studies uncertainty quantification for forecasting at sensor locations a model was not trained on, in networks whose layout changes. Its first part, now complete and released as a preprint, built and evaluated OmniST. OmniST is a forecaster that does not depend on a fixed network layout, so it can predict at a new sensor without being retrained, and it attaches split conformal prediction intervals to its forecasts at unseen sensors. On five real networks covering air quality, weather and traffic, with stations split at random into training, calibration and test sets many times over, average coverage at unseen sensors was between 87.6% and 90.6% for a 90% target when each interval was calibrated on the calibration stations' errors over the evaluation period. Calibrating only on errors available at forecast time gave averages between 77.8% and 89.1%, lowest in the two air-quality networks, where forecast error roughly doubled over the test period; in those two networks persistence and seasonal forecasts fell short in the same way. The evaluation also showed the limits of an average. Coverage varied from split to split, and some individual stations were covered far less often than the target. It fell with distance from the training network in one sparse weather network, by about 1.4 points per typical station spacing, but not in the denser networks. And the cost of the model's attention grows with the square of the number of sensors.
 
 The remaining work asks three open questions. First, where does coverage at a new site fail, and can calibration that accounts for the site's position relative to the existing network repair it without harming sites that are already well covered? Second, does the approach continue to hold, in coverage and in compute, as networks grow from hundreds toward thousands of sensors? Third, are the intervals useful as well as calibrated, judged against simple forecasting baselines and in decision tasks such as threshold alerts with a controlled miss rate? Early measurements bear on the last two. Restricting attention to each sensor's nearest neighbours reduced the attention layer's inference memory about seventeenfold at 8,000 sensors, with no gain below about a thousand. Replacing the recurrent time model with a state-space block brought no speed gain on this hardware. On real traffic data the intervals were narrower than those of a persistence forecast but wider than those of a seasonal one.
 
@@ -100,31 +100,27 @@ figures (memory ratio at 8,000 sensors, no gain below 1,000, traffic width order
 - Done (17 Nov 2026): title and abstract submitted and recorded as the finalised thesis topic.
 - Outstanding: supervisor approval of the Phase 2 scope (`THESIS-COMPLETION-PLAN.md`). Approval of the
   title is not recorded in this repository.
-- Consequence of freezing: the abstract quotes the C1 range 87.6% to 90.6%. If the chronological C1
-  re-run (plan item P1-1) moves it by more than 0.01, the submitted abstract no longer matches the
-  results and a revision request is needed.
-
----
-
-## 6. Proposed revision after the chronological re-run (not submitted; needs the author's and supervisor's decision)
+- Done (17 Nov 2026): the chronological C1 re-run (C1b) moved the coverage range, so the abstract's
+  coverage sentence was revised (Section 6) in the README and the progress report.
+- Expected later: further revisions in the final thesis when Phase 2 results (station-level coverage,
+  new-sensor warm-up, usefulness against baselines, scale) are in; each revision re-runs the checkers.
+## 6. Revision applied after the chronological re-run (17 Nov 2026)
 
 Reason. The 87.6% to 90.6% range comes from experiment C1, whose calibration quantile uses errors from the
 period being evaluated. With calibration restricted to errors available at forecast time (experiment C1b,
-`FINALIZATION-RECORD.md`, Sections 11 and 12) the means are 77.7% to 89.1% across the two coordinate frames
-tested. The abstract's contributions paragraph already promises an evaluation that uses only forecast-time
-information, so the first-part numbers need to say which rule they come from. Nothing else in the abstract
-changes. All figures below are tied to result files by `tools/check_c1b_report.py`.
+`FINALIZATION-RECORD.md`, Sections 11 and 12) the means are 77.8% to 89.1% with the training-station
+coordinate frame (77.7% to 88.9% with the original Delhi constants). The contributions paragraph already
+promises an evaluation that uses only forecast-time information, so the first-part numbers now say which rule
+they come from. Nothing else in the abstract changed.
 
-One sentence is replaced. Old:
+As submitted (17 Nov 2026):
 
 > average coverage at unseen sensors was between 87.6% and 90.6% for a 90% target. The evaluation also showed the limits of an average.
 
-New:
+As revised:
 
-> average coverage at unseen sensors was between 87.6% and 90.6% for a 90% target when each interval was calibrated on the calibration stations' errors over the evaluation period. Calibrating only on errors available at forecast time gave averages between 77.7% and 89.1%, lowest in the two air-quality networks, where forecast error roughly doubled over the test period; persistence and seasonal forecasts fell short in the same way. The evaluation also showed the limits of an average.
+> average coverage at unseen sensors was between 87.6% and 90.6% for a 90% target when each interval was calibrated on the calibration stations' errors over the evaluation period. Calibrating only on errors available at forecast time gave averages between 77.8% and 89.1%, lowest in the two air-quality networks, where forecast error roughly doubled over the test period; in those two networks persistence and seasonal forecasts fell short in the same way. The evaluation also showed the limits of an average.
 
-Length: abstract 503 words now, 556 after the change (limit 600). `tools/check_submission_text.py`
-checks the 87.6% to 90.6% range against the C1 files and would pass unchanged; it should gain a check of 77.7%
-and 89.1% against the C1b files if the revision is applied. Two options if the revision is not filed: keep the
-abstract and state in the thesis that its coverage figures are C1 figures; or file the revision. The first
-leaves a sentence that a reader will take as forecast-time coverage.
+Length: 503 words as submitted, 560 words as revised (limit 600). `tools/check_submission_text.py` ties the
+87.6% to 90.6% range to the C1 files and the 77.8% to 89.1% range to the C1b files, and
+`tools/check_c1b_report.py` ties the report's supporting figures to the result files.

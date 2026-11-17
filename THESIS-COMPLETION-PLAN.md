@@ -43,12 +43,12 @@ the submitted abstract. Report submission window: **20 to 30 Nov 2026**. The ear
 OK; decision rules are in the script header). S3 done for all five datasets (`FINALIZATION-RECORD.md`, Section 11).
 Result: chronological coverage is 0.777 (Beijing), 0.818 (Delhi), 0.869 (PeMSD7-M), 0.869 (PeMS-BAY),
 0.889 (weather). Rule (c) fired on Delhi and Beijing and rule (b) on four datasets, so the **abstract
-revision request (S2 rule b) is triggered**. **Status of the Phase 1 closure plan (17 Nov 2026): S1 to S9 done**
+revision (S2 rule b) was triggered and has been applied**. **Status of the Phase 1 closure plan (17 Nov 2026): S1 to S9 done**
 (`FINALIZATION-RECORD.md`, Sections 11 to 13). Diagnosis (C1d): the under-coverage follows error growth
 over the test period (late over early error 1.90 Delhi, 2.11 Beijing), not station mismatch. Baselines
 (C1c) under-cover the same way. The report is updated and its PDF regenerated; the abstract is unchanged
-and a one-sentence revision is proposed in `SUBMISSION-TITLE-AND-ABSTRACT.md`, Section 6, pending your
-decision. Phase 1 carries into Semester 4 only these items: the S6 re-runs (dropout, drift, 7-sensor,
+and its coverage sentence was revised on 17 Nov 2026 (`SUBMISSION-TITLE-AND-ABSTRACT.md`, Section 6); further
+revisions are expected in the final thesis. Phase 1 carries into Semester 4 only these items: the S6 re-runs (dropout, drift, 7-sensor,
 E-STGCN, interpolators), C2 and C3 with the corrected frame, and the preprint revision.
 Per-window scores for rolling-window and adaptive rules are saved in the C1d result files and feed
 contributions A and B.
