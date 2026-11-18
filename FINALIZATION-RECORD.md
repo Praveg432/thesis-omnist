@@ -383,3 +383,32 @@ coverage 0.922 against 0.891 pooled, width +31%, stations below 0.80 from 11.7% 
 of the post-hoc 89.8% and 89.6%; 597 words with the keywords line (limit 600). The rule is a repair for networks
 whose error changes strongly through the year; it is not uniformly better (H4 on weather). Traffic was not
 tested with the rule (its series are too short for earlier years).
+
+## 18. Second pre-registered round C1i/C1j (18 Nov 2026)
+
+Pre-registration committed before any run (`PRE-REGISTRATION-C1I.md`, commit 94f85f2). Script
+`phase1-omnist/experiments/C1i_origin_rules.py`; verdicts `phase1-omnist/experiments/C1i_summarise.py` ->
+`phase1-omnist/results/exp_C1i_verdicts.json`. New code: `phase1-omnist/src/origin_calibration.py` (known-at-origin
+history, phase matching, online rule selection), 7 tests. Station-level conformal on PeMS-BAY:
+`phase1-omnist/results/exp_C1g_hcp_pemsbay_traffic.json`.
+
+| Hypothesis | Outcome |
+|---|---|
+| H5 time-of-day rule within 0.02 of 0.90 on traffic | PeMSD7-M PASS (0.888); PeMS-BAY **FAIL** (0.877). Plain expanding calibration gives 0.891 and 0.881 |
+| H6 fixed seasonal rule holds with weekly origins | PASS on all three: Delhi 0.908 [0.900, 0.916] (narrower than C1h), Beijing 0.900, weather 0.913 |
+| H7 online selection keeps coverage and recovers efficiency | Delhi PASS (0.905, interval score within 0.3%); weather PASS (0.900, interval score lower by 2.1 [0.8, 3.4]); Beijing **FAIL** (0.868) |
+| H8 station-level conformal helps on PeMS-BAY | PASS: 0.903 against 0.881, stations below 0.80 from 12.2% to 5.9%, width +25% |
+
+**Defect found and fixed during the run.** The first traffic run converted timestamps to minutes by dividing the
+integer value by 6e10, which assumes nanosecond resolution; the loader's timestamps are microsecond resolution,
+so origins came out in units of 1,000 minutes while the step added to the end time was in minutes. Many windows
+then had no window counted as observed before them and got infinite intervals (960 of 2,100 station-windows
+in a check on one PeMS-BAY split), which inflated coverage and made widths infinite. The conversion now
+divides by a one-minute time delta, independent of resolution, and the script raises if any scored interval
+is infinite. Both traffic runs were deleted and re-run; only the re-run is reported. The air-quality and
+weather runs use day ordinals and were not affected.
+
+**Consequences.** Every network has a forecast-time method confirmed within 0.02 of 90% on data not used to
+design it: the seasonal rule for air quality and weather, expanding calibration for traffic, and station-level
+conformal for per-station coverage on traffic. Online selection is not adopted as the default (fails on Beijing).
+The abstract is unchanged: its C1h figures stand and C1i replicates them.

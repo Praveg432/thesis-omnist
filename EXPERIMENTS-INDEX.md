@@ -48,6 +48,7 @@ initialisation. They are kept as the original record; C1 is the primary evidence
 | 18 | Station-level (hierarchical) conformal is valid but conservative with 10 calibration stations | `phase1-omnist/experiments/C1g_hcp_comparison.py` | `phase1-omnist/results/exp_C1g_hcp_<domain>.json` | EXECUTED (Delhi, weather; 10 splits) |
 | 19 | A residual-to-last-value head does not close the gap to persistence | `phase1-omnist/experiments/C1b_chronological_eval.py` (`resid`) | `phase1-omnist/results/exp_C1b_resid_<domain>.json` | EXECUTED (weather, traffic); not adopted |
 | 20 | Pre-registered confirmation: the fixed rule gives 0.902, 0.890 and 0.908 (Delhi, Beijing, weather) and OmniST's intervals beat both simple forecasts | `phase1-omnist/experiments/C1h_confirmation.py`, `phase1-omnist/experiments/C1h_summarise.py` | `phase1-omnist/results/exp_C1h_<domain>.json`, `phase1-omnist/results/exp_C1h_verdicts.json` | EXECUTED; H1 to H3 pass on all three, H4 fails on weather |
+| 21 | Second pre-registered round: the rule replicates with weekly origins; traffic needs no seasonal rule; station-level conformal confirmed on PeMS-BAY; online selection fails on Beijing | `phase1-omnist/experiments/C1i_origin_rules.py`, `phase1-omnist/experiments/C1i_summarise.py` | `phase1-omnist/results/exp_C1i_<domain>.json`, `phase1-omnist/results/exp_C1i_verdicts.json` | EXECUTED; H6, H8 pass; H5 and H7 pass on one network each and fail on one |
 Full claim-to-file map for Phase 1: `phase1-omnist/RESULTS-INDEX.md`.
 
 ---

@@ -104,7 +104,30 @@ for dom, label in (("delhi_air_quality", "Delhi"), ("beijing_air_quality", "Beij
         if w not in line:
             failures.append(f"C1h row {label} lacks {w}: {line}")
 
+# ---- Section 4.3d: second pre-registered round (C1i/C1j) ---------------------------------------------------
+sec_d = report_lines[report_lines.index("### 4.3d"):report_lines.index("### 4.4")]
+vi = load("exp_C1i_verdicts.json")
+for dom, label in (("delhi_air_quality", "Delhi"), ("beijing_air_quality", "Beijing"), ("ghcn_weather", "Weather")):
+    x = vi[dom]
+    line = next(l for l in sec_d.splitlines() if l.startswith(f"| {label} |"))
+    want = [f"{x[r]['coverage']['mean']:.3f}" for r in ("same_year", "c1h_seasonal_scaled", "online_selection")]
+    want += [f"{x['c1h_seasonal_scaled']['width']:.1f} / {x['online_selection']['width']:.1f}", x["H6"], x["H7"]]
+    for w in want:
+        n_checked += 1
+        if w not in line:
+            failures.append(f"C1i row {label} lacks {w}: {line}")
+for dom, label in (("pemsd7_traffic", "PeMSD7-M"), ("pemsbay_traffic", "PeMS-BAY")):
+    x = vi[dom]
+    line = next(l for l in sec_d.splitlines() if l.startswith(f"| {label} |"))
+    for w in (f"{x['expanding']['coverage']['mean']:.3f}", f"{x['time_of_day_scaled']['coverage']['mean']:.3f}", x["H5"]):
+        n_checked += 1
+        if w not in line:
+            failures.append(f"C1j row {label} lacks {w}: {line}")
+n_checked += 1
+if f"{vi['pemsbay_hcp']['hcp']['coverage_mean']:.3f}" not in sec_d:
+    failures.append("4.3d lacks the PeMS-BAY station-level coverage")
+
 if failures:
     print("\n".join(failures))
     sys.exit(1)
-print(f"all {n_checked} C1b to C1h report figures match the committed result files")
+print(f"all {n_checked} C1b to C1j report figures match the committed result files")

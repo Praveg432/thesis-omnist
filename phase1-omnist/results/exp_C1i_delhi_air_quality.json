@@ -1,0 +1,1078 @@
+{
+  "experiment": "C1i/C1j second confirmation round (PRE-REGISTRATION-C1I.md)",
+  "domain": "delhi_air_quality",
+  "stride_days": 7,
+  "splits": [
+    {
+      "split": 30,
+      "n_scored_windows": 60,
+      "same_year": {
+        "coverage": 0.8326,
+        "width": 107.878,
+        "interval_score": 245.572,
+        "per_station_coverage": [
+          0.8006,
+          0.8422,
+          0.8483,
+          0.8128,
+          0.8656,
+          0.8094,
+          0.8233,
+          0.8589
+        ]
+      },
+      "c1h_seasonal_scaled": {
+        "coverage": 0.9185,
+        "width": 132.655,
+        "interval_score": 168.723,
+        "per_station_coverage": [
+          0.8989,
+          0.9078,
+          0.9478,
+          0.9283,
+          0.9278,
+          0.9122,
+          0.905,
+          0.92
+        ]
+      },
+      "online_selection": {
+        "coverage": 0.9139,
+        "width": 126.479,
+        "interval_score": 167.703,
+        "per_station_coverage": [
+          0.8911,
+          0.9039,
+          0.9422,
+          0.9122,
+          0.9283,
+          0.9139,
+          0.9022,
+          0.9172
+        ],
+        "chosen_counts": {
+          "all_scaled": 53,
+          "c1h_seasonal_scaled": 7
+        }
+      }
+    },
+    {
+      "split": 31,
+      "n_scored_windows": 60,
+      "same_year": {
+        "coverage": 0.8179,
+        "width": 102.28,
+        "interval_score": 258.443,
+        "per_station_coverage": [
+          0.8294,
+          0.8139,
+          0.845,
+          0.7794,
+          0.8228,
+          0.8128,
+          0.82,
+          0.82
+        ]
+      },
+      "c1h_seasonal_scaled": {
+        "coverage": 0.8898,
+        "width": 123.861,
+        "interval_score": 161.36,
+        "per_station_coverage": [
+          0.8911,
+          0.9028,
+          0.94,
+          0.8433,
+          0.9139,
+          0.8639,
+          0.8872,
+          0.8761
+        ]
+      },
+      "online_selection": {
+        "coverage": 0.8913,
+        "width": 120.71,
+        "interval_score": 159.035,
+        "per_station_coverage": [
+          0.8922,
+          0.9039,
+          0.9394,
+          0.8433,
+          0.9139,
+          0.8683,
+          0.8911,
+          0.8783
+        ],
+        "chosen_counts": {
+          "all_scaled": 45,
+          "c1h_seasonal_scaled": 15
+        }
+      }
+    },
+    {
+      "split": 32,
+      "n_scored_windows": 60,
+      "same_year": {
+        "coverage": 0.8253,
+        "width": 101.705,
+        "interval_score": 240.727,
+        "per_station_coverage": [
+          0.8178,
+          0.8322,
+          0.8389,
+          0.7906,
+          0.8228,
+          0.8172,
+          0.8394,
+          0.8433
+        ]
+      },
+      "c1h_seasonal_scaled": {
+        "coverage": 0.9247,
+        "width": 126.329,
+        "interval_score": 156.683,
+        "per_station_coverage": [
+          0.9478,
+          0.9372,
+          0.9061,
+          0.8894,
+          0.9322,
+          0.925,
+          0.9328,
+          0.9272
+        ]
+      },
+      "online_selection": {
+        "coverage": 0.9156,
+        "width": 126.653,
+        "interval_score": 157.803,
+        "per_station_coverage": [
+          0.9439,
+          0.9311,
+          0.8811,
+          0.8833,
+          0.9233,
+          0.9167,
+          0.9261,
+          0.9189
+        ],
+        "chosen_counts": {
+          "all_scaled": 24,
+          "c1h_seasonal_scaled": 36
+        }
+      }
+    },
+    {
+      "split": 33,
+      "n_scored_windows": 60,
+      "same_year": {
+        "coverage": 0.8123,
+        "width": 91.448,
+        "interval_score": 244.253,
+        "per_station_coverage": [
+          0.7911,
+          0.7894,
+          0.7939,
+          0.8383,
+          0.785,
+          0.8461,
+          0.8439,
+          0.8106
+        ]
+      },
+      "c1h_seasonal_scaled": {
+        "coverage": 0.9138,
+        "width": 141.023,
+        "interval_score": 165.227,
+        "per_station_coverage": [
+          0.8967,
+          0.9328,
+          0.9444,
+          0.9272,
+          0.9006,
+          0.9089,
+          0.8861,
+          0.9139
+        ]
+      },
+      "online_selection": {
+        "coverage": 0.8933,
+        "width": 129.266,
+        "interval_score": 162.869,
+        "per_station_coverage": [
+          0.8711,
+          0.9117,
+          0.9244,
+          0.9106,
+          0.8772,
+          0.8967,
+          0.8639,
+          0.8911
+        ],
+        "chosen_counts": {
+          "all_scaled": 4,
+          "c1h_seasonal_scaled": 24,
+          "same_year_scaled": 32
+        }
+      }
+    },
+    {
+      "split": 34,
+      "n_scored_windows": 60,
+      "same_year": {
+        "coverage": 0.8185,
+        "width": 99.414,
+        "interval_score": 244.753,
+        "per_station_coverage": [
+          0.7728,
+          0.8372,
+          0.8233,
+          0.8583,
+          0.7817,
+          0.8389,
+          0.8472,
+          0.7883
+        ]
+      },
+      "c1h_seasonal_scaled": {
+        "coverage": 0.8958,
+        "width": 122.944,
+        "interval_score": 167.869,
+        "per_station_coverage": [
+          0.8944,
+          0.8994,
+          0.9211,
+          0.9033,
+          0.8617,
+          0.9233,
+          0.915,
+          0.8483
+        ]
+      },
+      "online_selection": {
+        "coverage": 0.8953,
+        "width": 117.497,
+        "interval_score": 167.375,
+        "per_station_coverage": [
+          0.8922,
+          0.8944,
+          0.915,
+          0.9128,
+          0.8633,
+          0.9189,
+          0.9106,
+          0.8556
+        ],
+        "chosen_counts": {
+          "all_scaled": 49,
+          "c1h_seasonal_scaled": 11
+        }
+      }
+    },
+    {
+      "split": 35,
+      "n_scored_windows": 60,
+      "same_year": {
+        "coverage": 0.7781,
+        "width": 85.651,
+        "interval_score": 273.328,
+        "per_station_coverage": [
+          0.7606,
+          0.8,
+          0.7572,
+          0.7894,
+          0.7822,
+          0.7789,
+          0.7678,
+          0.7889
+        ]
+      },
+      "c1h_seasonal_scaled": {
+        "coverage": 0.9131,
+        "width": 133.436,
+        "interval_score": 159.426,
+        "per_station_coverage": [
+          0.8983,
+          0.9072,
+          0.9328,
+          0.8844,
+          0.9217,
+          0.9444,
+          0.9072,
+          0.9089
+        ]
+      },
+      "online_selection": {
+        "coverage": 0.8861,
+        "width": 127.068,
+        "interval_score": 162.345,
+        "per_station_coverage": [
+          0.8689,
+          0.885,
+          0.8967,
+          0.8489,
+          0.8967,
+          0.9244,
+          0.8833,
+          0.885
+        ],
+        "chosen_counts": {
+          "all_scaled": 39,
+          "c1h_seasonal_scaled": 12,
+          "same_year_scaled": 9
+        }
+      }
+    },
+    {
+      "split": 36,
+      "n_scored_windows": 60,
+      "same_year": {
+        "coverage": 0.8259,
+        "width": 105.335,
+        "interval_score": 250.212,
+        "per_station_coverage": [
+          0.8122,
+          0.81,
+          0.8206,
+          0.8156,
+          0.8394,
+          0.8461,
+          0.8261,
+          0.8372
+        ]
+      },
+      "c1h_seasonal_scaled": {
+        "coverage": 0.8961,
+        "width": 122.289,
+        "interval_score": 153.594,
+        "per_station_coverage": [
+          0.9039,
+          0.8956,
+          0.9022,
+          0.9078,
+          0.9217,
+          0.8744,
+          0.91,
+          0.8533
+        ]
+      },
+      "online_selection": {
+        "coverage": 0.895,
+        "width": 120.25,
+        "interval_score": 153.926,
+        "per_station_coverage": [
+          0.9022,
+          0.8956,
+          0.9,
+          0.9072,
+          0.92,
+          0.8756,
+          0.9089,
+          0.8506
+        ],
+        "chosen_counts": {
+          "all_scaled": 44,
+          "c1h_seasonal_scaled": 16
+        }
+      }
+    },
+    {
+      "split": 37,
+      "n_scored_windows": 60,
+      "same_year": {
+        "coverage": 0.8291,
+        "width": 97.596,
+        "interval_score": 243.727,
+        "per_station_coverage": [
+          0.7983,
+          0.8556,
+          0.8611,
+          0.8239,
+          0.7978,
+          0.8478,
+          0.8361,
+          0.8122
+        ]
+      },
+      "c1h_seasonal_scaled": {
+        "coverage": 0.9001,
+        "width": 127.775,
+        "interval_score": 164.043,
+        "per_station_coverage": [
+          0.8989,
+          0.9283,
+          0.8683,
+          0.9172,
+          0.8806,
+          0.8928,
+          0.9039,
+          0.9111
+        ]
+      },
+      "online_selection": {
+        "coverage": 0.9028,
+        "width": 126.472,
+        "interval_score": 163.091,
+        "per_station_coverage": [
+          0.9044,
+          0.93,
+          0.8678,
+          0.9206,
+          0.8861,
+          0.8944,
+          0.905,
+          0.9144
+        ],
+        "chosen_counts": {
+          "all_scaled": 40,
+          "c1h_seasonal_scaled": 14,
+          "same_year_scaled": 6
+        }
+      }
+    },
+    {
+      "split": 38,
+      "n_scored_windows": 60,
+      "same_year": {
+        "coverage": 0.8237,
+        "width": 104.114,
+        "interval_score": 255.885,
+        "per_station_coverage": [
+          0.7939,
+          0.8128,
+          0.8372,
+          0.8189,
+          0.8567,
+          0.7811,
+          0.8311,
+          0.8578
+        ]
+      },
+      "c1h_seasonal_scaled": {
+        "coverage": 0.9099,
+        "width": 132.698,
+        "interval_score": 160.473,
+        "per_station_coverage": [
+          0.9039,
+          0.95,
+          0.9267,
+          0.9283,
+          0.9017,
+          0.8933,
+          0.8922,
+          0.8828
+        ]
+      },
+      "online_selection": {
+        "coverage": 0.9081,
+        "width": 129.523,
+        "interval_score": 159.988,
+        "per_station_coverage": [
+          0.9056,
+          0.9478,
+          0.9228,
+          0.9228,
+          0.8956,
+          0.8967,
+          0.8917,
+          0.8817
+        ],
+        "chosen_counts": {
+          "all_scaled": 47,
+          "c1h_seasonal_scaled": 12,
+          "same_year_scaled": 1
+        }
+      }
+    },
+    {
+      "split": 39,
+      "n_scored_windows": 60,
+      "same_year": {
+        "coverage": 0.8139,
+        "width": 103.451,
+        "interval_score": 262.537,
+        "per_station_coverage": [
+          0.8161,
+          0.8522,
+          0.7889,
+          0.8189,
+          0.8139,
+          0.7944,
+          0.8267,
+          0.8
+        ]
+      },
+      "c1h_seasonal_scaled": {
+        "coverage": 0.911,
+        "width": 136.12,
+        "interval_score": 167.217,
+        "per_station_coverage": [
+          0.94,
+          0.93,
+          0.8944,
+          0.9089,
+          0.9272,
+          0.8939,
+          0.9056,
+          0.8883
+        ]
+      },
+      "online_selection": {
+        "coverage": 0.9104,
+        "width": 137.797,
+        "interval_score": 168.539,
+        "per_station_coverage": [
+          0.9406,
+          0.9272,
+          0.8933,
+          0.91,
+          0.925,
+          0.8928,
+          0.9056,
+          0.8889
+        ],
+        "chosen_counts": {
+          "all_scaled": 25,
+          "c1h_seasonal_scaled": 35
+        }
+      }
+    },
+    {
+      "split": 40,
+      "n_scored_windows": 60,
+      "same_year": {
+        "coverage": 0.834,
+        "width": 111.716,
+        "interval_score": 264.057,
+        "per_station_coverage": [
+          0.8317,
+          0.8183,
+          0.8472,
+          0.8372,
+          0.8356,
+          0.84,
+          0.8656,
+          0.7961
+        ]
+      },
+      "c1h_seasonal_scaled": {
+        "coverage": 0.9165,
+        "width": 132.007,
+        "interval_score": 170.316,
+        "per_station_coverage": [
+          0.9011,
+          0.9483,
+          0.9533,
+          0.9522,
+          0.8817,
+          0.9256,
+          0.92,
+          0.85
+        ]
+      },
+      "online_selection": {
+        "coverage": 0.9203,
+        "width": 134.007,
+        "interval_score": 171.871,
+        "per_station_coverage": [
+          0.9083,
+          0.9522,
+          0.9561,
+          0.9544,
+          0.8861,
+          0.9294,
+          0.9244,
+          0.8517
+        ],
+        "chosen_counts": {
+          "all": 1,
+          "all_scaled": 2,
+          "c1h_seasonal_scaled": 56,
+          "same_year_scaled": 1
+        }
+      }
+    },
+    {
+      "split": 41,
+      "n_scored_windows": 60,
+      "same_year": {
+        "coverage": 0.8194,
+        "width": 108.924,
+        "interval_score": 261.111,
+        "per_station_coverage": [
+          0.8406,
+          0.7378,
+          0.84,
+          0.7989,
+          0.8356,
+          0.8483,
+          0.8039,
+          0.85
+        ]
+      },
+      "c1h_seasonal_scaled": {
+        "coverage": 0.9293,
+        "width": 136.676,
+        "interval_score": 160.175,
+        "per_station_coverage": [
+          0.9183,
+          0.9183,
+          0.9244,
+          0.9228,
+          0.9644,
+          0.9483,
+          0.91,
+          0.9278
+        ]
+      },
+      "online_selection": {
+        "coverage": 0.903,
+        "width": 128.421,
+        "interval_score": 160.586,
+        "per_station_coverage": [
+          0.8911,
+          0.8767,
+          0.8967,
+          0.8933,
+          0.9461,
+          0.9261,
+          0.8856,
+          0.9083
+        ],
+        "chosen_counts": {
+          "all_scaled": 35,
+          "c1h_seasonal_scaled": 10,
+          "same_year_scaled": 15
+        }
+      }
+    },
+    {
+      "split": 42,
+      "n_scored_windows": 60,
+      "same_year": {
+        "coverage": 0.8574,
+        "width": 120.667,
+        "interval_score": 239.446,
+        "per_station_coverage": [
+          0.8472,
+          0.8506,
+          0.8639,
+          0.8333,
+          0.8711,
+          0.8694,
+          0.8533,
+          0.87
+        ]
+      },
+      "c1h_seasonal_scaled": {
+        "coverage": 0.9206,
+        "width": 125.164,
+        "interval_score": 157.769,
+        "per_station_coverage": [
+          0.8806,
+          0.9511,
+          0.9289,
+          0.9272,
+          0.9233,
+          0.93,
+          0.9139,
+          0.91
+        ]
+      },
+      "online_selection": {
+        "coverage": 0.9172,
+        "width": 127.101,
+        "interval_score": 158.816,
+        "per_station_coverage": [
+          0.8733,
+          0.9533,
+          0.9239,
+          0.9267,
+          0.9189,
+          0.9244,
+          0.9106,
+          0.9067
+        ],
+        "chosen_counts": {
+          "all_scaled": 17,
+          "c1h_seasonal_scaled": 35,
+          "same_year_scaled": 8
+        }
+      }
+    },
+    {
+      "split": 43,
+      "n_scored_windows": 60,
+      "same_year": {
+        "coverage": 0.8334,
+        "width": 104.349,
+        "interval_score": 225.888,
+        "per_station_coverage": [
+          0.8461,
+          0.8228,
+          0.7828,
+          0.8661,
+          0.865,
+          0.8,
+          0.8189,
+          0.8656
+        ]
+      },
+      "c1h_seasonal_scaled": {
+        "coverage": 0.9171,
+        "width": 129.361,
+        "interval_score": 156.102,
+        "per_station_coverage": [
+          0.9183,
+          0.9478,
+          0.9233,
+          0.9033,
+          0.8767,
+          0.9094,
+          0.9211,
+          0.9367
+        ]
+      },
+      "online_selection": {
+        "coverage": 0.9076,
+        "width": 123.602,
+        "interval_score": 155.911,
+        "per_station_coverage": [
+          0.9117,
+          0.9378,
+          0.9106,
+          0.8972,
+          0.8728,
+          0.8967,
+          0.9039,
+          0.9306
+        ],
+        "chosen_counts": {
+          "all_scaled": 29,
+          "c1h_seasonal_scaled": 23,
+          "same_year_scaled": 8
+        }
+      }
+    },
+    {
+      "split": 44,
+      "n_scored_windows": 60,
+      "same_year": {
+        "coverage": 0.8258,
+        "width": 97.614,
+        "interval_score": 255.163,
+        "per_station_coverage": [
+          0.8322,
+          0.8417,
+          0.7872,
+          0.8544,
+          0.8428,
+          0.7828,
+          0.8544,
+          0.8111
+        ]
+      },
+      "c1h_seasonal_scaled": {
+        "coverage": 0.8793,
+        "width": 122.525,
+        "interval_score": 169.774,
+        "per_station_coverage": [
+          0.8633,
+          0.9094,
+          0.9033,
+          0.9139,
+          0.7983,
+          0.8839,
+          0.8678,
+          0.8944
+        ]
+      },
+      "online_selection": {
+        "coverage": 0.878,
+        "width": 121.682,
+        "interval_score": 170.227,
+        "per_station_coverage": [
+          0.8622,
+          0.9078,
+          0.9028,
+          0.9128,
+          0.7972,
+          0.8828,
+          0.8644,
+          0.8939
+        ],
+        "chosen_counts": {
+          "all_scaled": 2,
+          "c1h_seasonal_scaled": 58
+        }
+      }
+    },
+    {
+      "split": 45,
+      "n_scored_windows": 60,
+      "same_year": {
+        "coverage": 0.829,
+        "width": 99.796,
+        "interval_score": 253.213,
+        "per_station_coverage": [
+          0.8372,
+          0.8272,
+          0.8172,
+          0.7994,
+          0.8533,
+          0.8322,
+          0.86,
+          0.805
+        ]
+      },
+      "c1h_seasonal_scaled": {
+        "coverage": 0.9095,
+        "width": 123.159,
+        "interval_score": 159.304,
+        "per_station_coverage": [
+          0.8906,
+          0.9367,
+          0.9533,
+          0.9017,
+          0.8567,
+          0.9089,
+          0.9206,
+          0.9078
+        ]
+      },
+      "online_selection": {
+        "coverage": 0.9103,
+        "width": 123.288,
+        "interval_score": 159.293,
+        "per_station_coverage": [
+          0.8917,
+          0.9372,
+          0.9533,
+          0.9022,
+          0.8578,
+          0.91,
+          0.9217,
+          0.9089
+        ],
+        "chosen_counts": {
+          "all_scaled": 1,
+          "c1h_seasonal_scaled": 59
+        }
+      }
+    },
+    {
+      "split": 46,
+      "n_scored_windows": 60,
+      "same_year": {
+        "coverage": 0.8124,
+        "width": 98.438,
+        "interval_score": 267.785,
+        "per_station_coverage": [
+          0.7989,
+          0.8044,
+          0.8444,
+          0.8006,
+          0.8394,
+          0.7567,
+          0.8067,
+          0.8483
+        ]
+      },
+      "c1h_seasonal_scaled": {
+        "coverage": 0.8597,
+        "width": 122.47,
+        "interval_score": 185.179,
+        "per_station_coverage": [
+          0.8483,
+          0.8828,
+          0.8722,
+          0.845,
+          0.8372,
+          0.835,
+          0.8844,
+          0.8728
+        ]
+      },
+      "online_selection": {
+        "coverage": 0.8849,
+        "width": 128.134,
+        "interval_score": 187.137,
+        "per_station_coverage": [
+          0.8828,
+          0.9122,
+          0.8978,
+          0.8678,
+          0.8783,
+          0.8511,
+          0.8928,
+          0.8967
+        ],
+        "chosen_counts": {
+          "all_scaled": 46,
+          "c1h_seasonal_scaled": 5,
+          "same_year_scaled": 9
+        }
+      }
+    },
+    {
+      "split": 47,
+      "n_scored_windows": 60,
+      "same_year": {
+        "coverage": 0.8177,
+        "width": 101.877,
+        "interval_score": 245.998,
+        "per_station_coverage": [
+          0.8094,
+          0.81,
+          0.8189,
+          0.8361,
+          0.7989,
+          0.8044,
+          0.8061,
+          0.8578
+        ]
+      },
+      "c1h_seasonal_scaled": {
+        "coverage": 0.9258,
+        "width": 124.849,
+        "interval_score": 149.987,
+        "per_station_coverage": [
+          0.9072,
+          0.9456,
+          0.9211,
+          0.9294,
+          0.9156,
+          0.925,
+          0.9617,
+          0.9011
+        ]
+      },
+      "online_selection": {
+        "coverage": 0.9269,
+        "width": 125.151,
+        "interval_score": 150.151,
+        "per_station_coverage": [
+          0.9094,
+          0.9456,
+          0.9217,
+          0.9317,
+          0.9167,
+          0.925,
+          0.9628,
+          0.9028
+        ],
+        "chosen_counts": {
+          "all_scaled": 3,
+          "c1h_seasonal_scaled": 57
+        }
+      }
+    },
+    {
+      "split": 48,
+      "n_scored_windows": 60,
+      "same_year": {
+        "coverage": 0.8257,
+        "width": 98.549,
+        "interval_score": 242.705,
+        "per_station_coverage": [
+          0.8228,
+          0.765,
+          0.8417,
+          0.8378,
+          0.8611,
+          0.8161,
+          0.8539,
+          0.8072
+        ]
+      },
+      "c1h_seasonal_scaled": {
+        "coverage": 0.9235,
+        "width": 132.35,
+        "interval_score": 162.262,
+        "per_station_coverage": [
+          0.8994,
+          0.8922,
+          0.945,
+          0.92,
+          0.9433,
+          0.9467,
+          0.9261,
+          0.915
+        ]
+      },
+      "online_selection": {
+        "coverage": 0.9217,
+        "width": 129.303,
+        "interval_score": 163.333,
+        "per_station_coverage": [
+          0.9022,
+          0.8883,
+          0.9422,
+          0.9167,
+          0.9411,
+          0.94,
+          0.9261,
+          0.9167
+        ],
+        "chosen_counts": {
+          "all_scaled": 27,
+          "c1h_seasonal_scaled": 33
+        }
+      }
+    },
+    {
+      "split": 49,
+      "n_scored_windows": 60,
+      "same_year": {
+        "coverage": 0.8337,
+        "width": 110.667,
+        "interval_score": 249.082,
+        "per_station_coverage": [
+          0.8,
+          0.8417,
+          0.8378,
+          0.8389,
+          0.8478,
+          0.855,
+          0.8328,
+          0.8156
+        ]
+      },
+      "c1h_seasonal_scaled": {
+        "coverage": 0.9061,
+        "width": 130.52,
+        "interval_score": 171.834,
+        "per_station_coverage": [
+          0.8861,
+          0.9022,
+          0.9306,
+          0.9511,
+          0.9067,
+          0.9056,
+          0.9072,
+          0.8594
+        ]
+      },
+      "online_selection": {
+        "coverage": 0.9258,
+        "width": 138.278,
+        "interval_score": 175.337,
+        "per_station_coverage": [
+          0.9072,
+          0.9256,
+          0.9472,
+          0.9683,
+          0.93,
+          0.9256,
+          0.9278,
+          0.875
+        ],
+        "chosen_counts": {
+          "c1h_seasonal_scaled": 35,
+          "same_year": 1,
+          "same_year_scaled": 24
+        }
+      }
+    }
+  ]
+}

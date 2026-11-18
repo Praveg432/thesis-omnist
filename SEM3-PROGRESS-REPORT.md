@@ -293,6 +293,49 @@ better. Persistence and seasonal-naive receive the same rule.
   11.7% to 1.7%. Its width cost falls as the number of calibration
   stations grows (90% at 10 stations on Delhi, 31% at 30 here).
 
+### 4.3d Second pre-registered round (experiments C1i, C1j)
+Four gaps remained after Section 4.3c: no test on traffic, few scored windows per split, the width cost of the
+rule, and station-level conformal on one network only. A second round with four new hypotheses was committed
+before any run (`PRE-REGISTRATION-C1I.md`). It used fresh station splits (Delhi and Beijing 30 to 49, weather 20
+to 39), and a forecast origin every 7 days, which gives 4 times more scored windows on Delhi (60 against 14 per
+split). A window's errors are used only once all its targets are observed. Online selection picks, at each
+origin, the candidate rule with the lowest interval score on the calibration stations over earlier observed
+windows, from five rules fixed in advance. A timestamp-unit defect in the first traffic run gave some intervals
+infinite width; it was fixed, the script now refuses infinite intervals, and only the re-run is reported
+(`FINALIZATION-RECORD.md`, Section 18).
+
+| Network | Splits | Coverage, same-year rule | Coverage, fixed rule | Coverage, online selection | Width: fixed / online | Interval score: fixed / online | Fixed rule holds (H6) | Online selection (H7) |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| Delhi | 20 | 0.823 [0.816, 0.830] | 0.908 [0.900, 0.916] | 0.905 [0.899, 0.912] | 128.9 / 127.0 | 163.4 / 163.8 | PASS | PASS |
+| Beijing | 20 | 0.787 [0.778, 0.796] | 0.900 [0.894, 0.905] | 0.868 [0.863, 0.872] | 225.3 / 215.5 | 325.0 / 331.2 | PASS | FAIL |
+| Weather | 20 | 0.880 [0.855, 0.905] | 0.913 [0.894, 0.932] | 0.900 [0.878, 0.921] | 25.0 / 22.3 | 29.6 / 27.5 | PASS | PASS |
+
+| Traffic network | Splits | Coverage, expanding | Coverage, time-of-day rule | Width: expanding / time-of-day | Interval score: expanding / time-of-day | Time-of-day rule (H5) |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|
+| PeMSD7-M | 6 | 0.891 | 0.888 | 17.30 / 21.43 | 35.56 / 36.33 | PASS |
+| PeMS-BAY | 6 | 0.881 | 0.877 | 18.82 / 26.78 | 56.31 / 50.12 | FAIL |
+
+- **The fixed rule replicates** on a third set of station splits with four times more forecast origins: 0.908,
+  0.900 and 0.913, with a narrower interval on Delhi than in C1h.
+- **Online selection recovers efficiency where the fixed rule over-widens.** On weather it reaches 0.900 with a
+  lower interval score than the fixed rule (-2.1 [-3.4, -0.8]); on Delhi it matches the fixed rule.
+  On Beijing it falls to 0.868 (H7 fails): with only one earlier test year, the selection often prefers
+  same-year rules that under-cover later in the year. The fixed rule remains the recommendation for networks
+  with strong seasonal change; selection is recommended only where several earlier years exist.
+- **On traffic the rule is not needed and does not help coverage.** Plain expanding calibration already gives
+  0.891 and 0.881. The time-of-day rule gives 0.888 and 0.877 (H5 passes on PeMSD7-M and fails on PeMS-BAY, by
+  0.003). It lowers the interval score on PeMS-BAY but widens the intervals.
+- **Station-level conformal repairs per-station coverage on both traffic networks.** On PeMS-BAY with 45
+  calibration stations it gives 0.903 against 0.881 and halves the share of stations below
+  0.80 (12.2% to 5.9%) at 25% more width (H8 passes); on PeMSD7-M, 0.922
+  against 0.891. For traffic, station-level conformal, not a seasonal rule, is the repair.
+
+**Overall.** Every network now has a forecast-time calibration method confirmed within 0.02 of the 90% target
+on data not used to design it. Air quality and weather use the fixed seasonal rule (0.890 to 0.913 across two
+confirmation rounds). Traffic uses expanding calibration (0.881 to 0.891), with station-level conformal for
+per-station coverage (0.903 and 0.922). The remaining costs are width (about 25% to 60% over the under-covering
+same-year rule) and stations that stay under-covered on weather (13%).
+
 ### 4.4 Does distance from the training network matter? (experiments C2 and C3)
 
 A new sensor placed far from the existing network may be harder to predict than one placed near it,
@@ -451,7 +494,9 @@ shortfall on the air-quality networks. Calibrating on earlier years' errors, sca
 gave 0.902 and 0.890 on Delhi and Beijing and 0.908 on weather in a pre-registered test on
 data not used to choose the rule, and OmniST's intervals then scored better than persistence and
 seasonal-naive on all three; on weather the rule costs width without a coverage gain. Station-level
-conformal was valid, and its width cost fell from 90% to 31% as calibration stations rose from 10 to 30. A coordinate-normalisation defect that inflated error and width on
+conformal was valid, and its width cost fell from 90% to 31% as calibration stations rose from 10 to 30. A second
+pre-registered round confirmed the rule again (0.900 to 0.913, four times more forecast origins), found that
+traffic needs no seasonal rule (0.881 and 0.891), and confirmed station-level conformal on PeMS-BAY (0.903). A coordinate-normalisation defect that inflated error and width on
 four networks was found and fixed. Against persistence, OmniST is better on three networks and not on
 PeMSD7-M or weather; against a seasonal forecast it is wider on PeMS-BAY. Distance from the training
 network matters only in the sparse weather network. Phase 2 is part of the final thesis: neighbour attention

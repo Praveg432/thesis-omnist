@@ -1,0 +1,273 @@
+{
+  "delhi_air_quality": {
+    "same_year": {
+      "coverage": {
+        "mean": 0.8233,
+        "ci95": [
+          0.8164,
+          0.8302
+        ],
+        "n": 20
+      },
+      "width": 102.573,
+      "interval_score": 251.194,
+      "fraction_stations_below_0.80": 0.206
+    },
+    "c1h_seasonal_scaled": {
+      "coverage": {
+        "mean": 0.908,
+        "ci95": [
+          0.9,
+          0.9161
+        ],
+        "n": 20
+      },
+      "width": 128.911,
+      "interval_score": 163.366,
+      "fraction_stations_below_0.80": 0.006
+    },
+    "online_selection": {
+      "coverage": {
+        "mean": 0.9054,
+        "ci95": [
+          0.8987,
+          0.912
+        ],
+        "n": 20
+      },
+      "width": 127.034,
+      "interval_score": 163.767,
+      "fraction_stations_below_0.80": 0.006
+    },
+    "n_splits": 20,
+    "is_diff_online_minus_c1h": {
+      "mean": 0.4009,
+      "ci95": [
+        -0.3032,
+        1.1051
+      ],
+      "n": 20
+    },
+    "online_relative_is": 1.0025,
+    "online_chosen_counts": {
+      "all_scaled": 532,
+      "c1h_seasonal_scaled": 553,
+      "same_year_scaled": 113,
+      "all": 1,
+      "same_year": 1
+    },
+    "H6": "PASS",
+    "H7": "PASS"
+  },
+  "beijing_air_quality": {
+    "same_year": {
+      "coverage": {
+        "mean": 0.7866,
+        "ci95": [
+          0.7776,
+          0.7956
+        ],
+        "n": 20
+      },
+      "width": 140.089,
+      "interval_score": 385.592,
+      "fraction_stations_below_0.80": 0.75
+    },
+    "c1h_seasonal_scaled": {
+      "coverage": {
+        "mean": 0.8998,
+        "ci95": [
+          0.8943,
+          0.9052
+        ],
+        "n": 20
+      },
+      "width": 225.333,
+      "interval_score": 325.006,
+      "fraction_stations_below_0.80": 0.0
+    },
+    "online_selection": {
+      "coverage": {
+        "mean": 0.8675,
+        "ci95": [
+          0.8631,
+          0.8718
+        ],
+        "n": 20
+      },
+      "width": 215.459,
+      "interval_score": 331.209,
+      "fraction_stations_below_0.80": 0.0
+    },
+    "n_splits": 20,
+    "is_diff_online_minus_c1h": {
+      "mean": 6.2033,
+      "ci95": [
+        3.4513,
+        8.9553
+      ],
+      "n": 20
+    },
+    "online_relative_is": 1.0191,
+    "online_chosen_counts": {
+      "c1h_seasonal_scaled": 432,
+      "same_year_scaled": 210,
+      "same_year": 38
+    },
+    "H6": "PASS",
+    "H7": "FAIL"
+  },
+  "ghcn_weather": {
+    "same_year": {
+      "coverage": {
+        "mean": 0.8798,
+        "ci95": [
+          0.8547,
+          0.9049
+        ],
+        "n": 20
+      },
+      "width": 20.822,
+      "interval_score": 26.288,
+      "fraction_stations_below_0.80": 0.192
+    },
+    "c1h_seasonal_scaled": {
+      "coverage": {
+        "mean": 0.9127,
+        "ci95": [
+          0.8936,
+          0.9319
+        ],
+        "n": 20
+      },
+      "width": 24.953,
+      "interval_score": 29.57,
+      "fraction_stations_below_0.80": 0.133
+    },
+    "online_selection": {
+      "coverage": {
+        "mean": 0.8996,
+        "ci95": [
+          0.8782,
+          0.921
+        ],
+        "n": 20
+      },
+      "width": 22.325,
+      "interval_score": 27.46,
+      "fraction_stations_below_0.80": 0.167
+    },
+    "n_splits": 20,
+    "is_diff_online_minus_c1h": {
+      "mean": -2.1101,
+      "ci95": [
+        -3.3735,
+        -0.8466
+      ],
+      "n": 20
+    },
+    "online_relative_is": 0.9286,
+    "online_chosen_counts": {
+      "all": 518,
+      "c1h_seasonal_scaled": 467,
+      "same_year": 168,
+      "all_scaled": 100,
+      "same_year_scaled": 107
+    },
+    "H6": "PASS",
+    "H7": "PASS"
+  },
+  "pemsd7_traffic": {
+    "expanding": {
+      "coverage": {
+        "mean": 0.8906,
+        "ci95": [
+          0.8811,
+          0.9002
+        ],
+        "n": 6
+      },
+      "width": 17.304,
+      "interval_score": 35.558,
+      "fraction_stations_below_0.80": 0.117
+    },
+    "time_of_day_scaled": {
+      "coverage": {
+        "mean": 0.888,
+        "ci95": [
+          0.8755,
+          0.9006
+        ],
+        "n": 6
+      },
+      "width": 21.426,
+      "interval_score": 36.333,
+      "fraction_stations_below_0.80": 0.161
+    },
+    "n_splits": 6,
+    "is_diff_tod_minus_expanding": {
+      "mean": 0.7743,
+      "ci95": [
+        -0.4757,
+        2.0243
+      ],
+      "n": 6
+    },
+    "H5": "PASS"
+  },
+  "pemsbay_traffic": {
+    "expanding": {
+      "coverage": {
+        "mean": 0.8808,
+        "ci95": [
+          0.8595,
+          0.9021
+        ],
+        "n": 6
+      },
+      "width": 18.818,
+      "interval_score": 56.307,
+      "fraction_stations_below_0.80": 0.122
+    },
+    "time_of_day_scaled": {
+      "coverage": {
+        "mean": 0.8774,
+        "ci95": [
+          0.8559,
+          0.8989
+        ],
+        "n": 6
+      },
+      "width": 26.782,
+      "interval_score": 50.12,
+      "fraction_stations_below_0.80": 0.167
+    },
+    "n_splits": 6,
+    "is_diff_tod_minus_expanding": {
+      "mean": -6.187,
+      "ci95": [
+        -9.6024,
+        -2.7716
+      ],
+      "n": 6
+    },
+    "H5": "FAIL"
+  },
+  "pemsbay_hcp": {
+    "pooled": {
+      "coverage_mean": 0.8808,
+      "coverage_sd": 0.0203,
+      "width_mean": 18.818,
+      "fraction_finite": 1.0,
+      "fraction_of_stations_below_0.80": 0.122
+    },
+    "hcp": {
+      "coverage_mean": 0.903,
+      "coverage_sd": 0.0183,
+      "width_mean": 23.517,
+      "fraction_finite": 1.0,
+      "fraction_of_stations_below_0.80": 0.059
+    },
+    "H8": "PASS"
+  }
+}
