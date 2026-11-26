@@ -3,7 +3,7 @@
 **M.Tech Thesis — Department of Computer Science and Engineering, IIT Patna**
 **Candidate:** Praveg Vashishtha
 **Hardware envelope:** Apple M4 Pro (MPS, ~24 GB unified memory), single machine — no cluster
-**Status:** title and abstract submitted and finalised 17 Nov 2026. Remaining work: [`THESIS-COMPLETION-PLAN.md`](THESIS-COMPLETION-PLAN.md), Section 0.
+**Status:** title and abstract submitted and finalised 17 Nov 2026. Phase 1 is closed; the Phase 2 plan is [`THESIS-COMPLETION-PLAN.md`](THESIS-COMPLETION-PLAN.md) (rewritten 26 Nov 2026).
 
 ---
 

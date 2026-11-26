@@ -225,6 +225,15 @@ were fixed in the script before the run. Window t-1 ends where window t begins, 
   PeMSD7-M (MAE 3.79 against 3.63) or weather (tie), and on PeMS-BAY its intervals are about 33% wider
   than seasonal-naive. Usefulness is therefore established against persistence on three networks and not
   established against seasonal forecasts.
+- **A backbone control.** Separate experiments in the OmniST repository (10 random splits; 4 for the two traffic
+  networks; corrected coordinate frame; copied with provenance to
+  `phase1-omnist/results/external_controls_omnist_repo.json`) compare OmniST with a GRU shared across sensors that
+  uses no coordinates and no attention. OmniST's point error relative to that GRU is +2.0% (Delhi), +0.9% (Beijing),
+  -1.4% (weather), -1.5% (PeMSD7-M) and +0.9% (PeMS-BAY), and persistence is better than both on weather and
+  PeMSD7-M. The ability to forecast at an unseen sensor therefore comes from sharing parameters across sensors; the
+  coordinates and the attention layer show no measured accuracy benefit. The thesis contribution is the calibration and
+  its evaluation, not the architecture, and the Semester-4 plan repeats the calibration results with the shared GRU as
+  the backbone (Section 6, E).
 ### 4.3b Strengthening forecast-time coverage (experiments C1e to C1g)
 Three directions were tried after Section 4.3a. All use the corrected coordinate frame and only information
 available at forecast time. The rule recommended below was chosen after seeing these results; Section 4.3c
@@ -476,9 +485,10 @@ the public project repository [7].
 
 ## 5. Phase 2: Status of Existing Components
 Phase 2 is part of the final thesis work and is planned for Semester 4. Some components were built and
-measured in exploratory work; the review corrected what had been claimed for them. All Phase 2 numbers
-below used the Delhi coordinate constants and must be re-run with the corrected frame before they are
-used for any claim about accuracy or interval width.
+measured in exploratory work; the review corrected what had been claimed for them. The Phase 2 models use the
+same coordinate embedding with the Delhi constants, but the real-network runs re-centre the PeMS-BAY coordinates
+into the Delhi range, so their inputs stayed within 0.47 of the intended range (synthetic fields within 1.9); the
+defect of Section 4.6 did not distort them. A corrected-frame run is scheduled as a robustness check.
 ### 5.1 Components and what has been measured
 | Component | State | Evidence |
 |---|---|---|
@@ -500,21 +510,28 @@ used for any claim about accuracy or interval width.
   0.880, and the suggested worst-group gap was not supported.
 - The Delhi-specific coordinate normalisation (Section 4.6), fixed in both phases.
 ## 6. Plan for Semester 4 (proposed, pending supervisor approval)
-The plan was revised after a prior-art scan on 16 Nov 2026 and the forecast-time results of Section 4.3a.
-Acceptance criteria and fallbacks are fixed before the experiments, so a negative result is still a thesis
-result. Duration: 12 weeks, 16 Nov 2026 to 7 Feb 2027, with writing from week 6. The full plan is in
-`THESIS-COMPLETION-PLAN.md`.
+The plan was rewritten on 26 Nov 2026 from the evidence of Sections 4.3a to 4.4; the full plan, with dated
+pre-registration of every contribution, is `THESIS-COMPLETION-PLAN.md`. Acceptance criteria are fixed before the
+experiments, and each contribution has a fallback, so a negative result is still a thesis result. Semester 4
+runs 16 Nov 2026 to 7 Feb 2027; week 3 starts on 30 Nov.
+**What the evidence changed.** The forecast-time repair is already shown on air quality and weather and on traffic
+with a different rule, so contribution A starts from a result. The weather distance effect did not survive the
+coordinate correction, so contribution C becomes a gated, powered test that probably ends as a characterisation. The
+learned model beats simple forecasts on air quality and weather but not on traffic, so contribution D concentrates
+on traffic. A coordinate-free GRU matches the architecture's accuracy, so the scale work is reduced to measurement
+and every calibration result is repeated with that backbone.
 | Contribution | Work | Acceptance criterion | Fallback |
 |---|---|---|---|
-| A. Exact station-level coverage | Hierarchical conformal prediction [21] with the station as the group, and a second-moment variant for per-station spread; chronological calibration with a rolling window or adaptive correction for the error growth found in Section 4.3a | Mean coverage within 0.02 of 0.90 on every network; share of stations below 0.80 halved with width at most 15% larger | Width against worst-station coverage curve |
-| B. A new sensor's first weeks | Cold start, then warm-up with Generalized hierarchical conformal [22], own-data split conformal and adaptive conformal inference, for 0 to 60 days of history | Coverage within 0.03 at every history length; at least 5% narrower by the longest history on 4 of 6 networks | Coverage and width against history curves |
-| C. Where position matters (gated; weakened by Section 4.4) | Geometry-aware calibration [16], [17] against sequential whitening [10] and cluster-aware calibration [18], only if a 300 to 1,500 station GHCN network shows far-tercile coverage at least 0.03 below near-tercile over 20 or more region splits | Far-tercile coverage within 0.03 of 0.90, mean within 0.02, width at most +10%, not worse than whitening | Characterisation of when distance does not matter |
-| D. Useful as well as valid | Diagnose the gap to seasonal-naive; combined forecast, locally scaled scores, quantile head | Width at most conformalised seasonal-naive at coverage within 0.02 of 0.90 on traffic; at most the better of persistence and seasonal-naive on the other networks | State the limitation |
-| Scale and alerts | Memory and time to about 8,600 sensors (LargeST), coverage against N on GHCN, threshold alerts at one air-quality network [19], IGNNK baseline, reproducibility pass | Reproduces one headline table in a fresh environment | Cut alerts, then scale, first |
-| Writing | Chapters 1 to 3 from week 6, 4 to 9 weeks 10 to 11, supervisor review week 11, submission-ready 7 Feb 2027 | Supervisor review | None |
-Phase 1 items still open and scheduled in Semester 4: re-testing the dropout, drift, 7-sensor and E-STGCN
-results under the C1b rules, re-running C2 and C3 with the corrected frame, and full re-runs of V3 and
-V3b. The state-space block, a separate coverage-risk estimate, and sensor placement are dropped.
+| A. Per-station coverage at forecast time (protected) | Station-level conformal combined with the seasonal scaled scores; second-moment variant; width against the number of calibration stations on a large GHCN network | On every network over at least 20 fresh splits: mean coverage within 0.02 of 0.90, at most 5% of stations below 0.80, width at most 30% above the Phase 1 fixed rule | Width against worst-station coverage, and which networks cannot meet both |
+| B. A new sensor's first weeks (protected) | Cold start then own-data split conformal, generalized hierarchical conformal [22], adaptive conformal inference, 0 to 60 days of history | Coverage within 0.03 at every history length; at least 5% narrower at 60 days than at 0 days on 4 of 6 networks | Coverage and width against history |
+| C. Does position matter? (gated) | Gate G0 on a 300 to 1,500 station GHCN network with the corrected frame: far tercile at least 0.03 below near over 20 or more region splits. Geometry-aware calibration [16], [17] against whitening [10] and cluster-aware calibration [18] only if G0 passes | If G0 passes: far tercile within 0.03 of 0.90, mean within 0.02, width at most +10%, not worse than whitening | If G0 fails (expected): a powered negative, the interval of the distance slope on a much larger network |
+| D. Useful intervals (protected on traffic) | Seasonal-residual forecaster, locally scaled scores, quantile head, and a diagnosis of the PeMS-BAY width gap, on PeMSD7-M and PeMS-BAY | Interval score below persistence and seasonal-naive under the same rule, paired 95% interval below zero, coverage within 0.02 | State that on traffic the learned model does not beat a seasonal baseline, with the diagnosis |
+| E. Scale and remaining comparisons | Parity gate V1b; corrected-frame V3 and V3b; coverage against N on the large GHCN network; LargeST compute scaling; dropout, drift, 7-sensor, E-STGCN, IGNNK and interpolator comparisons under the forecast-time rules; calibration results repeated with the coordinate-free GRU backbone | At least 5 times lower peak memory than exact attention at N of 2,000 or more; neighbour-set agreement at least 0.99; coverage within 0.02 of 0.90 at every size, at least 10 splits per size | Restrict the claim to equivalence; state evidence to 325 sensors if no larger network is usable |
+| F. Alerts (cut candidate) | Conformal risk control [19] at one air-quality network with published thresholds | Mean miss rate at or below target plus 0.02, false alarms against a point-forecast threshold | Miss rate against the number of calibration exceedances |
+| G. Package and thesis (protected) | Pip-installable package that reproduces one headline table in a fresh environment; thesis in the IIT Patna format with at least 30 verified references; chapters 1 to 3 from week 6, supervisor review week 11 | Table reproduces; supervisor review | None |
+Cut order if time runs short: F, then LargeST compute scaling, then the breadth of the comparisons in E, then C's method.
+Dropped: the state-space block, a separate coverage-risk estimate, sensor placement, cross-city transfer, and online rule
+selection as a default (it failed on Beijing).
 ## 7. Summary of Progress
 Phase 1 is complete as a design, an implementation and an evaluation. The forecaster was validated on
 five real networks and released as a preprint. Under the rule used in C1, mean coverage was 87.6% to
@@ -533,9 +550,10 @@ PeMSD7-M or weather; against a seasonal forecast it is wider on PeMS-BAY. Distan
 network showed an effect only in the sparse weather network with the Delhi constants, and that effect
 disappeared with the corrected coordinate frame (slope -0.2 points per spacing, interval including zero). Phase 2 is part of the final thesis: neighbour attention
 cuts attention memory 7 to 17 times from 4,000 sensors with equal output, the state-space block was dropped,
-and the Semester-4 plan (Section 6) is organised around station-level coverage, a new sensor's first weeks,
-position-dependent calibration and useful intervals, with acceptance criteria and fallbacks, pending
-supervisor approval.
+and the Semester-4 plan (Section 6) is organised around per-station coverage, a new sensor's first weeks, a gated
+test of whether position matters, useful intervals on traffic, and scale, with acceptance criteria and fallbacks,
+pending supervisor approval. A coordinate-free GRU matches the architecture's accuracy, so the thesis contribution is
+the calibration and its evaluation, not the architecture.
 ---
 
 ## 8. References

@@ -6,11 +6,11 @@ calibration protocol, coverage, width and MAE against persistence and seasonal-n
 below seasonal-naive with more training the gap was undertraining; if it plateaus above, the
 patch-trained model is not competitive with a trivial seasonal predictor on this data.
 
-Run: python experiments/V3b_training_budget.py [quick]
+Run: python experiments/V3b_training_budget.py [quick] [norm]
 """
 import sys, os, json, time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from V3_coverage_at_scale import load_pemsbay, run_one, ROOT
+from V3_coverage_at_scale import load_pemsbay, run_one, ROOT, NORM
 
 quick = "quick" in sys.argv
 y, coords, ts, per_day = load_pemsbay()
@@ -37,5 +37,5 @@ out = {"experiment": "V3b training-budget sweep on real PeMS-BAY (seed 0, gru+fa
                    if beats else
                    "Width stays above seasonal-naive at the largest budget -> the patch-trained model is not "
                    "competitive with a trivial seasonal predictor on this real traffic data.")}
-(ROOT / "results" / ("V3b_training_budget%s.json" % ("_quick" if quick else ""))).write_text(json.dumps(out, indent=2, default=float))
+(ROOT / "results" / ("V3b_training_budget%s%s.json" % ("_norm" if NORM else "", "_quick" if quick else ""))).write_text(json.dumps(out, indent=2, default=float))
 print(out["verdict"])

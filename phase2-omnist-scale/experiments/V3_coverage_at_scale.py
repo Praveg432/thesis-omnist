@@ -20,7 +20,10 @@ Parts: real = PeMS-BAY (325 sensors, REAL coordinates; gru+fast and gru+exact);
 SYNTHETIC results say whether the pipeline and exchangeability hold as N grows; they are not evidence
 about real thousand-sensor networks.
 
-Run: python experiments/V3_coverage_at_scale.py [real|synthetic|all] [quick]
+Add `norm` to build the coordinate frame from the TRAINING nodes (the default keeps the Delhi constants of the
+committed results); output files then carry the suffix `_norm`. The synthetic field is generated inside the
+Delhi range, so `norm` is only used for the real network.
+Run: python experiments/V3_coverage_at_scale.py [real|synthetic|all] [quick] [norm]
 """
 import sys, os, json, time
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src"))
@@ -36,6 +39,7 @@ from omnist_scale.scalable_model import OmniSTScale
 from omnist_scale.conformal import window_conformal, beta_band, group_ids, split_qhat
 
 ALPHA = 0.10
+NORM = "norm" in sys.argv[1:]
 DEV = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 ROOT = Path(__file__).resolve().parents[1]
 PEMS = ROOT.parent / "phase1-omnist" / "data" / "real_pems"
@@ -127,7 +131,12 @@ def run_one(y, coords, ts, period, seed, variant, W, H, steps, patch, n_eval_win
     mu, sd = float(y[:t_train_end].mean()), float(y[:t_train_end].std() + 1e-6)
     yn = (y - mu) / sd
 
-    cfg = ModelConfig(n_features=1, horizon=H, d_model=64, k_neighbors=8, n_gat_layers=1, n_temporal_layers=2)
+    frame = {}
+    if NORM:
+        c_tr = np.asarray(coords)[tr].astype(float)
+        frame = {"coord_center": tuple(float(v) for v in c_tr.mean(0)),
+                 "coord_scale": tuple(float(v) for v in c_tr.std(0) + 1e-6)}
+    cfg = ModelConfig(n_features=1, horizon=H, d_model=64, k_neighbors=8, n_gat_layers=1, n_temporal_layers=2, **frame)
     model = OmniSTScale(cfg, temporal=variant[0], attention=variant[1]).to(DEV)
     opt = torch.optim.AdamW(model.parameters(), lr=2e-3, weight_decay=1e-4)
 
@@ -249,6 +258,6 @@ if __name__ == "__main__":
         res["synthetic_ladder"] = part_synth(quick)
     res["runtime_seconds"] = round(time.time() - t0, 1)
     (ROOT / "results").mkdir(exist_ok=True)
-    fn = "V3_coverage_at_scale_%s%s.json" % (which, "_quick" if quick else "")
+    fn = "V3_coverage_at_scale_%s%s%s.json" % (which, "_norm" if NORM else "", "_quick" if quick else "")
     (ROOT / "results" / fn).write_text(json.dumps(res, indent=2, default=float))
     print("wrote", fn, "runtime", res["runtime_seconds"], "s")

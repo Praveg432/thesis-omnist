@@ -1,5 +1,10 @@
 # Progression Decision Brief (15 Nov 2026)
 
+> **Superseded for the Phase 2 plan (26 Nov 2026).** The authoritative plan is `THESIS-COMPLETION-PLAN.md`,
+> rewritten after Phase 1 closed. The distance effect this note relies on did not survive the coordinate
+> correction (`SEM3-PROGRESS-REPORT.md`, Section 4.4). Kept as a record of the reasoning at the time.
+
+
 > **Superseded on 16 Nov 2026 by [`THESIS-COMPLETION-PLAN.md`](THESIS-COMPLETION-PLAN.md)**, which adds
 > station-level (hierarchical) conformal, the new-sensor warm-up question, the contemporaneous-calibration
 > issue in C1, and new prior art (sequential whitening). Options A and B below are folded into it.

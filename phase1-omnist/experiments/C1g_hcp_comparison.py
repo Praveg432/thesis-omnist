@@ -85,12 +85,23 @@ def main(name, n_splits, n_cal):
                                  hold_out_stations=[])[3]["coords_all"].shape[0]
     if n_cal < 9:
         raise SystemExit("HCP at a 90% target needs at least 9 calibration stations; pass n_cal >= 9")
+    path = os.path.join(c1.RESULTS, f"exp_C1g_hcp_{name}.json")
     splits = []
+    if os.path.exists(path):  # resumable: splits are deterministic given their index, so finished ones are kept
+        prior = json.load(open(path))
+        if prior.get("n_calibration_stations") == n_cal:
+            splits = prior["splits"]
+    done = {s["split"] for s in splits}
     for split in range(n_splits):
+        if split in done:
+            continue
         splits.append(run_split(name, spec, split, n_stations, n_cal))
         r = splits[-1]["rules"]
         print(f"[{name}] split {split}: pooled {r['pooled_expanding']['coverage']} hcp {r['hcp_expanding']['coverage']}",
               flush=True)
+        json.dump({"experiment": "C1g HCP against pooled conformal, forecast-time calibration (partial)", "domain": name,
+                   "n_calibration_stations": n_cal, "splits": splits, "aggregate": {}}, open(path, "w"), indent=2)
+    splits = sorted(splits, key=lambda s: s["split"])
     agg = {}
     for rule in ("pooled_expanding", "hcp_expanding"):
         station = np.concatenate([s["rules"][rule]["per_station_coverage"] for s in splits])

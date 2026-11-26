@@ -5,10 +5,11 @@
 **Candidate:** Praveg Vashishtha (ID IITP006424) · IIT Patna, CSE · **Supervisor:** Pankaj Chaswal
 **Hardware:** Apple M4 Pro (MPS, ~24 GB)
 **Status of this document:** the scope in Sections 3 to 5 is a **proposal pending supervisor approval**.
-**16 Nov 2026:** the timeline (Section 4) and the spine are revised by
-[`THESIS-COMPLETION-PLAN.md`](../../THESIS-COMPLETION-PLAN.md) (12 weeks; adds hierarchical conformal and
-the new-sensor warm-up; trims WP2 to WP5; drops X1 to X3). Acceptance criteria below remain in force
-where that plan keeps the work package.
+**26 Nov 2026: superseded for scope and timeline.** [`THESIS-COMPLETION-PLAN.md`](../../THESIS-COMPLETION-PLAN.md)
+is the authoritative Phase 2 plan. It follows the evidence of `FINALIZATION-RECORD.md` Sections 11 to 21: WP1 and WP2 are
+replaced by a gated test of whether position matters, because the weather distance effect on which they rested did not
+survive the coordinate correction. This file is kept for the acceptance criteria of the scale and alert work (WP3, WP4), the
+novelty assessment (Section 5) and the terminology (Section 1). Where a statement below conflicts with the plan, the plan wins.
 
 ---
 
@@ -27,7 +28,7 @@ negative result still yields a defensible thesis chapter.
 | The first parity gate (V1) could not fail | V1b replaces it, with paired equivalence, fixed margins, and a separate gate for the attention swap alone. |
 | The title word "certified" overstated an empirical, marginal, approximate result | "Certified" was removed from the title (the 15 Nov title names the problem, not a result); Section 1 defines "calibrated" and its limits. |
 | The large-network claim rested on 7 held-out sensors | C1 re-evaluated it; WP3 adds a larger real network. |
-| **C2:** coverage falls with distance from the training network only in the sparse weather network (about 1.4 points per extra network spacing); not in the dense urban and traffic networks | The geometry-aware work (WP1, WP2) targets sparse networks and must not harm dense ones. |
+| **C2:** with the Delhi coordinate constants, coverage fell with distance only in the sparse weather network (about 1.4 points per extra network spacing). **Corrected 26 Nov:** with the corrected frame the slope is -0.2 points per spacing with an interval that includes zero | The effect was largely produced by the coordinate defect. The geometry-aware work is now a gated test (gate G0) on a larger sparse network, not a planned method. |
 | **C3:** differences between station score distributions are no larger than the estimator's noise floor (about 0.13) at roughly 360 dependent scores per station, and do not grow with distance in the weather data | A coverage bound built on total-variation distance would be vacuous. WP2 uses a threshold-specific, empirically validated diagnostic instead. |
 | The coordinate embedding uses Delhi-specific constants | A local coordinate frame is a precondition (WP0) for any new region and for portability (X1). |
 

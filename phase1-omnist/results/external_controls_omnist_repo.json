@@ -1,0 +1,50 @@
+{
+  "provenance": "Copied from the separate OmniST repository, results/exp_D2_analysis.json (last changed in commit d6188b5). Same five networks, corrected coordinate frame, random sensor splits with the sensors held out as in that repository's protocol (not the thesis C1 splits). 'coordinate_free_gru' is a GRU shared across sensors with no coordinates and no attention; 'no_attention' is OmniST without the attention layer.",
+  "rows": {
+    "delhi_air_quality": {
+      "n_splits": 10,
+      "n_held_out_per_split": 16,
+      "mae_omnist_corrected_frame": 28.531,
+      "mae_omnist_no_attention": 28.64,
+      "mae_coordinate_free_gru": 27.966,
+      "mae_persistence": 37.983,
+      "omnist_relative_to_gru": 0.0202
+    },
+    "beijing_air_quality": {
+      "n_splits": 10,
+      "n_held_out_per_split": 6,
+      "mae_omnist_corrected_frame": 48.848,
+      "mae_omnist_no_attention": 48.754,
+      "mae_coordinate_free_gru": 48.427,
+      "mae_persistence": 52.731,
+      "omnist_relative_to_gru": 0.0087
+    },
+    "ghcn_weather": {
+      "n_splits": 10,
+      "n_held_out_per_split": 12,
+      "mae_omnist_corrected_frame": 4.749,
+      "mae_omnist_no_attention": 4.756,
+      "mae_coordinate_free_gru": 4.816,
+      "mae_persistence": 4.65,
+      "omnist_relative_to_gru": -0.014
+    },
+    "pemsd7_traffic": {
+      "n_splits": 4,
+      "n_held_out_per_split": 60,
+      "mae_omnist_corrected_frame": 3.659,
+      "mae_omnist_no_attention": null,
+      "mae_coordinate_free_gru": 3.715,
+      "mae_persistence": 3.57,
+      "omnist_relative_to_gru": -0.015
+    },
+    "pemsbay_traffic": {
+      "n_splits": 4,
+      "n_held_out_per_split": 90,
+      "mae_omnist_corrected_frame": 4.488,
+      "mae_omnist_no_attention": null,
+      "mae_coordinate_free_gru": 4.447,
+      "mae_persistence": 5.14,
+      "omnist_relative_to_gru": 0.0091
+    }
+  }
+}

@@ -1,5 +1,10 @@
 # Thesis Overview: Narrative, Status, and Timeline
 
+> **Superseded for the Phase 2 plan (26 Nov 2026).** The authoritative plan is `THESIS-COMPLETION-PLAN.md`,
+> rewritten after Phase 1 closed. The distance effect this note relies on did not survive the coordinate
+> correction (`SEM3-PROGRESS-REPORT.md`, Section 4.4). Kept as a record of the reasoning at the time.
+
+
 > **Status (17 Nov 2026):** title and abstract submitted and finalised. The six-month timeline in
 > Section 5 and the WP0 to WP6 list in Section 4 are superseded by
 > [`THESIS-COMPLETION-PLAN.md`](THESIS-COMPLETION-PLAN.md) (12 weeks, to 7 Feb 2027).
