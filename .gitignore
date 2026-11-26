@@ -38,3 +38,6 @@ phase1-omnist/data/real_pems/pemsd7_vel.csv
 
 # Generated intermediate HTML from the PDF build (the .pdf itself IS committed)
 *.html
+
+# Background-run logs
+nohup.out
