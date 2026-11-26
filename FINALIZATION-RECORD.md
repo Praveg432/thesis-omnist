@@ -465,3 +465,17 @@ Seven independent checks were run on commit 42fda98 and its successor before the
 code does what it claims on simulated data, and that the confirmation tests were fixed in advance. They do not show
 that the rule would hold on other networks, other years, or a larger number of stations; the traffic results rest on
 6 splits, and the Phase 2 results used the original coordinate frame. The statistics of each figure are in the report.
+
+## 21. Closing the evidence limits (26 Nov 2026)
+
+| Limit | Action | Result |
+|---|---|---|
+| Traffic rested on 6 splits | `phase1-omnist/experiments/C1i_origin_rules.py` and `phase1-omnist/experiments/C1g_hcp_comparison.py` extended to 20 splits on both traffic networks (splits 6 to 19 added; not pre-registered, reported separately); summary `phase1-omnist/results/exp_traffic_extension_summary.json` | Expanding calibration: PeMSD7-M 0.896 [0.891, 0.902], PeMS-BAY 0.883 [0.874, 0.892] (the PeMS-BAY interval excludes 0.90). Station-level conformal: 0.927 [0.923, 0.931] and 0.906 [0.898, 0.913]; stations below 0.80 from 8.7% to 1.3% and from 13.9% to 6.2%. The extension agrees with the pre-registered six |
+| Phase 2 used the original coordinate frame | Measured that the real-network runs re-centre PeMS-BAY into the Delhi range (inputs at most 0.47; synthetic at most 1.9), then re-ran V3 on real PeMS-BAY with the corrected frame (`phase2-omnist-scale/experiments/V3_coverage_at_scale.py` with `norm`) | Coverage 0.918 to 0.918 (neighbour attention) and 0.921 to 0.917 (exact); width and MAE within about 3%. Phase 2 was not distorted by the defect |
+| Parity gate V1b not run | Ran the pre-registered V1b (10 seeds) | Attention swap GO; full model with the state-space block NO-GO. Test `phase2-omnist-scale/tests/test_v1b_result.py` checks the verdicts follow the stated rule |
+| Phase 2 plan out of date | `THESIS-COMPLETION-PLAN.md` rewritten; `MTECH-THESIS-PROPOSAL.md`, the report's Section 6 and `phase2-omnist-scale/docs/RESEARCH-PLAN.md` aligned; two older notes marked superseded | One authoritative plan |
+| The architecture's share of the result was unstated | Copied the coordinate-free GRU control from the OmniST repository with provenance (`phase1-omnist/results/external_controls_omnist_repo.json`) and stated it in the report | Within about 2% of OmniST on every network; claims are about calibration |
+
+**Remaining limits, stated in the report.** Traffic intervals are not useful against a seasonal forecast (D); weather
+keeps 13% of stations below 0.80 under the fixed rule; every repair costs width; online selection needs several
+earlier years; evidence stops at 325 real sensors. Supervisor approval is outside the repository.

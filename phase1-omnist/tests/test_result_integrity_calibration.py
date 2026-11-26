@@ -18,7 +18,7 @@ DOMAINS = list(c1.DOMAINS)
 AIR_WEATHER = ["delhi_air_quality", "beijing_air_quality", "ghcn_weather"]
 EXPECTED_C1H_SPLITS = {"delhi_air_quality": range(10, 30), "beijing_air_quality": range(10, 30), "ghcn_weather": range(0, 20)}
 EXPECTED_C1I_SPLITS = {"delhi_air_quality": range(30, 50), "beijing_air_quality": range(30, 50), "ghcn_weather": range(20, 40),
-                       "pemsd7_traffic": range(0, 6), "pemsbay_traffic": range(0, 6)}
+                       "pemsd7_traffic": range(0, 20), "pemsbay_traffic": range(0, 20)}
 
 
 def load(name):

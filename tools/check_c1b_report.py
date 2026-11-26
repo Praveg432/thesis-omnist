@@ -142,7 +142,30 @@ for dom, label in (("delhi_air_quality", "Delhi PM2.5"), ("beijing_air_quality",
     if f"{t[0]['coverage']:.3f} / {t[2]['coverage']:.3f}" not in line:
         failures.append(f"C2n row {label} lacks tertile coverage: {line}")
 
+# ---- traffic extension, V1b, corrected-frame V3 -----------------------------------------------------------
+xt = load("exp_traffic_extension_summary.json")
+fmt = lambda c: f"{c['mean']:.3f} [{c['ci95'][0]:.3f}, {c['ci95'][1]:.3f}]"
+for dom, label in (("pemsd7_traffic", "PeMSD7-M"), ("pemsbay_traffic", "PeMS-BAY")):
+    x = xt[dom]
+    line = next((l for l in report_lines.splitlines() if l.startswith(f"| {label} | ") and "Expanding" not in l
+                 and fmt(x["all_20"]["expanding"]) in l), "")
+    for w in (fmt(x["preregistered_0_5"]["expanding"]), fmt(x["extension_6_19"]["expanding"]), fmt(x["all_20"]["expanding"]),
+              fmt(x["hcp"]["hcp_coverage"])):
+        n_checked += 1
+        if w not in line:
+            failures.append(f"traffic extension row {label} lacks {w}")
+P2R = os.path.join(ROOT, "phase2-omnist-scale", "results")
+v1 = json.load(open(os.path.join(P2R, "V1b_parity_equivalence_results.json")))
+for w in ("**GO**", "**NO-GO**", f"{v1['mae_equivalence']['mean_diff']:.1f} [{v1['mae_equivalence']['ci'][0]:.1f}, {v1['mae_equivalence']['ci'][1]:.1f}]"):
+    n_checked += 1
+    if w not in report_lines:
+        failures.append(f"V1b figure missing from the report: {w}")
+for var in ("gru+fast", "gru+exact"):
+    n_checked += 1
+    if f"{xt['v3_pemsbay'][var]['corrected']['coverage_deployable']:.3f}" not in report_lines:
+        failures.append(f"corrected-frame V3 coverage for {var} missing from the report")
+
 if failures:
     print("\n".join(failures))
     sys.exit(1)
-print(f"all {n_checked} C1b to C1j and C2n report figures match the committed result files")
+print(f"all {n_checked} C1b to C1j, C2n, traffic-extension and V1b/V3 report figures match the committed result files")

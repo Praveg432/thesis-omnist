@@ -24,6 +24,7 @@ Locations in Evolving Networks.* Dates: Semester 4 runs 16 Nov 2026 to 7 Feb 202
 | Coordinate defect | Found, fixed (option, default unchanged), effect measured |
 | Distance effect (C2, C3) | Re-run with the corrected frame: the weather effect does not reproduce |
 | Verification | Seven checks, `FINALIZATION-RECORD.md` Section 20; progress report final |
+| Evidence limits closed | Traffic extended to 20 splits; Phase 2 re-run with the corrected frame (unchanged); V1b run (attention GO, state-space NO-GO); Section 21 |
 | Not re-run, labelled original-protocol in the report | Dropout robustness, drift handling, 7-sensor run, E-STGCN, IGNNK and interpolator comparisons. Scheduled below (E1) |
 
 ### Decisions outside the repository
@@ -90,7 +91,8 @@ stations stay under-covered (weather 13% below 0.80; pooled traffic 6% to 12%) a
 ### E. Scale and the remaining Phase 1 comparisons
 - **E1.** Phase 1 comparisons under the forecast-time rules: dropout robustness, drift handling, the 7-sensor run,
   E-STGCN, IGNNK (official code), interpolators. Accept: each claim restated or withdrawn with the new numbers.
-- **E2.** Parity gate V1b (attention swap alone, 10 seeds; running) and a corrected-frame run of V3 and V3b.
+- **E2.** Done 26 Nov: V1b (attention GO, state-space NO-GO) and the corrected-frame V3 on real PeMS-BAY (unchanged).
+  Remaining: corrected-frame V3b, only if D changes the traffic model.
 - **E3.** Large sparse network from GHCN-Daily (300 to 1,500 stations after quality filtering) for A, C and coverage
   against N; LargeST (8,600 sensors) for compute scaling only.
 - **Accept.** From `phase2-omnist-scale/docs/RESEARCH-PLAN.md` WP3: at least 5 times lower peak memory than exact
@@ -115,7 +117,7 @@ established), sensor placement, cross-city transfer, online rule selection as a 
 
 | Week | Dates | Work | Exit check |
 |---|---|---|---|
-| 3 | 30 Nov to 6 Dec | Submit the Semester 3 report. Pre-register A and G0. Build the GHCN large network (E3). V1b result. LargeST usability check. Traffic extension (20 splits) merged into the record | Network built with a quality report; V1b verdict recorded |
+| 3 | 30 Nov to 6 Dec | Submit the Semester 3 report. Pre-register A and G0. Build the GHCN large network (E3). LargeST usability check | Network built with a quality report |
 | 4 | 7 to 13 Dec | G0 test (C) on the large network. A1 and A2 on air quality and weather | G0 pass or fail recorded; A pre-registered runs complete |
 | 5 | 14 to 20 Dec | A on traffic and the large network (A3). Decide on the preprint revision | A accepted or fallback declared |
 | 6 | 21 to 27 Dec | B design, pre-registration and first runs. Start thesis chapters 1 to 3 | B first curves |

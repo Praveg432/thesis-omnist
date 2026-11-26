@@ -44,8 +44,8 @@ CONFIG = {
     "delhi_air_quality": {"folds": YEAR_FOLDS["delhi_air_quality"], "splits": range(30, 50), "stride": 7, "kind": "years"},
     "beijing_air_quality": {"folds": YEAR_FOLDS["beijing_air_quality"], "splits": range(30, 50), "stride": 7, "kind": "years"},
     "ghcn_weather": {"folds": YEAR_FOLDS["ghcn_weather"], "splits": range(20, 40), "stride": 7, "kind": "years"},
-    "pemsd7_traffic": {"folds": [{}], "splits": range(0, 6), "stride": None, "kind": "day"},
-    "pemsbay_traffic": {"folds": [{}], "splits": range(0, 6), "stride": None, "kind": "day"},
+    "pemsd7_traffic": {"folds": [{}], "splits": range(0, 20), "stride": None, "kind": "day"},  # 0-5 pre-registered; 6-19 extension
+    "pemsbay_traffic": {"folds": [{}], "splits": range(0, 20), "stride": None, "kind": "day"},  # 0-5 pre-registered; 6-19 extension
 }
 
 

@@ -326,6 +326,19 @@ infinite width; it was fixed, the script now refuses infinite intervals, and onl
 | PeMSD7-M | 6 | 0.891 | 0.888 | 17.30 / 21.43 | 35.56 / 36.33 | PASS |
 | PeMS-BAY | 6 | 0.881 | 0.877 | 18.82 / 26.78 | 56.31 / 50.12 | FAIL |
 
+**Traffic extended to 20 splits (not pre-registered; splits 6 to 19 added on 26 Nov 2026).** The six pre-registered
+traffic splits were extended to 20 with the same code, to narrow the intervals. The table above keeps the
+pre-registered six.
+
+| Traffic network | Expanding, splits 0 to 5 | Expanding, splits 6 to 19 | Expanding, all 20 | Station-level conformal, all 20 | Stations below 0.80: expanding / station-level | Width: expanding / station-level |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|
+| PeMSD7-M | 0.891 [0.881, 0.900] | 0.899 [0.892, 0.906] | 0.896 [0.891, 0.902] | 0.927 [0.923, 0.931] | 8.7% / 1.3% | 17.4 / 22.7 |
+| PeMS-BAY | 0.881 [0.860, 0.902] | 0.884 [0.872, 0.895] | 0.883 [0.874, 0.892] | 0.906 [0.898, 0.913] | 13.9% / 6.2% | 17.8 / 22.3 |
+
+The extension agrees with the pre-registered splits. With 20 splits, PeMS-BAY under expanding calibration is within
+the 0.02 tolerance but its interval excludes 0.90, so a small under-coverage there is real; station-level conformal
+removes it and more than halves the share of under-covered stations, at about 25% to 31% more width.
+
 - **The fixed rule replicates** on a third set of station splits with four times more forecast origins: 0.908,
   0.900 and 0.913, with a narrower interval on Delhi than in C1h.
 - **Online selection recovers efficiency where the fixed rule over-widens.** On weather it reaches 0.900 with a
@@ -343,8 +356,8 @@ infinite width; it was fixed, the script now refuses infinite intervals, and onl
 
 **Overall.** Every network now has a forecast-time calibration method confirmed within 0.02 of the 90% target
 on data not used to design it. Air quality and weather use the fixed seasonal rule (0.890 to 0.913 across two
-confirmation rounds). Traffic uses expanding calibration (0.881 to 0.891), with station-level conformal for
-per-station coverage (0.903 and 0.922). The remaining costs are width (about 25% to 60% over the under-covering
+confirmation rounds). Traffic uses expanding calibration (0.896 and 0.883 over 20 splits), with station-level
+conformal for per-station coverage (0.927 and 0.906). The remaining costs are width (about 25% to 60% over the under-covering
 same-year rule) and stations that stay under-covered on weather (13%).
 
 ### 4.4 Does distance from the training network matter? (experiments C2 and C3)
@@ -488,15 +501,16 @@ Phase 2 is part of the final thesis work and is planned for Semester 4. Some com
 measured in exploratory work; the review corrected what had been claimed for them. The Phase 2 models use the
 same coordinate embedding with the Delhi constants, but the real-network runs re-centre the PeMS-BAY coordinates
 into the Delhi range, so their inputs stayed within 0.47 of the intended range (synthetic fields within 1.9); the
-defect of Section 4.6 did not distort them. A corrected-frame run is scheduled as a robustness check.
+defect of Section 4.6 did not distort them. The real-network coverage run was repeated with the corrected frame: coverage and width are unchanged within
+about 3% (table below).
 ### 5.1 Components and what has been measured
 | Component | State | Evidence |
 |---|---|---|
 | Neighbour attention (cost proportional to sensors × neighbours) | Implemented | Output cosine similarity to exact attention at least 0.99987 for N up to 2,000 (random tokens, shared weights; not affected by the coordinate frame). Inference memory is 2.6 times lower at N = 2,000, 7.2 times at 4,000 and 16.7 times at 8,000; no advantage below about 1,000 sensors |
 | State-space temporal block | Implemented, then dropped | Sequential scan about 2.0 to 2.2 times slower than the GRU at sequence lengths 60, 240 and 960; a chunked scan is 1.7 to 2.0 times slower and not exact |
-| Coverage against network size | Measured, delhi-constants model | Deployable (chronological) calibration; real PeMS-BAY 0.918 and 0.921 (neighbour and exact attention); synthetic networks of 100 to 4,000 sensors 0.880 to 0.914. No real network above 325 sensors |
+| Coverage against network size | Measured; re-run with the corrected frame | Deployable (chronological) calibration; real PeMS-BAY 0.918 and 0.921 (neighbour and exact attention), 0.918 and 0.917 with the corrected frame (width 22.3 and 21.8 against 21.6 and 21.9); synthetic networks of 100 to 4,000 sensors 0.880 to 0.914. No real network above 325 sensors |
 | Interval width against baselines | Measured, delhi-constants model | On PeMS-BAY the intervals were narrower than persistence and about 21% wider than seasonal-naive; to be re-measured with the corrected frame (Section 4.3a gives 33% under the C1b protocol) |
-| Corrected parity gate (V1b) | Written, smoke-tested | Not yet run |
+| Corrected parity gate (V1b) | Run, 10 seeds, pre-registered margins | Neighbour attention against exact attention: **GO** (MAE difference 0.0001, 90% interval inside the 2.43 margin; coverage difference 0.000). Full model with the state-space block: **NO-GO** (MAE worse by 6.4 [4.6, 8.3], margin 2.4), consistent with dropping the block |
 ### 5.2 Defects found and fixed
 - A neighbour-index cache key could collide for two different sensor layouts; it is now a hash of the exact
   coordinates, with a size limit and regression tests.
