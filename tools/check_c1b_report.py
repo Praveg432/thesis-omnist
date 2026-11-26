@@ -127,7 +127,22 @@ n_checked += 1
 if f"{vi['pemsbay_hcp']['hcp']['coverage_mean']:.3f}" not in sec_d:
     failures.append("4.3d lacks the PeMS-BAY station-level coverage")
 
+# ---- Section 4.4: corrected-frame re-run of C2 and C3 ---------------------------------------------------
+sec_4 = report_lines[report_lines.index("**Re-run with the corrected coordinate frame"):report_lines.index("Experiment C3 asks whether")]
+an = load("exp_C2n_analysis.json")
+for dom, label in (("delhi_air_quality", "Delhi PM2.5"), ("beijing_air_quality", "Beijing PM2.5"), ("ghcn_weather", "NOAA weather")):
+    ws = an[dom]["within_station"]
+    line = next(l for l in sec_4.splitlines() if l.startswith(f"| {label}"))
+    want = f"{ws['slope_per_spacing']:+.4f} [{ws['ci95'][0]:+.4f}, {ws['ci95'][1]:+.4f}]"
+    n_checked += 1
+    if want not in line:
+        failures.append(f"C2n row {label} lacks {want}: {line}")
+    t = an[dom]["region"]["tertiles"]
+    n_checked += 1
+    if f"{t[0]['coverage']:.3f} / {t[2]['coverage']:.3f}" not in line:
+        failures.append(f"C2n row {label} lacks tertile coverage: {line}")
+
 if failures:
     print("\n".join(failures))
     sys.exit(1)
-print(f"all {n_checked} C1b to C1j report figures match the committed result files")
+print(f"all {n_checked} C1b to C1j and C2n report figures match the committed result files")

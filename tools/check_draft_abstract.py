@@ -42,7 +42,7 @@ means = [json.load(open(os.path.join(P1, f"exp_C1_{d}.json")))["aggregate"]["dis
     "coverage_over_splits"]["mean"] for d in doms]
 check(f"between {100 * min(means):.1f}% and {100 * max(means):.1f}%" in abstract, "coverage range does not match C1")
 slope = json.load(open(os.path.join(P1, "exp_C2_analysis.json")))["ghcn_weather"]["within_station"]["slope_per_spacing"]
-check(f"about {abs(100 * slope):.1f} points" in abstract, "weather slope does not match C2")
+check(f"{abs(100 * slope):.1f} points per station spacing" in abstract, "weather slope does not match C2")
 check("five real networks" in abstract, "should say 'five real networks'")
 
 v4 = {r["N"]: r for r in json.load(open(os.path.join(P2, "V4_scaling_crossover_results.json")))["spatial"]}

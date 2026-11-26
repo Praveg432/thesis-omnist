@@ -61,6 +61,10 @@ intervals beat persistence and seasonal-naive on all three; the rule does not be
 **Second round (C1i/C1j, pre-registered, 18 Nov):** the rule replicates (0.908, 0.900, 0.913 with 4 times more
 origins); traffic is already near target with expanding calibration (0.881, 0.891); station-level conformal
 holds on PeMS-BAY (0.903); online selection helps on weather and fails on Beijing.
+**Phase 1 closed (26 Nov 2026, `FINALIZATION-RECORD.md` Section 19).** C2 and C3 re-run with the corrected frame: the
+weather distance effect disappears, so contribution C is weakened and stays a gated test. References verified; the
+report, abstract (fourth revision) and PDF are final. Remaining outside the repository: supervisor approval, the
+preprint decision, and the submission date.
 **Contribution A now starts from these results:** fix the
 scaled seasonal rule in advance, confirm it on held-out years and on weather and traffic with multi-year data,
 compare against the baselines under the same rule, and test HCP with more calibration stations (traffic).

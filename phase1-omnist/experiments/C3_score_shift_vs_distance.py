@@ -32,6 +32,9 @@ import C1_rigorous_inductive_eval as c1  # noqa: E402
 import C2_region_holdout_distance as c2  # noqa: E402
 from src.data import DataConfig  # noqa: E402
 from src.omnist_model import ModelConfig, OmniST  # noqa: E402
+from src.cc_hash import training_coordinate_frame  # noqa: E402
+
+NORM = "norm" in sys.argv[1:]  # training-station coordinate frame; output exp_C3n_<domain>.json
 from src.trainer import TrainConfig, train_model  # noqa: E402
 import torch  # noqa: E402
 
@@ -62,8 +65,12 @@ def run(domain: str, quick: bool) -> None:
         tcfg = TrainConfig(lr=1e-3, n_epochs=2 if quick else spec["epochs"], patience=spec["patience"],
                            batch_size=spec["batch"], loss_type="pot")
         train_ds, val_ds, _, meta = spec["prepare"](cfg, hold_out_stations=[int(i) for i in held])
+        frame = {}
+        if NORM:
+            center, scale = training_coordinate_frame(np.asarray(meta["coords_all"])[meta["train_stations"]])
+            frame = {"coord_center": center, "coord_scale": scale}
         model = OmniST(ModelConfig(n_features=1, horizon=horizon, d_model=64, k_neighbors=8,
-                                   knn_mode=spec.get("knn_mode", "exact")))
+                                   knn_mode=spec.get("knn_mode", "exact"), **frame))
         train_model(model, train_ds, val_ds, tcfg, meta)
         scores = c1.score_array(model, meta, c1.station_dataset(meta, held, window, horizon))  # (W, n_hold, H)
         series = [scores[:, j, :].reshape(-1) for j in range(n_hold)]
@@ -95,11 +102,11 @@ def run(domain: str, quick: bool) -> None:
            "noise_floor_time_halves_median": round(float(np.median(floors_time)), 3),
            "bound_loss_3_nearest_median": round(float(np.median(target_losses)), 3),
            "bound_loss_3_nearest_p90": round(float(np.percentile(target_losses, 90)), 3)}
-    path = os.path.join(c1.RESULTS, f"C3_quick_{domain}.json" if quick else f"exp_C3_{domain}.json")
+    path = os.path.join(c1.RESULTS, f"C3_quick_{domain}.json" if quick else f"exp_C3n_{domain}.json" if NORM else f"exp_C3_{domain}.json")
     json.dump(out, open(path, "w"), indent=2)
     print(json.dumps(out, indent=2))
 
 
 if __name__ == "__main__":
-    args = [a for a in sys.argv[1:] if a != "quick"]
+    args = [a for a in sys.argv[1:] if a not in ("quick", "norm")]
     run(args[0] if args else "delhi_air_quality", "quick" in sys.argv[1:])

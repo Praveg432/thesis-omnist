@@ -412,3 +412,37 @@ weather runs use day ordinals and were not affected.
 design it: the seasonal rule for air quality and weather, expanding calibration for traffic, and station-level
 conformal for per-station coverage on traffic. Online selection is not adopted as the default (fails on Beijing).
 The abstract is unchanged: its C1h figures stand and C1i replicates them.
+
+## 19. Closing checks before the Semester 3 report (26 Nov 2026)
+
+**C2 and C3 re-run with the corrected coordinate frame** (`phase1-omnist/experiments/C2_region_holdout_distance.py` and
+`phase1-omnist/experiments/C3_score_shift_vs_distance.py` with `norm`; results in `phase1-omnist/results/`
+(exp_C2n_<domain>.json, exp_C2n_analysis.json, exp_C3n_<domain>.json); 20 splits for Delhi, Beijing and weather; traffic not repeated).
+The distance effect that the submitted abstract quoted for the sparse weather network does not reproduce: the
+within-station slope goes from -0.0136 [-0.0221, -0.0063] to -0.0023 [-0.0116, +0.0079]; the nearest and farthest thirds go
+from 0.930 and 0.843 to 0.894 and 0.858. Delhi's small positive slope also loses significance. C3's conclusion (a
+total-variation bound would be vacuous) is unchanged. The abstract sentence was changed accordingly (fourth revision,
+`SUBMISSION-TITLE-AND-ABSTRACT.md`, Section 6) and contribution C is weakened but kept as a gated test.
+This is a second result in this work that the coordinate defect had produced or inflated; the first was MAE and width.
+
+**References (P1-5).** Checked against publisher pages on 26 Nov 2026: [1] IJCAI 2018, pages 3634 to 3640 confirmed;
+[3] AAAI-21 vol. 35 no. 5, authors and venue confirmed, start page 4478 (end page not shown on the page reached);
+[5] Foundations and Trends in Machine Learning 16(4), pp. 494 to 591 confirmed, and the published title is
+"Conformal Prediction: A Gentle Introduction" (the long title is the arXiv version), now corrected; [22] authors
+confirmed as Mallick, Tchetgen Tchetgen, Dobriban and Lee; [7] title updated to the submitted thesis title.
+Not re-verified: [2], [4] (book), and the arXiv-only entries beyond their identifiers.
+
+**Phase 1 items not re-run, stated in the report as original-protocol only:** dropout robustness, drift handling, the
+7-sensor large-network run, the E-STGCN and IGNNK comparisons and the interpolator comparison. They concern the
+design claims of the preprint, not the calibration evidence of this report, and are scheduled for Semester 4.
+
+**Preprint (P1-4).** Nothing public has changed. A correction paragraph for a revised version, for your decision:
+"Version 2 replaces the coverage statements. Coverage at unseen sensors was 87.6% to 90.6% when calibrated on errors
+from the evaluation period, and 77.8% to 89.1% when calibrated only on errors available at forecast time; the claim of
+coverage at or above 90% under 30% to 50% sensor dropout and at 325 sensors applied to a protocol that calibrated on
+training stations and is withdrawn. A coordinate-normalisation defect inflated error and interval width on four of five
+networks and also produced an apparent fall in coverage with distance in a sparse network, which does not persist
+after correction."
+
+**Open, outside the repository:** supervisor approval of the title and the Phase 2 scope; the decision to post the
+revised preprint; the report submission date (window 20 to 30 Nov 2026).

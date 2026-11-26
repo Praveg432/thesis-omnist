@@ -75,7 +75,12 @@ conf = [f"{100 * confirmed[d]['coverage_scaled_seasonal']['mean']:.1f}%" for d i
 check(f"gave {conf[0]} and {conf[1]}" in readme_abs and f"and {conf[2]} on the weather network" in readme_abs,
       f"abstract confirmed coverage should read {conf} (C1h, PRE-REGISTRATION-C1H.md)")
 slope = json.load(open(os.path.join(RESULTS, "exp_C2_analysis.json")))["ghcn_weather"]["within_station"]["slope_per_spacing"]
-check(f"about {abs(100 * slope):.1f} points" in readme_abs, f"abstract slope should read 'about {abs(100 * slope):.1f} points'")
+check(f"{abs(100 * slope):.1f} points per station spacing" in readme_abs,
+      f"abstract slope should read '{abs(100 * slope):.1f} points per station spacing' (C2, Delhi constants)")
+corrected = json.load(open(os.path.join(RESULTS, "exp_C2n_analysis.json")))["ghcn_weather"]["within_station"]
+check(corrected["ci95"][0] < 0 < corrected["ci95"][1],
+      "abstract says the weather distance effect disappeared, but the corrected-frame interval excludes zero: "
+      f"{corrected['ci95']}")
 check(len(domains) == 5 and "five real networks" in readme_abs, "abstract should say 'five real networks'")
 
 if failures:

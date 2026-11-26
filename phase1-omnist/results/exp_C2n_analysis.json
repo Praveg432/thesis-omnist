@@ -1,0 +1,263 @@
+{
+  "delhi_air_quality": {
+    "edges_in_spacings": [
+      1.26,
+      2.15
+    ],
+    "within_station": {
+      "n_stations": 37,
+      "n_observations": 320,
+      "slope_per_spacing": 0.0028,
+      "ci95": [
+        -0.0031,
+        0.0088
+      ]
+    },
+    "scattered": {
+      "n_stations": 160,
+      "test_d1_mean": 1.56,
+      "cal_d1_mean": 1.49,
+      "spearman_rho": -0.04,
+      "p_value": 0.6163,
+      "tertiles": [
+        {
+          "n": 80,
+          "coverage": 0.891,
+          "ci95": [
+            0.874,
+            0.908
+          ],
+          "mean_d1": 0.8
+        },
+        {
+          "n": 47,
+          "coverage": 0.898,
+          "ci95": [
+            0.887,
+            0.91
+          ],
+          "mean_d1": 1.65
+        },
+        {
+          "n": 33,
+          "coverage": 0.889,
+          "ci95": [
+            0.872,
+            0.905
+          ],
+          "mean_d1": 3.27
+        }
+      ]
+    },
+    "region": {
+      "n_stations": 160,
+      "test_d1_mean": 2.31,
+      "cal_d1_mean": 1.35,
+      "spearman_rho": -0.126,
+      "p_value": 0.1133,
+      "tertiles": [
+        {
+          "n": 27,
+          "coverage": 0.902,
+          "ci95": [
+            0.885,
+            0.921
+          ],
+          "mean_d1": 0.99
+        },
+        {
+          "n": 59,
+          "coverage": 0.903,
+          "ci95": [
+            0.891,
+            0.915
+          ],
+          "mean_d1": 1.66
+        },
+        {
+          "n": 74,
+          "coverage": 0.89,
+          "ci95": [
+            0.877,
+            0.903
+          ],
+          "mean_d1": 3.32
+        }
+      ]
+    }
+  },
+  "beijing_air_quality": {
+    "edges_in_spacings": [
+      1.05,
+      1.71
+    ],
+    "within_station": {
+      "n_stations": 12,
+      "n_observations": 120,
+      "slope_per_spacing": 0.0014,
+      "ci95": [
+        -0.0118,
+        0.005
+      ]
+    },
+    "scattered": {
+      "n_stations": 60,
+      "test_d1_mean": 1.89,
+      "cal_d1_mean": 1.37,
+      "spearman_rho": 0.341,
+      "p_value": 0.0077,
+      "tertiles": [
+        {
+          "n": 16,
+          "coverage": 0.892,
+          "ci95": [
+            0.88,
+            0.902
+          ],
+          "mean_d1": 0.71
+        },
+        {
+          "n": 20,
+          "coverage": 0.916,
+          "ci95": [
+            0.907,
+            0.923
+          ],
+          "mean_d1": 1.15
+        },
+        {
+          "n": 24,
+          "coverage": 0.911,
+          "ci95": [
+            0.904,
+            0.918
+          ],
+          "mean_d1": 3.3
+        }
+      ]
+    },
+    "region": {
+      "n_stations": 60,
+      "test_d1_mean": 1.78,
+      "cal_d1_mean": 1.83,
+      "spearman_rho": 0.733,
+      "p_value": 0.0,
+      "tertiles": [
+        {
+          "n": 23,
+          "coverage": 0.879,
+          "ci95": [
+            0.874,
+            0.883
+          ],
+          "mean_d1": 0.77
+        },
+        {
+          "n": 20,
+          "coverage": 0.891,
+          "ci95": [
+            0.886,
+            0.896
+          ],
+          "mean_d1": 1.21
+        },
+        {
+          "n": 17,
+          "coverage": 0.917,
+          "ci95": [
+            0.901,
+            0.929
+          ],
+          "mean_d1": 3.82
+        }
+      ]
+    }
+  },
+  "ghcn_weather": {
+    "edges_in_spacings": [
+      1.2,
+      2.48
+    ],
+    "within_station": {
+      "n_stations": 29,
+      "n_observations": 238,
+      "slope_per_spacing": -0.0023,
+      "ci95": [
+        -0.0116,
+        0.0079
+      ]
+    },
+    "scattered": {
+      "n_stations": 120,
+      "test_d1_mean": 1.39,
+      "cal_d1_mean": 1.6,
+      "spearman_rho": -0.189,
+      "p_value": 0.0387,
+      "tertiles": [
+        {
+          "n": 57,
+          "coverage": 0.883,
+          "ci95": [
+            0.838,
+            0.919
+          ],
+          "mean_d1": 0.46
+        },
+        {
+          "n": 43,
+          "coverage": 0.875,
+          "ci95": [
+            0.845,
+            0.904
+          ],
+          "mean_d1": 1.6
+        },
+        {
+          "n": 20,
+          "coverage": 0.879,
+          "ci95": [
+            0.847,
+            0.908
+          ],
+          "mean_d1": 3.59
+        }
+      ]
+    },
+    "region": {
+      "n_stations": 120,
+      "test_d1_mean": 2.79,
+      "cal_d1_mean": 1.29,
+      "spearman_rho": -0.167,
+      "p_value": 0.0682,
+      "tertiles": [
+        {
+          "n": 23,
+          "coverage": 0.894,
+          "ci95": [
+            0.859,
+            0.933
+          ],
+          "mean_d1": 0.78
+        },
+        {
+          "n": 36,
+          "coverage": 0.888,
+          "ci95": [
+            0.824,
+            0.923
+          ],
+          "mean_d1": 1.49
+        },
+        {
+          "n": 61,
+          "coverage": 0.858,
+          "ci95": [
+            0.82,
+            0.887
+          ],
+          "mean_d1": 4.33
+        }
+      ]
+    }
+  }
+}

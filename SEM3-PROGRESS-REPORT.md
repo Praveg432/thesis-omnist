@@ -19,12 +19,13 @@
 > holds as networks grow, and whether the intervals are useful. Phase 2 is planned for Semester 4
 > and partly measured (`phase2-omnist-scale/docs/CONSOLIDATED-FINDINGS.md`).
 >
-> **Revision note (17 Nov 2026).** The abstract was submitted earlier on 17 Nov 2026 and is revised here in
-> one sentence. The original 87.6% to 90.6% coverage range comes from experiment C1, which calibrates on
-> errors from the same period it evaluates; the revised sentence adds the forecast-time range (Section
-> 4.3a), 77.8% to 89.1%. The original wording is recorded in `SUBMISSION-TITLE-AND-ABSTRACT.md`, Section 6.
-> The coordinate embedding also used Delhi constants on every network, which inflated error and interval
-> width on four networks (Section 4.6); coverage was affected by at most 0.011 in the same-window protocol.
+> **Revision note.** The abstract was submitted on 17 Nov 2026 and is revised here in one sentence, in three
+> steps recorded in `SUBMISSION-TITLE-AND-ABSTRACT.md`, Section 6. (1) Its 87.6% to 90.6% coverage range comes from
+> experiment C1, which calibrates on errors from the period it evaluates; the revised sentence adds the
+> forecast-time range, 77.8% to 89.1% (Section 4.3a). (2) It then adds the result of calibrating on earlier
+> years' errors. (3) That result is quoted from a test whose rule and pass criteria were committed before it
+> was run (Section 4.3c). The coordinate embedding also used Delhi constants on every network, which inflated
+> error and interval width on four networks (Section 4.6); same-window coverage moved by at most 0.011.
 >
 > **Terminology.** "Calibrated coverage" means marginal coverage from split conformal prediction, with calibration on
 > stations the model never saw. Stations are split at random into train, calibration and test sets, so
@@ -42,7 +43,7 @@
 
 Sensor networks for air quality, traffic and weather are used to forecast conditions and to act on them. Two features of real deployments make this hard. The networks change: sensors fail, go offline and are installed at new sites, so forecasts are often needed at locations the model has never seen. And a single predicted value is not enough to act on. An operator needs an interval that contains the true value with a stated probability, and needs to know where that statement can be trusted.
 
-This thesis studies uncertainty quantification for forecasting at sensor locations a model was not trained on, in networks whose layout changes. Its first part, now complete and released as a preprint, built and evaluated OmniST. OmniST is a forecaster that does not depend on a fixed network layout, so it can predict at a new sensor without being retrained, and it attaches split conformal prediction intervals to its forecasts at unseen sensors. On five real networks covering air quality, weather and traffic, with stations split at random into training, calibration and test sets many times over, average coverage at unseen sensors was between 87.6% and 90.6% for a 90% target when calibrated on errors from the evaluation period itself. Using only errors available at forecast time, averages were between 77.8% and 89.1%, lowest in the two air-quality networks, where error roughly doubled through the test year and simple baselines fell short alike. Calibrating instead on earlier years' errors from the same season, scaled by the forecast's magnitude, gave 90.2% and 89.0% in a pre-registered test on fresh station splits, and 90.8% on the weather network, which played no part in choosing the rule. The evaluation also showed the limits of an average. Coverage varied from split to split, and some individual stations were covered far less often than the target. It fell with distance from the training network in one sparse weather network, by about 1.4 points per typical station spacing, but not in the denser networks. And the cost of the model's attention grows with the square of the number of sensors.
+This thesis studies uncertainty quantification for forecasting at sensor locations a model was not trained on, in networks whose layout changes. Its first part, now complete and released as a preprint, built and evaluated OmniST. OmniST is a forecaster that does not depend on a fixed network layout, so it can predict at a new sensor without being retrained, and it attaches split conformal prediction intervals to its forecasts at unseen sensors. On five real networks covering air quality, weather and traffic, with stations split at random into training, calibration and test sets many times over, average coverage at unseen sensors was between 87.6% and 90.6% for a 90% target when calibrated on errors from the evaluation period itself. Using only errors available at forecast time, averages were between 77.8% and 89.1%, lowest in the two air-quality networks, where error roughly doubled through the test year and simple baselines fell short alike. Calibrating instead on earlier years' errors from the same season, scaled by the forecast's magnitude, gave 90.2% and 89.0% in a pre-registered test on fresh station splits, and 90.8% on the weather network, which played no part in choosing the rule. The evaluation also showed the limits of an average. Coverage varied from split to split, and some individual stations were covered far less often than the target. A fall in coverage with distance from the training network, 1.4 points per station spacing in one sparse weather network, disappeared once a coordinate-encoding defect was corrected. And the cost of the model's attention grows with the square of the number of sensors.
 
 The remaining work asks three open questions. First, where does coverage at a new site fail, and can calibration that accounts for the site's position relative to the existing network repair it without harming sites that are already well covered? Second, does the approach continue to hold, in coverage and in compute, as networks grow from hundreds toward thousands of sensors? Third, are the intervals useful as well as calibrated, judged against simple forecasting baselines and in decision tasks such as threshold alerts with a controlled miss rate? Early measurements bear on the last two. Restricting attention to each sensor's nearest neighbours reduced the attention layer's inference memory about seventeenfold at 8,000 sensors, with no gain below about a thousand. Replacing the recurrent time model with a state-space block brought no speed gain on this hardware. On real traffic data the intervals were narrower than those of a persistence forecast but wider than those of a seasonal one.
 
@@ -93,12 +94,13 @@ The design sits among four lines of work (references in Section 8).
   work shows that common kriging evaluation protocols leak spatial information and proposes a
   leakage-free partition that separates training, validation and testing in space and time [11].
 - **Conformal prediction.** Split conformal prediction [4], [5] gives finite-sample coverage when
-  calibration and test scores are exchangeable. Extensions relevant here: weighted conformal
+  calibration and test scores are exchangeable. Extensions relevant here: hierarchical conformal prediction [21], [22]; weighted conformal
   prediction under covariate shift [14] and beyond exchangeability [15], randomised localisation for
   local guarantees [16], local spatial conformal prediction [17], cluster-aware calibration of
   spatiotemporal forecasts by sampling density [18], conformal prediction for inductive graph models
-  [9], conformal prediction for spatially dependent data [10], and conformal risk control [19]. None is
-  used in the present work yet; they are the comparison points and building blocks for Phase 2.
+  [9], conformal prediction for spatially dependent data [10], and conformal risk control [19]. Station-level
+  (hierarchical) conformal prediction [21] is used in Section 4.3b to 4.3d; the others are the comparison points and
+  building blocks for Phase 2.
 - **Efficient sequence and spatiotemporal models.** Selective state-space models [6] process
   sequences in linear time. STGformer [12] reports a 100-fold speedup and a 99.8% reduction in GPU
   memory against the STAEformer baseline during batch inference on a California road graph with
@@ -262,7 +264,7 @@ weather and from 4.73 to 5.04 on PeMS-BAY. It does not close the gap to persiste
 
 **What this changes.** The forecast-time shortfall on the air-quality networks is mostly a calibration
 problem with too little history, and it is largely repairable by calibrating on earlier years, at a cost in
-width. The weather and traffic networks were not re-run over several years.
+width. Weather was re-run over several years in Section 4.3c; the traffic series cover weeks to months, so a multi-year design does not apply to them (Section 4.3d).
 
 ### 4.3c Pre-registered confirmation (experiment C1h)
 The rule of Section 4.3b (earlier years' errors from the same season, scaled by the forecast's magnitude) was
@@ -358,7 +360,8 @@ influence of stations that are simply noisier.
 
 Reading the table:
 
-- A distance effect appears only in the sparse weather network (station spacing about 81 km).
+- With the Delhi constants, a distance effect appears only in the sparse weather network (station spacing about
+  81 km); it does not survive the coordinate correction below.
   Coverage there falls by about 1.4 points per extra spacing, and from about 0.93 in the nearest third
   of test stations to 0.84 in the farthest third under region holdout.
 - In the dense urban and traffic networks, held-out regions sat 1.7 to 13 times farther from the
@@ -370,14 +373,42 @@ Reading the table:
 - Only one sparse network, of 30 stations, was available, so the weather result is the evidence of a
   single dataset.
 
+**Re-run with the corrected coordinate frame (experiments C2 and C3, `norm`).** The table above used the Delhi
+coordinate constants, which put the weather network's coordinate inputs about 650 units out of range (Section 4.6).
+Experiments C2 and C3 were repeated with the frame built from the training stations, same splits and seeds (20
+splits; the scattered arm is the same-window coverage of the corrected C1b run). The two traffic networks were not
+repeated.
+
+| Dataset | Region-holdout coverage (mean, standard deviation over splits) | Scattered holdout | Distance to nearest training station, test vs calibration (spacings) | Change in coverage per extra spacing, within station [95% interval] | Coverage in nearest / farthest third of test stations |
+|---|---|:---:|:---:|---|:---:|
+| Delhi PM2.5 | 0.897 (0.025) | 0.893 | 2.31 vs 1.35 | +0.0028 [-0.0031, +0.0088] | 0.902 / 0.890 |
+| Beijing PM2.5 | 0.894 (0.019) | 0.907 | 1.78 vs 1.83 | +0.0014 [-0.0118, +0.0050] | 0.879 / 0.917 |
+| NOAA weather | 0.874 (0.063) | 0.880 | 2.79 vs 1.29 | -0.0023 [-0.0116, +0.0079] | 0.894 / 0.858 |
+
+- **The weather distance effect does not reproduce.** With the corrected frame the within-station slope is
+  -0.0023 [-0.0116, +0.0079], an interval that includes zero (it was -0.0136 [-0.0221, -0.0063]). Coverage in the
+  nearest and farthest thirds is 0.894 and 0.858 (it was 0.930 and 0.843), a gap of 0.036 with overlapping
+  intervals. The effect reported with the Delhi constants was therefore largely a consequence of the defect,
+  not a property of sparse networks. A smaller decline in coverage with distance in the weather data is not
+  excluded (the interval reaches -1.2 points per spacing), but it is not established.
+- Delhi's small positive slope also loses significance (+0.0028 [-0.0031, +0.0088]).
+  Beijing's slope is near zero (+0.0014); its tertile trend of 0.879 to 0.917 runs the
+  other way, with coverage rising with distance.
+- In C3 the corrected frame gives a median pairwise total-variation distance of 0.12 (Delhi) and 0.16
+  (weather), against noise floors of 0.13 and 0.13, and a distance correlation of
+  +0.006 in the weather data. The conclusion is unchanged: the estimator cannot resolve
+  differences below the noise floor, so a total-variation bound would be vacuous.
+- **Consequence for the plan.** The case for geometry-aware calibration (contribution C) rested on this effect and
+  is now weak. C stays gated: it proceeds only if a larger sparse network shows a far-tercile deficit of at least
+  0.03 over 20 or more region splits, and otherwise the thesis reports that distance did not matter.
+
 Experiment C3 asks whether a coverage bound built on the total-variation distance between station
 score distributions could be informative. The estimated distance between held-out stations had a
 median of 0.12 in Delhi and 0.18 in the weather data, against a noise floor of 0.13 obtained by
 splitting one station's own scores into random halves. In the weather data it did not grow with
 separation (Spearman correlation -0.02). With about 360 dependent scores per station the estimator
 cannot resolve differences below roughly 0.13, which exceeds the 0.10 miscoverage budget, so a
-total-variation bound would be vacuous. The Semester-4 plan therefore uses a threshold-specific
-estimate of coverage loss instead (Section 6).
+total-variation bound would be vacuous. The Semester-4 plan therefore drops the coverage-risk estimate.
 
 ### 4.5 Original-protocol results (kept as a record)
 
@@ -477,7 +508,7 @@ result. Duration: 12 weeks, 16 Nov 2026 to 7 Feb 2027, with writing from week 6.
 |---|---|---|---|
 | A. Exact station-level coverage | Hierarchical conformal prediction [21] with the station as the group, and a second-moment variant for per-station spread; chronological calibration with a rolling window or adaptive correction for the error growth found in Section 4.3a | Mean coverage within 0.02 of 0.90 on every network; share of stations below 0.80 halved with width at most 15% larger | Width against worst-station coverage curve |
 | B. A new sensor's first weeks | Cold start, then warm-up with Generalized hierarchical conformal [22], own-data split conformal and adaptive conformal inference, for 0 to 60 days of history | Coverage within 0.03 at every history length; at least 5% narrower by the longest history on 4 of 6 networks | Coverage and width against history curves |
-| C. Where position matters (gated) | Geometry-aware calibration [16], [17] against sequential whitening [10] and cluster-aware calibration [18], only if a 300 to 1,500 station GHCN network shows far-tercile coverage at least 0.03 below near-tercile over 20 or more region splits | Far-tercile coverage within 0.03 of 0.90, mean within 0.02, width at most +10%, not worse than whitening | Characterisation of when distance does not matter |
+| C. Where position matters (gated; weakened by Section 4.4) | Geometry-aware calibration [16], [17] against sequential whitening [10] and cluster-aware calibration [18], only if a 300 to 1,500 station GHCN network shows far-tercile coverage at least 0.03 below near-tercile over 20 or more region splits | Far-tercile coverage within 0.03 of 0.90, mean within 0.02, width at most +10%, not worse than whitening | Characterisation of when distance does not matter |
 | D. Useful as well as valid | Diagnose the gap to seasonal-naive; combined forecast, locally scaled scores, quantile head | Width at most conformalised seasonal-naive at coverage within 0.02 of 0.90 on traffic; at most the better of persistence and seasonal-naive on the other networks | State the limitation |
 | Scale and alerts | Memory and time to about 8,600 sensors (LargeST), coverage against N on GHCN, threshold alerts at one air-quality network [19], IGNNK baseline, reproducibility pass | Reproduces one headline table in a fresh environment | Cut alerts, then scale, first |
 | Writing | Chapters 1 to 3 from week 6, 4 to 9 weeks 10 to 11, supervisor review week 11, submission-ready 7 Feb 2027 | Supervisor review | None |
@@ -499,7 +530,8 @@ pre-registered round confirmed the rule again (0.900 to 0.913, four times more f
 traffic needs no seasonal rule (0.881 and 0.891), and confirmed station-level conformal on PeMS-BAY (0.903). A coordinate-normalisation defect that inflated error and width on
 four networks was found and fixed. Against persistence, OmniST is better on three networks and not on
 PeMSD7-M or weather; against a seasonal forecast it is wider on PeMS-BAY. Distance from the training
-network matters only in the sparse weather network. Phase 2 is part of the final thesis: neighbour attention
+network showed an effect only in the sparse weather network with the Delhi constants, and that effect
+disappeared with the corrected coordinate frame (slope -0.2 points per spacing, interval including zero). Phase 2 is part of the final thesis: neighbour attention
 cuts attention memory 7 to 17 times from 4,000 sensors with equal output, the state-space block was dropped,
 and the Semester-4 plan (Section 6) is organised around station-level coverage, a new sensor's first weeks,
 position-dependent calibration and useful intervals, with acceptance criteria and fallbacks, pending
@@ -521,15 +553,15 @@ Kriging," in *Proc. AAAI Conf. Artificial Intelligence*, vol. 35, no. 5, 2021, p
 [4] V. Vovk, A. Gammerman, and G. Shafer, *Algorithmic Learning in a Random World*. New York, NY,
 USA: Springer, 2005.
 
-[5] A. N. Angelopoulos and S. Bates, "A Gentle Introduction to Conformal Prediction and
-Distribution-Free Uncertainty Quantification," *Foundations and Trends in Machine Learning*, vol. 16,
-no. 4, pp. 494–591, 2023.
+[5] A. N. Angelopoulos and S. Bates, "Conformal Prediction: A Gentle Introduction," *Foundations and Trends in
+Machine Learning*, vol. 16, no. 4, pp. 494–591, 2023 (arXiv:2107.07511, "A Gentle Introduction to Conformal
+Prediction and Distribution-Free Uncertainty Quantification").
 
 [6] A. Gu and T. Dao, "Mamba: Linear-Time Sequence Modeling with Selective State Spaces,"
 *arXiv:2312.00752*, 2023.
 
-[7] P. Vashishtha, "thesis-omnist: Topology-Invariant Spatiotemporal Forecasting with Calibrated Uncertainty, and
-Its Scaling (project repository)," 2026. [Online]. Available:
+[7] P. Vashishtha, "thesis-omnist: Uncertainty Quantification for Spatiotemporal Forecasting at Unseen Sensor
+Locations in Evolving Networks (project repository)," 2026. [Online]. Available:
 https://github.com/Praveg432/thesis-omnist
 
 [8] P. Vashishtha, "OmniST: Topology-Invariant Spatiotemporal Forecasting with Guaranteed-Coverage
@@ -577,8 +609,8 @@ https://arxiv.org/abs/2606.06753
 Shift," *arXiv:2608.01460*, 2026. [Online]. Available: https://arxiv.org/abs/2608.01460
 [21] Y. Lee, R. F. Barber, and R. Willett, "Distribution-free inference with hierarchical data,"
 *arXiv:2306.06342*. [Online]. Available: https://arxiv.org/abs/2306.06342
-[22] S. Mallick et al., "Generalized Hierarchical Conformal Prediction," *arXiv:2608.15500* [stat.ME],
-2026. [Online]. Available: https://arxiv.org/abs/2608.15500 (full author list not verified).
+[22] S. Mallick, E. Tchetgen Tchetgen, E. Dobriban, and Y. Lee, "Generalized Hierarchical Conformal Prediction,"
+*arXiv:2608.15500* [stat.ME], 2026. [Online]. Available: https://arxiv.org/abs/2608.15500
 
 ---
 

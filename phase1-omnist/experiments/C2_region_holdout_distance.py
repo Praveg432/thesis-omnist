@@ -26,8 +26,11 @@ bootstrap over splits), and the distance gap between calibration and test statio
 Distances: Haversine-like (equirectangular, km) for the three lat/lon datasets; Euclidean in the
 reconstructed MDS plane for the two traffic datasets (their coordinates are not measured positions).
 
-Run:  python experiments/C2_region_holdout_distance.py <domain|all> [quick]
-      python experiments/C2_region_holdout_distance.py analyse
+Add `norm` to use the training-station coordinate frame instead of the Delhi constants; results then go to
+results/exp_C2n_<domain>.json and the scattered arm is read from exp_C1b_norm_<domain>.json (same-window rule,
+which is C1's rule).
+Run:  python experiments/C2_region_holdout_distance.py <domain|all> [quick] [norm]
+      python experiments/C2_region_holdout_distance.py analyse [norm]
 Output: results/exp_C2_<domain>.json (quick writes results/C2_quick_<domain>.json).
 """
 import json
@@ -42,6 +45,10 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import C1_rigorous_inductive_eval as c1  # noqa: E402  (also puts the project root on sys.path)
 from src.data import DataConfig  # noqa: E402
 from src.omnist_model import ModelConfig, OmniST  # noqa: E402
+from src.cc_hash import training_coordinate_frame  # noqa: E402
+
+NORM = "norm" in sys.argv[1:]
+TAG = "C2n" if NORM else "C2"
 from src.trainer import TrainConfig, train_model  # noqa: E402
 import torch  # noqa: E402
 
@@ -97,8 +104,12 @@ def run_split(domain: str, spec: dict, split: int, plane: np.ndarray, spacing: f
     tcfg = TrainConfig(lr=1e-3, n_epochs=2 if quick else spec["epochs"], patience=spec["patience"],
                        batch_size=spec["batch"], loss_type="pot")
     train_ds, val_ds, _, meta = spec["prepare"](cfg, hold_out_stations=held)
+    frame = {}
+    if NORM:
+        center, scale = training_coordinate_frame(np.asarray(meta["coords_all"])[meta["train_stations"]])
+        frame = {"coord_center": center, "coord_scale": scale}
     model = OmniST(ModelConfig(n_features=1, horizon=horizon, d_model=64, k_neighbors=8,
-                               knn_mode=spec.get("knn_mode", "exact")))
+                               knn_mode=spec.get("knn_mode", "exact"), **frame))
     train_model(model, train_ds, val_ds, tcfg, meta)
 
     cal_scores = c1.score_array(model, meta, c1.station_dataset(meta, cal, window, horizon))
@@ -119,7 +130,7 @@ def run_split(domain: str, spec: dict, split: int, plane: np.ndarray, spacing: f
 
 def run_domain(domain: str, quick: bool) -> None:
     spec = c1.DOMAINS[domain]
-    path = os.path.join(RESULTS, f"C2_quick_{domain}.json" if quick else f"exp_C2_{domain}.json")
+    path = os.path.join(RESULTS, f"C2_quick_{domain}.json" if quick else f"exp_{TAG}_{domain}.json")
     plane, spacing = get_plane_and_spacing(domain)
     state = {"experiment": "C2 contiguous-region holdout: coverage versus distance to training sensors",
              "domain": domain, "n_stations": int(len(plane)), "network_spacing": round(spacing, 4),
@@ -172,19 +183,20 @@ def pooled_arm(domain, plane, spacing, arm):
     """Collect (d1, per-station coverage, split id, cal d1, station id) for one arm of a domain."""
     d1, cov, ids, cal_d1, stations = [], [], [], [], []
     if arm == "region":
-        data = json.load(open(os.path.join(RESULTS, f"exp_C2_{domain}.json")))["splits"]
+        data = json.load(open(os.path.join(RESULTS, f"exp_{TAG}_{domain}.json")))["splits"]
         for s in data:
             d1 += s["test_d1"]; cov += s["station_coverage"]; ids += [s["split"]] * len(s["test_d1"])
             cal_d1 += s["cal_d1"]; stations += s["test_stations"]
     else:
-        data = json.load(open(os.path.join(RESULTS, f"exp_C1_{domain}.json")))["splits"]
+        c1_file = f"exp_C1b_norm_{domain}.json" if NORM else f"exp_C1_{domain}.json"
+        data = json.load(open(os.path.join(RESULTS, c1_file)))["splits"]
         n = len(plane)
         for s in data:
             test, cal = np.array(s["test_stations"]), np.array(s["cal_stations"])
             train = np.setdiff1d(np.arange(n), np.concatenate([test, cal]))
             td, _ = distances_to_training(plane, test, train, spacing)
             cd, _ = distances_to_training(plane, cal, train, spacing)
-            d1 += list(td); cov += s["disjoint_calibration"]["per_station_coverage"]
+            d1 += list(td); cov += (s["same_window"] if NORM else s["disjoint_calibration"])["per_station_coverage"]
             ids += [s["split"]] * len(test); cal_d1 += list(cd); stations += [int(i) for i in test]
     return np.array(d1), np.array(cov), np.array(ids), np.array(cal_d1), np.array(stations)
 
@@ -224,7 +236,7 @@ def within_station_effect(arms, n_boot=2000, seed=0):
 def analyse() -> None:
     out = {}
     for domain in c1.DOMAINS:
-        if not os.path.exists(os.path.join(RESULTS, f"exp_C2_{domain}.json")):
+        if not os.path.exists(os.path.join(RESULTS, f"exp_{TAG}_{domain}.json")):
             continue
         plane, spacing = get_plane_and_spacing(domain)
         arms = {a: pooled_arm(domain, plane, spacing, a) for a in ("scattered", "region")}
@@ -247,12 +259,13 @@ def analyse() -> None:
                            if r else f"T{i + 1}: -" for i, r in enumerate(rows))
             print(f"  {arm:9s} n={len(d1):3d} test d1 {d1.mean():.2f} vs cal d1 {cal_d1.mean():.2f} | "
                   f"rho={rho:+.3f} (p={p:.3f}) | {t}")
-    json.dump(out, open(os.path.join(RESULTS, "exp_C2_analysis.json"), "w"), indent=2, default=float)
-    print("\nsaved -> results/exp_C2_analysis.json")
+    name = "exp_C2n_analysis.json" if NORM else "exp_C2_analysis.json"
+    json.dump(out, open(os.path.join(RESULTS, name), "w"), indent=2, default=float)
+    print(f"\nsaved -> results/{name}")
 
 
 if __name__ == "__main__":
-    argv = [a for a in sys.argv[1:] if a != "quick"]
+    argv = [a for a in sys.argv[1:] if a not in ("quick", "norm")]
     if argv and argv[0] == "analyse":
         analyse()
     else:
