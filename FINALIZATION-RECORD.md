@@ -446,3 +446,22 @@ after correction."
 
 **Open, outside the repository:** supervisor approval of the title and the Phase 2 scope; the decision to post the
 revised preprint; the report submission date (window 20 to 30 Nov 2026).
+
+## 20. Pre-submission verification (26 Nov 2026)
+
+Seven independent checks were run on commit 42fda98 and its successor before the report was finalised.
+
+| # | Check | Method | Result |
+|---|---|---|---|
+| 1 | Clean clone | Cloned the pushed repository into an empty folder and ran both test suites | Found a defect: one Beijing integrity test failed because the raw Beijing archive is not committed (`phase1-omnist/data/README.md` says so, the test comment said otherwise). The test now skips with that reason when the archive is absent, and the comment is corrected. Everything else passed in the clean clone |
+| 2 | Bit-exact reproduction | Re-trained and re-evaluated four committed splits from scratch with the same seeds (Beijing 0 and 7, weather 3, Delhi 0; corrected frame) and compared with the stored values | All coverage values (chronological, same-window, pooled) and test MAE identical to four decimals |
+| 3 | Stored-result integrity | `phase1-omnist/tests/test_result_integrity_calibration.py`, 38 tests: station sets match the seeds; calibration and test stations disjoint; per-station coverage averages to the split coverage; stored aggregates and the C1h verdicts recompute from the split values; C1h and C1i use exactly the pre-registered fresh splits; every interval score is at least the interval width; no infinite intervals; HCP uses at least 9 calibration stations; C1b legacy and corrected runs use identical station splits | All pass |
+| 4 | Simulation against known truth | `phase1-omnist/tests/test_calibration_simulation.py`, 5 tests: split conformal covers between 0.89 and 0.93 on exchangeable scores (theory: 0.90 to 0.92 with 49 calibration scores); HCP stays inside its theoretical band [0.90, 0.90 + 2/(K+1)] with unequal group sizes; pooled conformal is dragged below 0.85 by one large quiet station while HCP stays at or above 0.88; the scaled seasonal rule is closer to the target than the same-year rule on a seasonal, trending process; windows whose targets are not yet observed cannot change an interval | All pass. One assertion was wrong, not the code: in the seasonal simulation the same-year rule over-covers (0.94) instead of under-covering, so the test now asserts that the scaled rule is closer to the target |
+| 5 | Independent claim audit | `tools/audit_claims.py` recomputes every abstract figure from the stored per-split values with no project code, checks the abstract text is identical in the README, the report and this record, checks that the HTML behind the PDF contains the current abstract and Sections 4.3a to 4.3d, and that the pre-registered failures (weather H4, Beijing H7, PeMS-BAY H5) are the ones in the verdict files | 21 of 21 rows pass |
+| 6 | Pre-registration provenance | `git log` for both pre-registration files and for the first commit of each result family | PRE-REGISTRATION-C1H.md (3c462ee, 17 Nov 13:58) precedes the C1h results (99af251, 15:17); PRE-REGISTRATION-C1I.md (94f85f2, 17 Nov 15:47) precedes the C1i results (c0afaf2, 18 Nov 10:19). Each file has exactly one commit, so neither was edited after the fact. The rule itself was chosen on C1f (3cfb6c9, 13:50), before the first pre-registration, as the report states |
+| 7 | Report and PDF freshness | Compared modification times and the HTML text | The PDF is newer than its source; the HTML contains the current text |
+
+**What these checks do not cover.** They show that the numbers in the report are the numbers the code produced, that the
+code does what it claims on simulated data, and that the confirmation tests were fixed in advance. They do not show
+that the rule would hold on other networks, other years, or a larger number of stations; the traffic results rest on
+6 splits, and the Phase 2 results used the original coordinate frame. The statistics of each figure are in the report.

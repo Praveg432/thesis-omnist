@@ -18,7 +18,11 @@ import C1_rigorous_inductive_eval as c1  # noqa: E402
 import C2_region_holdout_distance as c2  # noqa: E402
 
 DOMAINS = list(c1.DOMAINS)
-COMMITTED_DATA = ["delhi_air_quality", "beijing_air_quality", "ghcn_weather"]   # raw data is in the repo
+COMMITTED_DATA = ["delhi_air_quality", "beijing_air_quality", "ghcn_weather"]
+# Delhi and weather raw data are committed; the Beijing archive (about 40 MB) is not (data/README.md), so the test
+# for Beijing is skipped, with the reason, on a clean checkout that has not downloaded it.
+BEIJING_RAW = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "real_beijing")
+HAVE_BEIJING = any(f.startswith("PRSA_Data") for _, _, fs in os.walk(BEIJING_RAW) for f in fs)
 
 
 def load(name):
@@ -74,6 +78,8 @@ def test_c2_region_and_calibration_are_disjoint_and_sized(domain):
 
 @pytest.mark.parametrize("domain", COMMITTED_DATA)
 def test_c2_regions_are_contiguous_and_distances_recompute(domain):
+    if domain == "beijing_air_quality" and not HAVE_BEIJING:
+        pytest.skip("Beijing raw data (UCI PRSA archive) is not committed; see data/README.md to fetch it")
     plane, spacing = c2.get_plane_and_spacing(domain)
     d = load(f"exp_C2_{domain}.json")
     n = len(plane)
