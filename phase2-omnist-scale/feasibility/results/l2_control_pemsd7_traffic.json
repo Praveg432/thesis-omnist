@@ -1,0 +1,21 @@
+{
+ "pairs": {
+  "test_mae": [
+   3.8852,
+   3.8852
+  ],
+  "chronological": [
+   0.8786,
+   0.8786
+  ],
+  "same_window": [
+   0.8707,
+   0.8707
+  ],
+  "pooled": [
+   0.8798,
+   0.8798
+  ]
+ },
+ "reproduced_exactly": true
+}

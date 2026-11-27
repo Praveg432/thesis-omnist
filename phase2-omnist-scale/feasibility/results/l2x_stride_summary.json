@@ -1,0 +1,60 @@
+{
+ "pemsbay_traffic": {
+  "splits": [
+   0,
+   1,
+   2
+  ],
+  "mae_stride12": [
+   4.1547,
+   3.3696,
+   3.6704
+  ],
+  "mae_stride48_committed": [
+   5.3498,
+   4.3391,
+   4.1602
+  ],
+  "mean_stride12": 3.7316,
+  "mean_stride48": 4.6164,
+  "ratio": 0.8083,
+  "diff_mean": -0.8848,
+  "diff_ci95": [
+   -1.7796,
+   0.01
+  ],
+  "chrono_cov_stride12": 0.8948,
+  "chrono_cov_stride48": 0.8816,
+  "chrono_width_stride12": 18.4258,
+  "chrono_width_stride48": 18.967
+ },
+ "pemsd7_traffic": {
+  "splits": [
+   0,
+   1,
+   2
+  ],
+  "mae_stride12": [
+   3.9392,
+   3.6856,
+   3.6838
+  ],
+  "mae_stride48_committed": [
+   3.8852,
+   3.7959,
+   3.7961
+  ],
+  "mean_stride12": 3.7695,
+  "mean_stride48": 3.8257,
+  "ratio": 0.9853,
+  "diff_mean": -0.0562,
+  "diff_ci95": [
+   -0.2933,
+   0.1809
+  ],
+  "chrono_cov_stride12": 0.8907,
+  "chrono_cov_stride48": 0.8881,
+  "chrono_width_stride12": 16.5598,
+  "chrono_width_stride48": 17.1452
+ }
+}

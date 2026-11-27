@@ -479,3 +479,36 @@ that the rule would hold on other networks, other years, or a larger number of s
 **Remaining limits, stated in the report.** Traffic intervals are not useful against a seasonal forecast (D); weather
 keeps 13% of stations below 0.80 under the fixed rule; every repair costs width; online selection needs several
 earlier years; evidence stops at 325 real sensors. Supervisor approval is outside the repository.
+
+
+## 22. Feasibility rounds and the lifecycle plan (26 Nov 2026)
+
+**What was done.** Proposed OmniST v2 upgrades (relative distance-biased neighbour attention with a zero-initialised
+gate, masked-station training, seasonal-residual + scale head) were tested in two pre-registered rounds in a separate
+sandbox that read this repository without writing to it. The code, pass rules, reports and results were then copied
+to `phase2-omnist-scale/feasibility/` with only the import paths changed; the 9 tests pass there and the summarisers
+reproduce `phase2-omnist-scale/feasibility/results/verdicts.json` and
+`phase2-omnist-scale/feasibility/results/verdicts2.json` identically. The sandbox commit history (pre-registration before code
+and results in each round) is in `phase2-omnist-scale/feasibility/README.md`.
+
+**Findings** (all figures from `phase2-omnist-scale/feasibility/results/`; checked by `tools/check_c1b_report.py`):
+- The unmasked spatial branch does not beat the shared GRU for sensors with history (F1 fails on Delhi and PeMS-BAY);
+  masked training costs -2.0% to +1.3%.
+- Day 0: 16.2% (PeMS-BAY) and 10.3% (PeMSD7-M) below the best neighbour baseline over 10 splits each; 1.2%, not
+  significant, on Delhi. A neighbour mean keeps 14.7% and 9.9%; attention adds about 2% on PeMS-BAY only. Day-0
+  coverage 0.879 and 0.880 with lower interval score than the baseline.
+- The seasonal-residual + scale head lowers PeMS-BAY interval score 37% below seasonal-naive; a GRU with the same
+  head is equal, so the gain is the head's.
+- Time of day in the thesis model: 0.1% and 0.7% change; refuted as the traffic fix. The control reproduced the
+  stored split-0 results exactly.
+- Exploratory, not pre-registered: the thesis traffic loaders use stride = window = 48, so PeMS-BAY training windows
+  share one clock phase. Stride 12 lowered PeMS-BAY error 19% on splits 0 to 2 (interval reaching zero). The
+  committed Phase 1 results are unchanged; the report flags traffic accuracy and width as possibly pessimistic
+  (Section 4.6) and S0 tests it first.
+
+**Decisions.** Phase 2 is reframed as calibrated forecasting across a sensor's lifecycle (Day 0 to warm), scoped to
+road networks with Delhi as negative control; the architecture is frozen; claims that the spatial branch beats the
+GRU, that the attention provides the Day-0 gain, that the warm-up is cost-free, that the interval gain is OmniST's, or
+any accuracy claim at 8,000 sensors are excluded. Order: S0, B, D, A, C, E, F, G (`THESIS-COMPLETION-PLAN.md`). The
+abstract is unchanged (597 of 600 words; its statements remain true). Report Sections 4.6, 5, 5.1, 6 and 7 and
+references [23], [24] were updated; the checker now ties 158 report figures to result files.

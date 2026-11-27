@@ -1,0 +1,32 @@
+[
+ {
+  "N": 2000,
+  "mode": "knn",
+  "layer_peak_mb": 22.78125
+ },
+ {
+  "N": 2000,
+  "mode": "dense",
+  "layer_peak_mb": 62.703125
+ },
+ {
+  "N": 4000,
+  "mode": "knn",
+  "layer_peak_mb": 44.046875
+ },
+ {
+  "N": 4000,
+  "mode": "dense",
+  "layer_peak_mb": 247.65625
+ },
+ {
+  "N": 8000,
+  "mode": "knn",
+  "layer_peak_mb": 84.859375
+ },
+ {
+  "N": 8000,
+  "mode": "dense",
+  "layer_peak_mb": 879.28125
+ }
+]

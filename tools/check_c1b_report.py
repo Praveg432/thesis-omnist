@@ -165,7 +165,39 @@ for var in ("gru+fast", "gru+exact"):
     if f"{xt['v3_pemsbay'][var]['corrected']['coverage_deployable']:.3f}" not in report_lines:
         failures.append(f"corrected-frame V3 coverage for {var} missing from the report")
 
+# ---- Phase 2 feasibility rounds (Sections 4.6, 5.1 and 7) ----------------------------------------------------
+FR = os.path.join(ROOT, "phase2-omnist-scale", "feasibility", "results")
+fv = json.load(open(os.path.join(FR, "verdicts.json")))
+fw = json.load(open(os.path.join(FR, "verdicts2.json")))
+fs = json.load(open(os.path.join(FR, "l2x_stride_summary.json")))
+pct = lambda x: f"{x * 100:.1f}%"
+for dom in ("pemsbay", "pemsd7"):
+    x = fw[dom]; c = x["cold_mae"]; d = x["L1a_diff_v2_minus_best"]; i = x["day0_intervals"]
+    assert x["L1a"] == "PASS" and x["L1c"] == "PASS" and x["best_neighbour_baseline"] == "idw_gru"
+    for w in (f"{c['v2_mask']:.2f} against {c['idw_gru']:.2f}", f"{d['mean']:.2f} [{d['ci95'][0]:.2f}, {d['ci95'][1]:.2f}]",
+              pct(1 - x["L1a_ratio"]), pct(1 - c["v2_mask_mean"] / c["idw_gru"]),
+              f"{i['v2_mask']['interval_score']:.1f} against {i['idw_gru']['interval_score']:.1f}",
+              f"{i['v2_mask']['coverage']:.3f}", pct(1 - fw["L2"][dom]["ratio"])):
+        need(w, f"feasibility {dom}")
+need(f"{fw['pemsbay']['day0_intervals']['v2_mask']['coverage']:.3f} and {fw['pemsd7']['day0_intervals']['v2_mask']['coverage']:.3f}", "Day-0 coverage pair")
+need(f"{pct(fw['pemsbay']['warm_mae']['v2_mask'] / fw['pemsbay']['warm_mae']['gru'] - 1).replace('-', '-')} to "
+     f"+{pct(fw['pemsd7']['warm_mae']['v2_mask'] / fw['pemsd7']['warm_mae']['gru'] - 1)}", "warm cost range")
+need(pct(1 - fv["delhi"]["F3_ratio"]), "Delhi Day-0 ratio")
+b = fv["pemsbay"]["intervals"]
+need(f"{b['v2_res_scale']['interval_score']:.1f} against {b['seasonal_naive']['interval_score']:.1f}", "F4 interval score")
+need(f"{100 * (1 - b['v2_res_scale']['interval_score'] / b['seasonal_naive']['interval_score']):.0f}% lower; coverage {b['v2_res_scale']['coverage']:.3f}", "F4 ratio")
+need(f"scores {b['gru_res_scale']['interval_score']:.1f}", "F4b GRU with the same head")
+m = fv["memory"]
+need(f"{m['knn_mb']['8000']:.0f} MB against {m['dense_mb']['8000']:.0f} MB", "F5 memory")
+need(f"({m['dense_over_knn_at_8000']:.1f} times)", "F5 ratio")
+x = fs["pemsbay_traffic"]
+for w in (f"from {x['mean_stride48']:.2f} to {x['mean_stride12']:.2f} ({100 * (1 - x['ratio']):.0f}%",
+          f"[{x['diff_ci95'][0]:.2f}, {x['diff_ci95'][1]:+.2f}]",
+          f"{x['chrono_cov_stride48']:.3f} to {x['chrono_cov_stride12']:.3f}",
+          f"{x['chrono_width_stride48']:.1f} to {x['chrono_width_stride12']:.1f}", pct(1 - fs["pemsd7_traffic"]["ratio"])):
+    need(w, "training-stride finding")
+
 if failures:
     print("\n".join(failures))
     sys.exit(1)
-print(f"all {n_checked} C1b to C1j, C2n, traffic-extension and V1b/V3 report figures match the committed result files")
+print(f"all {n_checked} C1b to C1j, C2n, traffic-extension and V1b/V3 and feasibility report figures match the committed result files")

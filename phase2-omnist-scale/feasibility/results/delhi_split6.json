@@ -1,0 +1,29 @@
+{
+ "split": 6,
+ "n_train": 21,
+ "n_windows": 10,
+ "variants": {
+  "gru": {
+   "warm_mae": 29.11170277347986
+  },
+  "v2_nomask": {
+   "warm_mae": 28.963920504867904,
+   "gate_mean_abs": 0.06543,
+   "cold_mae": 64.14164664079047
+  },
+  "v2_mask": {
+   "warm_mae": 29.810002430621687,
+   "gate_mean_abs": 0.07055,
+   "cold_mae": 31.85934511093841
+  }
+ },
+ "baselines": {
+  "warm_persistence_mae": 41.215974962658336,
+  "warm_seasonal_naive_mae": 41.129855021779996,
+  "cold_nn_persistence_mae": 40.66445883067417,
+  "cold_idw_persistence_mae": 40.15863072423321,
+  "cold_idw_seasonal_naive_mae": 41.051249485838476,
+  "cold_idw_gru_mae": 30.398120482412804
+ },
+ "seconds": 145.0
+}

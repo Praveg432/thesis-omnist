@@ -488,6 +488,14 @@ were not repeated under C1 and carry the stated caveats.
   The committed C1 to C3 results used the Delhi constants; the corrected frame is now an option in the
   code (default unchanged) and the C1b rows above are reported with both. The training-station frame
   will be used from here on. Cross-region transfer has not been tested.
+- **Training windows on traffic (found in the Phase 2 feasibility tests).** The traffic loaders cut training
+  windows with a stride equal to the window length (48 steps), so on PeMS-BAY, at 30-minute steps, every training
+  window starts at the same clock time. An exploratory run on splits 0 to 2 with overlapping windows (stride 12)
+  lowered PeMS-BAY error from 4.62 to 3.73 (19%; lower on all 3 splits; paired interval [-1.78, +0.01]), with
+  same-network forecast-time coverage 0.882 to 0.895 and width 19.0 to 18.4; PeMSD7-M changed by 1.5% (not
+  significant). The traffic accuracy and width figures in this report may therefore be pessimistic; the coverage
+  figures are little affected. It was not pre-registered, and the committed results are unchanged. A pre-registered
+  test on all 6 splits is the first step of Semester 4 (Section 6).
 - **Baselines.** E-STGCN and IGNNK are the author's re-implementations.
 
 ### 4.7 Dissemination
@@ -502,7 +510,8 @@ measured in exploratory work; the review corrected what had been claimed for the
 same coordinate embedding with the Delhi constants, but the real-network runs re-centre the PeMS-BAY coordinates
 into the Delhi range, so their inputs stayed within 0.47 of the intended range (synthetic fields within 1.9); the
 defect of Section 4.6 did not distort them. The real-network coverage run was repeated with the corrected frame: coverage and width are unchanged within
-about 3% (table below).
+about 3% (table below). Two pre-registered feasibility rounds then tested proposed upgrades before the Semester-4
+plan was changed; code, pass rules and results are in `phase2-omnist-scale/feasibility/`.
 ### 5.1 Components and what has been measured
 | Component | State | Evidence |
 |---|---|---|
@@ -511,6 +520,11 @@ about 3% (table below).
 | Coverage against network size | Measured; re-run with the corrected frame | Deployable (chronological) calibration; real PeMS-BAY 0.918 and 0.921 (neighbour and exact attention), 0.918 and 0.917 with the corrected frame (width 22.3 and 21.8 against 21.6 and 21.9); synthetic networks of 100 to 4,000 sensors 0.880 to 0.914. No real network above 325 sensors |
 | Interval width against baselines | Measured, delhi-constants model | On PeMS-BAY the intervals were narrower than persistence and about 21% wider than seasonal-naive; to be re-measured with the corrected frame (Section 4.3a gives 33% under the C1b protocol) |
 | Corrected parity gate (V1b) | Run, 10 seeds, pre-registered margins | Neighbour attention against exact attention: **GO** (MAE difference 0.0001, 90% interval inside the 2.43 margin; coverage difference 0.000). Full model with the state-space block: **NO-GO** (MAE worse by 6.4 [4.6, 8.3], margin 2.4), consistent with dropping the block |
+| Day-0 forecasting with masked-station training (feasibility rounds 1 and 2, pre-registered) | Run; passes on road networks | For a sensor with no history, a model trained with 20% of training stations' inputs hidden had error 4.71 against 5.62 for the best neighbour baseline (a shared GRU's neighbour forecasts, distance-weighted) on PeMS-BAY, -0.91 [-1.04, -0.78], 16.2% lower, 10 splits; and 7.43 against 8.29 on PeMSD7-M, -0.86 [-1.14, -0.57], 10.3%. Not on Delhi (1.2%, not significant). Day-0 forecast-time coverage 0.879 and 0.880; interval score 52.1 against 61.4 and 61.3 against 67.5 |
+| Source of the Day-0 gain (round 2) | Run | A plain mean over neighbours keeps 14.7% and 9.9% of the gain; distance-biased attention adds about 2% on PeMS-BAY and nothing measurable on PeMSD7-M. For sensors with history the masked model is within -2.0% to +1.3% of the shared GRU; an unmasked spatial branch does not beat it (Delhi, PeMS-BAY) |
+| Seasonal-residual and scale head (round 1) | Run, PeMS-BAY, 5 splits | Interval score 25.9 against 40.9 for seasonal-naive (37% lower; coverage 0.894). A plain GRU with the same head scores 26.1, so the gain belongs to the head, not the spatial parts |
+| Time-of-day input to the thesis model (round 2) | Run, 6 splits each; refuted | Error changed by 0.1% (PeMS-BAY) and 0.7% (PeMSD7-M); the stored split-0 results were reproduced exactly as a control |
+| Memory of the distance-biased layer (round 1) | Measured | 85 MB against 879 MB for dense attention at N = 8,000 (10.4 times), growing linearly |
 ### 5.2 Defects found and fixed
 - A neighbour-index cache key could collide for two different sensor layouts; it is now a hash of the exact
   coordinates, with a size limit and regression tests.
@@ -524,28 +538,43 @@ about 3% (table below).
   0.880, and the suggested worst-group gap was not supported.
 - The Delhi-specific coordinate normalisation (Section 4.6), fixed in both phases.
 ## 6. Plan for Semester 4 (proposed, pending supervisor approval)
-The plan was rewritten on 26 Nov 2026 from the evidence of Sections 4.3a to 4.4; the full plan, with dated
-pre-registration of every contribution, is `THESIS-COMPLETION-PLAN.md`. Acceptance criteria are fixed before the
-experiments, and each contribution has a fallback, so a negative result is still a thesis result. Semester 4
-runs 16 Nov 2026 to 7 Feb 2027; week 3 starts on 30 Nov.
-**What the evidence changed.** The forecast-time repair is already shown on air quality and weather and on traffic
-with a different rule, so contribution A starts from a result. The weather distance effect did not survive the
-coordinate correction, so contribution C becomes a gated, powered test that probably ends as a characterisation. The
-learned model beats simple forecasts on air quality and weather but not on traffic, so contribution D concentrates
-on traffic. A coordinate-free GRU matches the architecture's accuracy, so the scale work is reduced to measurement
-and every calibration result is repeated with that backbone.
-| Contribution | Work | Acceptance criterion | Fallback |
+The plan was rewritten on 26 Nov 2026 from the evidence of Sections 4.3a to 4.4 and the feasibility rounds of
+Section 5.1; the full plan is `THESIS-COMPLETION-PLAN.md`. Acceptance criteria are fixed before the experiments,
+every step is pre-registered before its first run, and each has a fallback, so a negative result is still a thesis
+result. Semester 4 runs 16 Nov 2026 to 7 Feb 2027; week 3 starts on 30 Nov.
+
+**Framing: calibrated forecasting across a sensor's lifecycle.** A sensor added to a running network has no history
+on its first day, a short history during its warm-up, and a full history later. Semester 4 asks whether one system can
+give valid intervals at every stage using only information available at forecast time, and what each stage costs in
+accuracy and width. Forecasting at sensors with no history is published (IGNNK [3], KITS [23], MoGERNN [24]); none of
+these reports forecast-time intervals across the transition, which is the part claimed as new. The architecture is not
+claimed as new.
+
+**What the evidence changed.** The forecast-time repair is already shown on air quality and weather, and on traffic
+with a different rule, so per-station coverage (A) starts from a result. Masked-station training gives a Day-0
+forecaster better than interpolating neighbours' forecasts on both road networks but not on Delhi, so the lifecycle
+curve (B) is the headline and Delhi is its negative control. The gain comes from masked training with neighbour
+pooling, not from the attention, and the spatial branch does not help sensors with history, so the architecture is
+frozen and no warm-sensor claim is made. The seasonal-residual head fixes traffic intervals for any backbone, so (D)
+is a head and calibration result. The weather distance effect did not survive the coordinate correction, so (C) is a
+gated test. Time of day was refuted as the traffic fix; the training-window finding of Section 4.6 is tested first.
+
+| Step | Work | Acceptance criterion | Fallback |
 |---|---|---|---|
-| A. Per-station coverage at forecast time (protected) | Station-level conformal combined with the seasonal scaled scores; second-moment variant; width against the number of calibration stations on a large GHCN network | On every network over at least 20 fresh splits: mean coverage within 0.02 of 0.90, at most 5% of stations below 0.80, width at most 30% above the Phase 1 fixed rule | Width against worst-station coverage, and which networks cannot meet both |
-| B. A new sensor's first weeks (protected) | Cold start then own-data split conformal, generalized hierarchical conformal [22], adaptive conformal inference, 0 to 60 days of history | Coverage within 0.03 at every history length; at least 5% narrower at 60 days than at 0 days on 4 of 6 networks | Coverage and width against history |
-| C. Does position matter? (gated) | Gate G0 on a 300 to 1,500 station GHCN network with the corrected frame: far tercile at least 0.03 below near over 20 or more region splits. Geometry-aware calibration [16], [17] against whitening [10] and cluster-aware calibration [18] only if G0 passes | If G0 passes: far tercile within 0.03 of 0.90, mean within 0.02, width at most +10%, not worse than whitening | If G0 fails (expected): a powered negative, the interval of the distance slope on a much larger network |
-| D. Useful intervals (protected on traffic) | Seasonal-residual forecaster, locally scaled scores, quantile head, and a diagnosis of the PeMS-BAY width gap, on PeMSD7-M and PeMS-BAY | Interval score below persistence and seasonal-naive under the same rule, paired 95% interval below zero, coverage within 0.02 | State that on traffic the learned model does not beat a seasonal baseline, with the diagnosis |
-| E. Scale and remaining comparisons | Parity gate V1b; corrected-frame V3 and V3b; coverage against N on the large GHCN network; LargeST compute scaling; dropout, drift, 7-sensor, E-STGCN, IGNNK and interpolator comparisons under the forecast-time rules; calibration results repeated with the coordinate-free GRU backbone | At least 5 times lower peak memory than exact attention at N of 2,000 or more; neighbour-set agreement at least 0.99; coverage within 0.02 of 0.90 at every size, at least 10 splits per size | Restrict the claim to equivalence; state evidence to 325 sensors if no larger network is usable |
-| F. Alerts (cut candidate) | Conformal risk control [19] at one air-quality network with published thresholds | Mean miss rate at or below target plus 0.02, false alarms against a point-forecast threshold | Miss rate against the number of calibration exceedances |
-| G. Package and thesis (protected) | Pip-installable package that reproduces one headline table in a fresh environment; thesis in the IIT Patna format with at least 30 verified references; chapters 1 to 3 from week 6, supervisor review week 11 | Table reproduces; supervisor review | None |
-Cut order if time runs short: F, then LargeST compute scaling, then the breadth of the comparisons in E, then C's method.
-Dropped: the state-space block, a separate coverage-risk estimate, sensor placement, cross-city transfer, and online rule
-selection as a default (it failed on Beijing).
+| S0. Training-window fix (week 3) | Overlapping training windows on all 6 C1 splits of PeMS-BAY and PeMSD7-M, through the thesis pipeline | PeMS-BAY error lower, paired 95% interval below zero; coverage within 0.02 of 0.90. If accepted, Phase 1 traffic accuracy and width are re-run and reported next to the originals | Report the effect size with its interval |
+| B. Lifecycle curve (headline, protected) | Masked training extended to partial histories; model-input history 0 to 24 hours (PeMS-BAY), 0 to 4 hours (PeMSD7-M), 0 to 60 days (Delhi); calibration history 0 to 60 days with Day-0 calibration, own-data split conformal, generalized hierarchical conformal [22] and adaptive conformal inference; at least 20 splits | Road networks: Day-0 error at least 5% below the shared GRU with neighbour interpolation; full-history error at most 1.01 times the shared GRU's; coverage within 0.03 of 0.90 at every point; width at 60 days at least 5% below Day 0 | The curves as measured, with the stage where the system stops being valid or useful |
+| D. Useful intervals (protected) | Seasonal-residual and scale head as a backbone-agnostic head, seasonal value as an explicit input (Day 0: from neighbours), PeMS-BAY and PeMSD7-M, 20 splits each, after S0 | Interval score below seasonal-naive and persistence under the same forecast-time rule, paired 95% interval below zero, coverage within 0.02, both networks; for OmniST and the shared GRU | Where the learned model does not beat a seasonal baseline, with a diagnosis |
+| A. Per-station coverage (protected) | Station-level conformal on the scale-head scores, at full history and along the lifecycle curve | Every network, at least 20 splits: mean coverage within 0.02 of 0.90, at most 5% of stations below 0.80, width at most 30% above the pooled rule | Width against worst-station coverage |
+| C. Does position matter? (gated) | Gate G0 on a 300 to 1,500 station GHCN network, corrected frame: far tercile at least 0.03 below near over 20 or more region splits; geometry-aware calibration [16], [17] against whitening [10] and cluster-aware calibration [18] only if G0 passes | If G0 passes: far tercile within 0.03 of 0.90, mean within 0.02, width at most +10% | A powered negative (expected) |
+| E. Scale and remaining comparisons | Coverage and error against N on GHCN; LargeST compute; dropout, drift, 7-sensor, E-STGCN, IGNNK and interpolator comparisons under forecast-time rules; headline results repeated with the shared GRU | At least 5 times lower peak memory than exact attention at N of 2,000 or more; coverage within 0.02 at every size | Evidence to 325 sensors if no larger network is usable |
+| F. Alerts (cut candidate) | Conformal risk control [19] at one air-quality network | Miss rate at or below target plus 0.02 | Miss rate against calibration exceedances |
+| G. Package and thesis (protected) | Package reproducing one headline table in a fresh environment; thesis in the IIT Patna format, at least 30 verified references; supervisor review week 11 | Table reproduces; supervisor review | None |
+
+Schedule: S0 and the pre-registration of B in week 3; B in weeks 4 and 5; D in weeks 6 and 7, then A; C and E in
+weeks 8 and 9; reproducibility and writing in weeks 10 to 12. Cut order if time runs short: F, then LargeST compute,
+then the breadth of E, then C's method. Dropped: tuning the attention to beat the GRU on sensors with history, the
+time-of-day input, the state-space block, a separate coverage-risk estimate, sensor placement, cross-city transfer,
+and online rule selection as a default (it failed on Beijing).
 ## 7. Summary of Progress
 Phase 1 is complete as a design, an implementation and an evaluation. The forecaster was validated on
 five real networks and released as a preprint. Under the rule used in C1, mean coverage was 87.6% to
@@ -563,10 +592,13 @@ four networks was found and fixed. Against persistence, OmniST is better on thre
 PeMSD7-M or weather; against a seasonal forecast it is wider on PeMS-BAY. Distance from the training
 network showed an effect only in the sparse weather network with the Delhi constants, and that effect
 disappeared with the corrected coordinate frame (slope -0.2 points per spacing, interval including zero). Phase 2 is part of the final thesis: neighbour attention
-cuts attention memory 7 to 17 times from 4,000 sensors with equal output, the state-space block was dropped,
-and the Semester-4 plan (Section 6) is organised around per-station coverage, a new sensor's first weeks, a gated
-test of whether position matters, useful intervals on traffic, and scale, with acceptance criteria and fallbacks,
-pending supervisor approval. A coordinate-free GRU matches the architecture's accuracy, so the thesis contribution is
+cuts attention memory 7 to 17 times from 4,000 sensors with equal output, and the state-space block was dropped.
+Pre-registered feasibility tests showed that masked-station training forecasts sensors with no history 16.2% and 10.3%
+better than interpolating neighbours' forecasts on the two road networks (not on Delhi), with Day-0 coverage of 0.879
+and 0.880, and that a seasonal-residual head cuts PeMS-BAY interval score 37% below seasonal-naive for any backbone.
+The Semester-4 plan (Section 6) is therefore organised around calibrated forecasting across a sensor's lifecycle,
+from no history to warm, with useful traffic intervals, per-station coverage, a gated test of whether position
+matters, and scale, with acceptance criteria and fallbacks, pending supervisor approval. A coordinate-free GRU matches the architecture's accuracy, so the thesis contribution is
 the calibration and its evaluation, not the architecture.
 ---
 
@@ -643,6 +675,12 @@ Shift," *arXiv:2608.01460*, 2026. [Online]. Available: https://arxiv.org/abs/260
 *arXiv:2306.06342*. [Online]. Available: https://arxiv.org/abs/2306.06342
 [22] S. Mallick, E. Tchetgen Tchetgen, E. Dobriban, and Y. Lee, "Generalized Hierarchical Conformal Prediction,"
 *arXiv:2608.15500* [stat.ME], 2026. [Online]. Available: https://arxiv.org/abs/2608.15500
+[23] Q. Xu, C. Long, Z. Li, S. Ruan, R. Zhao, and Z. Li, "KITS: Inductive Spatio-Temporal Kriging with Increment
+Training Strategy," in *Proc. AAAI Conf. Artificial Intelligence*, 2025 (arXiv:2311.02565). [Online]. Available:
+https://arxiv.org/abs/2311.02565
+[24] Q. Zhou, Y. Zhang, M. A. Makridis, A. Kouvelas, Y. Wang, and S. Hu, "MoGERNN: An Inductive Traffic Predictor for
+Unobserved Locations in Dynamic Sensing Networks," *Transportation Research Part C*, vol. 174, 2025, Art. no. 105080
+(arXiv:2501.12281). [Online]. Available: https://arxiv.org/abs/2501.12281
 
 ---
 

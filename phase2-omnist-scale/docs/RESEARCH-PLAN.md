@@ -6,7 +6,8 @@
 **Hardware:** Apple M4 Pro (MPS, ~24 GB)
 **Status of this document:** the scope in Sections 3 to 5 is a **proposal pending supervisor approval**.
 **26 Nov 2026: superseded for scope and timeline.** [`THESIS-COMPLETION-PLAN.md`](../../THESIS-COMPLETION-PLAN.md)
-is the authoritative Phase 2 plan. It follows the evidence of `FINALIZATION-RECORD.md` Sections 11 to 21: WP1 and WP2 are
+is the authoritative Phase 2 plan. It follows the evidence of `FINALIZATION-RECORD.md` Sections 11 to 22 and the feasibility rounds in
+`phase2-omnist-scale/feasibility/`: WP1 and WP2 are
 replaced by a gated test of whether position matters, because the weather distance effect on which they rested did not
 survive the coordinate correction. This file is kept for the acceptance criteria of the scale and alert work (WP3, WP4), the
 novelty assessment (Section 5) and the terminology (Section 1). Where a statement below conflicts with the plan, the plan wins.
